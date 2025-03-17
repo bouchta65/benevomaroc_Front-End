@@ -8,7 +8,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.2.45"
+    "autoprefixer": "^10.4.21",
+    "pinia": "^3.0.1",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.17",
+    "vue": "^3.2.45",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",

@@ -9,6 +9,45 @@
         </div>
       </div>
     </section>
+
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <span class="text-[#C93EA1] font-medium">Comment Ça Marche</span>
+          <h2 class="text-4xl font-bold mt-2 mb-4 text-[#2D3436]">Engagez-vous facilement</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">Notre plateforme simplifie le processus pour trouver des opportunités de bénévolat qui correspondent à vos centres d'intérêt.</p>
+        </div>
+  
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="service-card bg-white p-8 rounded-lg shadow-md text-center">
+            <div class="w-16 h-16 bg-[#C93EA1] text-white rounded-full flex items-center justify-center text-2xl mx-auto mb-4">
+              <i class="fas fa-user-plus"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3 text-[#2D3436]">Créez votre profil</h3>
+            <p class="text-gray-600">Inscrivez-vous et partagez vos compétences, disponibilités et centres d'intérêt.</p>
+            <a href="#" class="inline-block mt-4 text-[#C93EA1] hover:underline">En savoir plus →</a>
+          </div>
+  
+          <div class="service-card bg-white p-8 rounded-lg shadow-md text-center">
+            <div class="w-16 h-16 bg-[#C93EA1] text-white rounded-full flex items-center justify-center text-2xl mx-auto mb-4">
+              <i class="fas fa-search"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3 text-[#2D3436]">Trouvez des missions</h3>
+            <p class="text-gray-600">Parcourez les opportunités de bénévolat qui correspondent à vos critères.</p>
+            <a href="#" class="inline-block mt-4 text-[#C93EA1] hover:underline">En savoir plus →</a>
+          </div>
+  
+          <div class="service-card bg-white p-8 rounded-lg shadow-md text-center">
+            <div class="w-16 h-16 bg-[#C93EA1] text-white rounded-full flex items-center justify-center text-2xl mx-auto mb-4">
+              <i class="fas fa-hands-helping"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3 text-[#2D3436]">Engagez-vous</h3>
+            <p class="text-gray-600">Postulez aux missions et commencez votre parcours de bénévole.</p>
+            <a href="#" class="inline-block mt-4 text-[#C93EA1] hover:underline">En savoir plus →</a>
+          </div>
+        </div>
+      </div>
+    </section>
 </template>
 
 <style>

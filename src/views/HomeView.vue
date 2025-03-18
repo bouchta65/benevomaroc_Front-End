@@ -117,7 +117,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <!-- Mission 1 -->
           <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <img src="{{ asset('assets/images/associations/opportunites/event3.jpg') }}" alt="Éducation" class="w-full h-48 object-cover">
+            <img src="/images/associations/opportunites/event3.jpg" alt="Éducation" class="w-full h-48 object-cover">
             <div class="p-6">
               <div class="flex justify-between mb-2">
                 <span class="bg-[#C93EA1] text-white text-xs px-2 py-1 rounded-full">Éducation</span>
@@ -141,7 +141,7 @@
   
           <!-- Mission 2 -->
           <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <img src="{{ asset('assets/images/associations/opportunites/event2.jpg') }}" alt="Environnement" class="w-full h-48 object-cover">
+            <img src="/images/associations/opportunites/event2.jpg" alt="Environnement" class="w-full h-48 object-cover">
             <div class="p-6">
               <div class="flex justify-between mb-2">
                 <span class="bg-[#C93EA1] text-white text-xs px-2 py-1 rounded-full">Environnement</span>
@@ -165,7 +165,7 @@
   
           <!-- Mission 3 -->
           <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <img src="{{ asset('assets/images/associations/opportunites/event1.jpg') }}" alt="Social" class="w-full h-48 object-cover">
+            <img src="/images/associations/opportunites/event1.jpg" alt="Social" class="w-full h-48 object-cover">
             <div class="p-6">
               <div class="flex justify-between mb-2">
                 <span class="bg-[#C93EA1] text-white text-xs px-2 py-1 rounded-full">Social</span>

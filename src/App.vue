@@ -1,6 +1,6 @@
 <script setup>
-import Navbar from './components/benevoLayout/Header.vue'
-import Footer from './components/benevoLayout/Footer.vue'
+import Navbar from './components/layout/Header.vue'
+import Footer from './components/layout/Footer.vue'
 </script>
 
 <template>

@@ -4,8 +4,10 @@
         <h1 class="text-5xl md:text-6xl font-bold mb-6">Ensemble, agissons pour un monde meilleur</h1>
         <p class="text-xl mb-8 max-w-3xl mx-auto">Notre plateforme de bénévolat vous connecte avec des opportunités d'engagement qui correspondent à vos passions et compétences.</p>
         <div class="flex flex-col md:flex-row justify-center gap-4">
-          <a href="#" class="bg-[#4ECDC4] hover:bg-[#3BAFA8] text-white font-bold py-3 px-8 rounded-full transition duration-300">S'inscrire comme Bénévole</a>
-          <a href="#" class="bg-transparent hover:bg-white hover:text-[#2D3436] text-white font-bold py-3 px-8 border-2 border-white rounded-full transition duration-300">Proposer une Mission</a>
+            <router-link :to="'/inscription'" class="bg-[#4ECDC4] hover:bg-[#3BAFA8] text-white font-bold py-3 px-8 rounded-full transition duration-300">S'inscrire Maintenant</router-link>
+            <router-link :to="'/opportunites'" class="bg-transparent hover:bg-white hover:text-[#2D3436] text-white font-bold py-3 px-8 border-2 border-white rounded-full transition duration-300">Découvrir Nos Missions</router-link>
+
+
         </div>
       </div>
     </section>
@@ -26,7 +28,8 @@
             </div>
             <h3 class="text-xl font-bold mb-3 text-[#2D3436]">Créez votre profil</h3>
             <p class="text-gray-600">Inscrivez-vous et partagez vos compétences, disponibilités et centres d'intérêt.</p>
-            <a href="#" class="inline-block mt-4 text-[#C93EA1] hover:underline">En savoir plus →</a>
+            <router-link :to="'/Bénévoles'" class="inline-block mt-4 text-[#C93EA1] hover:underline">En savoir plus →</router-link>
+
           </div>
   
           <div class="service-card bg-white p-8 rounded-lg shadow-md text-center">
@@ -35,7 +38,7 @@
             </div>
             <h3 class="text-xl font-bold mb-3 text-[#2D3436]">Trouvez des missions</h3>
             <p class="text-gray-600">Parcourez les opportunités de bénévolat qui correspondent à vos critères.</p>
-            <a href="#" class="inline-block mt-4 text-[#C93EA1] hover:underline">En savoir plus →</a>
+            <router-link :to="'/opportunites'" class="inline-block mt-4 text-[#C93EA1] hover:underline">En savoir plus →</router-link>
           </div>
   
           <div class="service-card bg-white p-8 rounded-lg shadow-md text-center">
@@ -44,7 +47,7 @@
             </div>
             <h3 class="text-xl font-bold mb-3 text-[#2D3436]">Engagez-vous</h3>
             <p class="text-gray-600">Postulez aux missions et commencez votre parcours de bénévole.</p>
-            <a href="#" class="inline-block mt-4 text-[#C93EA1] hover:underline">En savoir plus →</a>
+            <router-link :to="'/opportunites'" class="inline-block mt-4 text-[#C93EA1] hover:underline">En savoir plus →</router-link>
           </div>
         </div>
       </div>
@@ -104,8 +107,6 @@
         </div>
       </div>
     </section>
-
-    <!-- Missions Section -->
     <section class="py-16 bg-white">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
@@ -115,87 +116,27 @@
         </div>
   
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <!-- Mission 1 -->
-          <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <img src="" alt="Éducation" class="w-full h-48 object-cover">
-            <div class="p-6">
-              <div class="flex justify-between mb-2">
-                <span class="bg-[#C93EA1] text-white text-xs px-2 py-1 rounded-full">Éducation</span>
-                <span class="text-gray-500 text-sm">Paris, France</span>
-              </div>
-              <h3 class="text-xl font-bold mb-2 text-[#2D3436]">Soutien scolaire pour enfants</h3>
-              <p class="text-gray-600 mb-4">Aidez des enfants défavorisés à réussir à l'école en leur offrant du soutien scolaire hebdomadaire.</p>
-              <div class="mb-4">
-                <div class="flex justify-between text-sm mb-1">
-                  <span class="font-medium text-gray-700">Engagement requis:</span>
-                  <span class="text-gray-600">2h/semaine</span>
-                </div>
-                <div class="flex justify-between text-sm">
-                  <span class="font-medium text-gray-700">Bénévoles recherchés:</span>
-                  <span class="text-gray-600">15/20</span>
-                </div>
-              </div>
-              <a href="#" class="bg-[#4ECDC4] hover:bg-[#3BAFA8] text-white text-center py-2 px-4 rounded-full block transition duration-300">Postuler</a>
-            </div>
-          </div>
-  
-          <!-- Mission 2 -->
-          <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <img src="" alt="Environnement" class="w-full h-48 object-cover">
-            <div class="p-6">
-              <div class="flex justify-between mb-2">
-                <span class="bg-[#C93EA1] text-white text-xs px-2 py-1 rounded-full">Environnement</span>
-                <span class="text-gray-500 text-sm">Lyon, France</span>
-              </div>
-              <h3 class="text-xl font-bold mb-2 text-[#2D3436]">Nettoyage des berges du Rhône</h3>
-              <p class="text-gray-600 mb-4">Participez à une journée de nettoyage des berges pour protéger la biodiversité locale.</p>
-              <div class="mb-4">
-                <div class="flex justify-between text-sm mb-1">
-                  <span class="font-medium text-gray-700">Engagement requis:</span>
-                  <span class="text-gray-600">1 journée</span>
-                </div>
-                <div class="flex justify-between text-sm">
-                  <span class="font-medium text-gray-700">Bénévoles recherchés:</span>
-                  <span class="text-gray-600">45/50</span>
-                </div>
-              </div>
-              <a href="#" class="bg-[#4ECDC4] hover:bg-[#3BAFA8] text-white text-center py-2 px-4 rounded-full block transition duration-300">Postuler</a>
-            </div>
-          </div>
-  
-          <!-- Mission 3 -->
-          <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <img src="" alt="Social" class="w-full h-48 object-cover">
-            <div class="p-6">
-              <div class="flex justify-between mb-2">
-                <span class="bg-[#C93EA1] text-white text-xs px-2 py-1 rounded-full">Social</span>
-                <span class="text-gray-500 text-sm">Marseille, France</span>
-              </div>
-              <h3 class="text-xl font-bold mb-2 text-[#2D3436]">Accompagnement de personnes âgées</h3>
-              <p class="text-gray-600 mb-4">Rendez visite à des personnes âgées isolées pour partager des moments de convivialité.</p>
-              <div class="mb-4">
-                <div class="flex justify-between text-sm mb-1">
-                  <span class="font-medium text-gray-700">Engagement requis:</span>
-                  <span class="text-gray-600">3h/semaine</span>
-                </div>
-                <div class="flex justify-between text-sm">
-                  <span class="font-medium text-gray-700">Bénévoles recherchés:</span>
-                  <span class="text-gray-600">8/25</span>
-                </div>
-              </div>
-              <a href="#" class="bg-[#4ECDC4] hover:bg-[#3BAFA8] text-white text-center py-2 px-4 rounded-full block transition duration-300">Postuler</a>
-            </div>
-          </div>
+        <TopOpportunites />
         </div>
   
         <div class="text-center mt-10">
-          <a href="#" class="inline-flex items-center text-[#C93EA1] hover:underline font-medium">
-            Voir toutes les missions <i class="fas fa-arrow-right ml-2"></i>
-          </a>
+          <router-link :to="'/opportunites'" class="inline-flex items-center text-[#C93EA1] hover:underline font-medium"> Voir toutes les missions <i class="fas fa-arrow-right ml-2"></i></router-link>           
         </div>
       </div>
     </section>
+
+    
 </template>
+
+<script>
+import TopOpportunites from '@/components/opportunites/Top3Opportunites.vue';
+
+export default {
+  components: {
+    TopOpportunites, 
+  },
+};
+</script>
 
 <style>
 .hero-section {

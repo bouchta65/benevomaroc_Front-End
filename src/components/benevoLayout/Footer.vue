@@ -96,21 +96,6 @@
             <div class="text-gray-500 text-sm text-center md:text-left">
               © 2025 BénévoMaroc. Tous droits réservés.
             </div>
-  
-            <div class="flex space-x-6">
-              <a href="#" class="text-gray-400 hover:text-[#C9559B] transition-colors">
-                <i class="fab fa-facebook-f"></i>
-              </a>
-              <a href="#" class="text-gray-400 hover:text-[#C9559B] transition-colors">
-                <i class="fab fa-twitter"></i>
-              </a>
-              <a href="#" class="text-gray-400 hover:text-[#C9559B] transition-colors">
-                <i class="fab fa-instagram"></i>
-              </a>
-              <a href="#" class="text-gray-400 hover:text-[#C9559B] transition-colors">
-                <i class="fab fa-linkedin-in"></i>
-              </a>
-            </div>
           </div>
         </div>
       </div>

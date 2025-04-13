@@ -17,6 +17,7 @@
                         </div>
                     </div>
     
+                    <!-- Filters -->
                     <div class="mt-6 flex flex-wrap space-x-4">
                         <div v-for="filter in filters" :key="filter.value" class="flex items-center">
                             <input
@@ -30,9 +31,10 @@
                         </div>
                     </div>
     
+                    <!-- Opportunities List -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                         <div 
-                            v-for="opportunite in filteredOpportunities" 
+                            v-for="opportunite in paginatedOpportunities" 
                             :key="opportunite.id" 
                             class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden group hover:shadow-lg transition-all duration-300"
                         >
@@ -51,15 +53,40 @@
                                 <div class="flex items-center text-sm text-gray-500 mb-2">
                                     {{ opportunite.ville }}, {{ opportunite.pays }}
                                 </div>
-                                <div class="flex justify-between text-sm mb-2">
-                                    <span>Engagement:</span>
-                                    <span>{{ opportunite.engagement_requis }}</span>
-                                </div>
                                 <a href="#" class="block text-center py-2 px-4 bg-[#4ECDC4] text-white rounded-lg hover:bg-[#3BAFA8] transition-colors duration-200">
                                     En savoir plus
                                 </a>
                             </div>
                         </div>
+                    </div>
+    
+                    <!-- Pagination Controls -->
+                    <div class="mt-8 flex justify-center">
+                        <nav class="flex items-center space-x-2">
+                            <button 
+                                class="p-2 rounded-lg border border-gray-200 text-gray-500 hover:border-[#4ECDC4] hover:text-[#4ECDC4]"
+                                @click="changePage(currentPage - 1)"
+                                :disabled="currentPage === 1"
+                            >
+                                Précédent
+                            </button>
+                            <button 
+                                v-for="page in totalPages" 
+                                :key="page" 
+                                class="px-4 py-2 rounded-lg border border-gray-200 hover:border-[#4ECDC4] hover:text-[#4ECDC4]"
+                                :class="{'bg-[#4ECDC4] text-white': currentPage === page}"
+                                @click="changePage(page)"
+                            >
+                                {{ page }}
+                            </button>
+                            <button 
+                                class="p-2 rounded-lg border border-gray-200 text-gray-500 hover:border-[#4ECDC4] hover:text-[#4ECDC4]"
+                                @click="changePage(currentPage + 1)"
+                                :disabled="currentPage === totalPages"
+                            >
+                                Suivant
+                            </button>
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -77,6 +104,8 @@
                 filteredOpportunities: [],
                 searchQuery: "",
                 activeFilters: [],
+                currentPage: 1,
+                itemsPerPage: 9,
                 filters: [
                     { label: "🌍 Social", value: "Social" },
                     { label: "🌱 Environnement", value: "Environnement" },
@@ -84,6 +113,16 @@
                     { label: "🎭 Culture", value: "Culture" },
                 ],
             };
+        },
+        computed: {
+            totalPages() {
+                return Math.ceil(this.filteredOpportunities.length / this.itemsPerPage);
+            },
+            paginatedOpportunities() {
+                const start = (this.currentPage - 1) * this.itemsPerPage;
+                const end = start + this.itemsPerPage;
+                return this.filteredOpportunities.slice(start, end);
+            },
         },
         async mounted() {
             try {
@@ -107,6 +146,13 @@
     
                     return matchesQuery && matchesFilters;
                 });
+    
+                this.currentPage = 1;   
+            },
+            changePage(page) {
+                if (page >= 1 && page <= this.totalPages) {
+                    this.currentPage = page;
+                }
             },
         },
     };

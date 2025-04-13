@@ -22,18 +22,18 @@
                         </div>
     
                         <div class="relative lg:col-span-2 group">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <svg class="h-5 w-5 text-[#4ECDC4] group-hover:text-[#3BAFA8] transition-colors duration-200" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4-243a8 8 0 1111.314 0z"></path>
-                                </svg>
-                            </div>
-                            <input v-model="searchLocation" 
-                                type="text" 
-                                class="block w-full pl-12 pr-4 py-3.5 border border-gray-200 rounded-xl bg-gray-50 text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4ECDC4] focus:ring-2 focus:ring-[#4ECDC4]/20 transition-all duration-200" 
-                                placeholder="Où ?"
-                                @input="filterOpportunities"
-                            >
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-[#4ECDC4] group-hover:text-[#3BAFA8] transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            </svg>
                         </div>
+                        <input v-model="searchLocation" 
+                            type="text" 
+                            class="block w-full pl-12 pr-4 py-3.5 border border-gray-200 rounded-xl bg-gray-50 text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4ECDC4] focus:ring-2 focus:ring-[#4ECDC4]/20 transition-all duration-200" 
+                            placeholder="Où ?"
+                            @input="filterOpportunities"
+                        >
+                    </div>
         
                         <button class="lg:col-span-2 flex justify-center items-center px-6 py-3.5 bg-[#4ECDC4] hover:bg-[#3BAFA8] text-white rounded-xl font-medium transition-all duration-200 transform hover:scale-[1.02] hover:shadow-lg group">
                             <span>Rechercher</span>
@@ -67,47 +67,85 @@
                                 <option value="popular">Les plus populaires</option>
                             </select>
                         </div>
-    
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <div v-for="opportunite in paginatedOpportunities" :key="opportunite.id" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden group hover:shadow-lg transition-all duration-300">
-                                <div class="relative">
-                                    <img :src="opportunite.image" alt="Image" class="w-full h-48 object-cover">                             
-                                    <div class="absolute top-4 left-4">
-                                        <span class="bg-[#4ECDC4] text-white text-xs px-3 py-1 rounded-full">
-                                            {{ opportunite.type }}
-                                        </span>
-                                    </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div 
+                            v-for="opportunite in paginatedOpportunities" 
+                            :key="opportunite.id" 
+                            class="relative bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-shadow duration-300"
+                        >
+                        <router-link :to="`/opportunites/${opportunite.id}`">
+                            <div class="relative">
+                            <img 
+                                :src="opportunite.image" 
+                                alt="Image" 
+                                class="w-full h-56 object-cover"
+                            >
+                            <div class="absolute top-4 left-4 bg-[#4ECDC4] text-white text-xs font-medium px-3 py-1 rounded-full shadow-md">
+                                {{ opportunite.type }}
+                            </div>
+                            </div>
+
+                            <div class="p-6">
+                            <div class="flex items-center text-sm text-gray-500 mb-3">
+                                <svg 
+                                class="w-5 h-5 text-[#4ECDC4] mr-2" 
+                                fill="none" 
+                                stroke="currentColor" 
+                                stroke-width="2" 
+                                viewBox="0 0 24 24"
+                                >
+                                <path 
+                                    stroke-linecap="round" 
+                                    stroke-linejoin="round" 
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                />
+                                </svg>
+                                <span>{{ opportunite.ville }}, {{ opportunite.pays }}</span>
+                            </div>
+
+                            <h3 
+                                class="text-lg font-bold text-gray-900 mb-4 group-hover:text-[#4ECDC4] transition-colors duration-300"
+                            >
+                                {{ opportunite.titre }}
+                            </h3>
+
+                            <div class="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-4">
+                                <div class="flex flex-col">
+                                <span class="text-gray-500">Engagement:</span>
+                                <span class="text-gray-900 font-medium">{{ opportunite.engagement_requis }}</span>
                                 </div>
-                                <div class="p-6">
-                                    <div class="flex items-center text-sm text-gray-500 mb-2">
-                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                        </svg>
-                                        {{ opportunite.ville }}, {{ opportunite.pays }}
-                                        
-                                    </div>
-                                    <h3 class="text-lg font-bold text-gray-900 mb-3">
-                                        {{ opportunite.titre }}
-                                        
-                                    </h3>
-                                    <div class="space-y-2 mb-4">
-                                        <div class="flex justify-between text-sm">
-                                            <span class="text-gray-500">Engagement:</span>
-                                            <span class="font-medium">{{opportunite.engagement_requis}}</span>
-                                        </div>
-                                        <div class="flex justify-between text-sm">
-                                            <span class="text-gray-500">Places:</span>
-                                            <span class="font-medium">{{ opportunite.nb_benevole - opportunite.postules_count }}/{{ opportunite.nb_benevole }}</span>
-                                        </div>
-                                    </div>
-                                    <a href="" class="block text-center py-2 px-4 bg-[#4ECDC4] text-white rounded-lg hover:bg-[#3BAFA8] transition-colors duration-200">
-                                        En savoir plus
-                                    </a>
+                                <div class="flex flex-col">
+                                <span class="text-gray-500">Places:</span>
+                                <span class="text-gray-900 font-medium">
+                                    {{ opportunite.nb_benevole - opportunite.postules_count }}/{{ opportunite.nb_benevole }}
+                                </span>
                                 </div>
                             </div>
+
+                            <div class="flex items-center text-sm text-gray-500">
+                                <svg 
+                                class="w-5 h-5 text-[#4ECDC4] mr-2" 
+                                fill="none" 
+                                stroke="currentColor" 
+                                stroke-width="2" 
+                                viewBox="0 0 24 24"
+                                >
+                                <path 
+                                    stroke-linecap="round" 
+                                    stroke-linejoin="round" 
+                                    d="M8 7V3m8 4V3m-9 9h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                />
+                                </svg>
+                                <span>Date limite: 
+                                    <span class="text-gray-900 font-medium">{{ formatDate(opportunite.derniere_date_postule) }}</span>
+                                </span>
+                            </div>
+                            </div>
+                        </router-link>
                         </div>
+                        </div>
+                    
     
-                        <!-- Pagination Controls -->
                         <div class="mt-8 flex justify-center">
                             <nav class="flex items-center space-x-2">
                                 <button 
@@ -225,6 +263,10 @@
                     this.currentPage = page;
                 }
             },
+            formatDate(date) {
+            const options = { year: "numeric", month: "long", day: "numeric" };
+            return new Intl.DateTimeFormat("fr-FR", options).format(new Date(date));
+            }
         },
     };
     </script>

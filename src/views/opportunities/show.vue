@@ -16,6 +16,20 @@
                             >
                         </div>
                     </div>
+    
+                    <div class="mt-6 flex flex-wrap space-x-4">
+                        <div v-for="filter in filters" :key="filter.value" class="flex items-center">
+                            <input
+                                type="checkbox"
+                                v-model="activeFilters"
+                                :value="filter.value"
+                                class="form-checkbox rounded text-[#4ECDC4] focus:ring-[#4ECDC4]"
+                                @change="filterOpportunities"
+                            >
+                            <label class="ml-2 text-gray-700">{{ filter.label }}</label>
+                        </div>
+                    </div>
+    
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                         <div 
                             v-for="opportunite in filteredOpportunities" 
@@ -62,6 +76,13 @@
                 opportunities: [],
                 filteredOpportunities: [],
                 searchQuery: "",
+                activeFilters: [],
+                filters: [
+                    { label: "🌍 Social", value: "Social" },
+                    { label: "🌱 Environnement", value: "Environnement" },
+                    { label: "🎓 Éducation", value: "Éducation" },
+                    { label: "🎭 Culture", value: "Culture" },
+                ],
             };
         },
         async mounted() {
@@ -75,9 +96,17 @@
         },
         methods: {
             filterOpportunities() {
-                this.filteredOpportunities = this.opportunities.filter(opportunite =>
-                    opportunite.titre.toLowerCase().includes(this.searchQuery.toLowerCase())
-                );
+                this.filteredOpportunities = this.opportunities.filter(opportunite => {
+                    const matchesQuery = this.searchQuery
+                        ? opportunite.titre.toLowerCase().includes(this.searchQuery.toLowerCase())
+                        : true;
+    
+                    const matchesFilters = this.activeFilters.length
+                        ? this.activeFilters.includes(opportunite.type)
+                        : true;
+    
+                    return matchesQuery && matchesFilters;
+                });
             },
         },
     };

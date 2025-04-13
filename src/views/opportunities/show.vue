@@ -6,9 +6,19 @@
                     <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6 text-center">
                         Trouvez votre mission de bénévolat idéale
                     </h1>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-4">
+                        <div class="lg:col-span-3">
+                            <input v-model="searchQuery" 
+                                type="text" 
+                                class="block w-full pl-4 pr-4 py-3.5 border border-gray-200 rounded-xl bg-gray-50 text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4ECDC4] focus:ring-2 focus:ring-[#4ECDC4]/20 transition-all duration-200" 
+                                placeholder="Rechercher une opportunité"
+                                @input="filterOpportunities"
+                            >
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                         <div 
-                            v-for="opportunite in opportunities" 
+                            v-for="opportunite in filteredOpportunities" 
                             :key="opportunite.id" 
                             class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden group hover:shadow-lg transition-all duration-300"
                         >
@@ -50,19 +60,25 @@
         data() {
             return {
                 opportunities: [],
+                filteredOpportunities: [],
+                searchQuery: "",
             };
         },
         async mounted() {
             try {
                 const response = await opportuniteApi.getAll();
                 this.opportunities = response.data.opportunites;
+                this.filteredOpportunities = this.opportunities;
             } catch (error) {
                 console.error("Erreur lors du chargement des opportunités :", error);
             }
         },
+        methods: {
+            filterOpportunities() {
+                this.filteredOpportunities = this.opportunities.filter(opportunite =>
+                    opportunite.titre.toLowerCase().includes(this.searchQuery.toLowerCase())
+                );
+            },
+        },
     };
     </script>
-    
-    <style scoped>
-    /* Add your styles for the card layout here */
-    </style>

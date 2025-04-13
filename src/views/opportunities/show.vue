@@ -7,86 +7,138 @@
                         Trouvez votre mission de bénévolat idéale
                     </h1>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-4">
-                        <div class="lg:col-span-3">
-                            <input v-model="searchQuery" 
+                        <div class="relative lg:col-span-3 group">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-[#4ECDC4] group-hover:text-[#3BAFA8] transition-colors duration-200" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                            <input v-model="searchVille" 
                                 type="text" 
-                                class="block w-full pl-4 pr-4 py-3.5 border border-gray-200 rounded-xl bg-gray-50 text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4ECDC4] focus:ring-2 focus:ring-[#4ECDC4]/20 transition-all duration-200" 
-                                placeholder="Rechercher une opportunité"
+                                class="block w-full pl-12 pr-4 py-3.5 border border-gray-200 rounded-xl bg-gray-50 text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4ECDC4] focus:ring-2 focus:ring-[#4ECDC4]/20 transition-all duration-200" 
+                                placeholder="Quelle mission vous intéresse ?"
                                 @input="filterOpportunities"
                             >
                         </div>
-                    </div>
     
-                    <!-- Filters -->
-                    <div class="mt-6 flex flex-wrap space-x-4">
-                        <div v-for="filter in filters" :key="filter.value" class="flex items-center">
-                            <input
-                                type="checkbox"
-                                v-model="activeFilters"
-                                :value="filter.value"
-                                class="form-checkbox rounded text-[#4ECDC4] focus:ring-[#4ECDC4]"
-                                @change="filterOpportunities"
-                            >
-                            <label class="ml-2 text-gray-700">{{ filter.label }}</label>
-                        </div>
-                    </div>
-    
-                    <!-- Opportunities List -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                        <div 
-                            v-for="opportunite in paginatedOpportunities" 
-                            :key="opportunite.id" 
-                            class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden group hover:shadow-lg transition-all duration-300"
-                        >
-                            <div class="relative">
-                                <img :src="opportunite.image" alt="Image" class="w-full h-48 object-cover">
-                                <div class="absolute top-4 left-4">
-                                    <span class="bg-[#4ECDC4] text-white text-xs px-3 py-1 rounded-full">
-                                        {{ opportunite.type }}
-                                    </span>
-                                </div>
+                        <div class="relative lg:col-span-2 group">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-[#4ECDC4] group-hover:text-[#3BAFA8] transition-colors duration-200" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4-243a8 8 0 1111.314 0z"></path>
+                                </svg>
                             </div>
-                            <div class="p-6">
-                                <h3 class="text-lg font-bold text-gray-900 mb-3">
-                                    {{ opportunite.titre }}
-                                </h3>
-                                <div class="flex items-center text-sm text-gray-500 mb-2">
-                                    {{ opportunite.ville }}, {{ opportunite.pays }}
-                                </div>
-                                <a href="#" class="block text-center py-2 px-4 bg-[#4ECDC4] text-white rounded-lg hover:bg-[#3BAFA8] transition-colors duration-200">
-                                    En savoir plus
-                                </a>
+                            <input v-model="searchLocation" 
+                                type="text" 
+                                class="block w-full pl-12 pr-4 py-3.5 border border-gray-200 rounded-xl bg-gray-50 text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4ECDC4] focus:ring-2 focus:ring-[#4ECDC4]/20 transition-all duration-200" 
+                                placeholder="Où ?"
+                                @input="filterOpportunities"
+                            >
+                        </div>
+        
+                        <button class="lg:col-span-2 flex justify-center items-center px-6 py-3.5 bg-[#4ECDC4] hover:bg-[#3BAFA8] text-white rounded-xl font-medium transition-all duration-200 transform hover:scale-[1.02] hover:shadow-lg group">
+                            <span>Rechercher</span>
+                            <svg class="ml-2 h-5 w-5 transform transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+        
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="hidden md:block space-y-6">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Filtres</h3>
+                            <div class="space-y-3">
+                                <label v-for="filter in filters" :key="filter.value" class="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+                                    <input type="checkbox" v-model="activeFilters" :value="filter.value" class="form-checkbox rounded text-orange-400 focus:ring-orange-400" @change="filterOpportunities">
+                                    <span class="text-gray-700 ml-3">{{ filter.label }}</span>
+                                </label>
                             </div>
                         </div>
                     </div>
+        
+                    <div class="md:col-span-3">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-bold text-gray-900">
+                                {{ filteredOpportunities.length }} opportunités trouvées
+                            </h2>
+                            <select v-model="sortOption" @change="sortOpportunities" class="border border-gray-200 rounded-lg px-4 py-2 bg-white focus:outline-none focus:border-[#4ECDC4] text-sm">
+                                <option value="recent">Les plus récents</option>
+                                <option value="popular">Les plus populaires</option>
+                            </select>
+                        </div>
     
-                    <!-- Pagination Controls -->
-                    <div class="mt-8 flex justify-center">
-                        <nav class="flex items-center space-x-2">
-                            <button 
-                                class="p-2 rounded-lg border border-gray-200 text-gray-500 hover:border-[#4ECDC4] hover:text-[#4ECDC4]"
-                                @click="changePage(currentPage - 1)"
-                                :disabled="currentPage === 1"
-                            >
-                                Précédent
-                            </button>
-                            <button 
-                                v-for="page in totalPages" 
-                                :key="page" 
-                                class="px-4 py-2 rounded-lg border border-gray-200 hover:border-[#4ECDC4] hover:text-[#4ECDC4]"
-                                :class="{'bg-[#4ECDC4] text-white': currentPage === page}"
-                                @click="changePage(page)"
-                            >
-                                {{ page }}
-                            </button>
-                            <button 
-                                class="p-2 rounded-lg border border-gray-200 text-gray-500 hover:border-[#4ECDC4] hover:text-[#4ECDC4]"
-                                @click="changePage(currentPage + 1)"
-                                :disabled="currentPage === totalPages"
-                            >
-                                Suivant
-                            </button>
-                        </nav>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div v-for="opportunite in paginatedOpportunities" :key="opportunite.id" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden group hover:shadow-lg transition-all duration-300">
+                                <div class="relative">
+                                    <img :src="opportunite.image" alt="Image" class="w-full h-48 object-cover">                             
+                                    <div class="absolute top-4 left-4">
+                                        <span class="bg-[#4ECDC4] text-white text-xs px-3 py-1 rounded-full">
+                                            {{ opportunite.type }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    <div class="flex items-center text-sm text-gray-500 mb-2">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                        </svg>
+                                        {{ opportunite.ville }}, {{ opportunite.pays }}
+                                        
+                                    </div>
+                                    <h3 class="text-lg font-bold text-gray-900 mb-3">
+                                        {{ opportunite.titre }}
+                                        
+                                    </h3>
+                                    <div class="space-y-2 mb-4">
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-gray-500">Engagement:</span>
+                                            <span class="font-medium">{{opportunite.engagement_requis}}</span>
+                                        </div>
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-gray-500">Places:</span>
+                                            <span class="font-medium">{{ opportunite.nb_benevole - opportunite.postules_count }}/{{ opportunite.nb_benevole }}</span>
+                                        </div>
+                                    </div>
+                                    <a href="" class="block text-center py-2 px-4 bg-[#4ECDC4] text-white rounded-lg hover:bg-[#3BAFA8] transition-colors duration-200">
+                                        En savoir plus
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <!-- Pagination Controls -->
+                        <div class="mt-8 flex justify-center">
+                            <nav class="flex items-center space-x-2">
+                                <button 
+                                    class="p-2 rounded-lg border border-gray-200 text-gray-500 hover:border-[#4ECDC4] hover:text-[#4ECDC4]"
+                                    @click="changePage(currentPage - 1)"
+                                    :disabled="currentPage === 1"
+                                >
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                                    </svg>
+                                </button>
+                                <button 
+                                    v-for="page in totalPages" 
+                                    :key="page" 
+                                    class="px-4 py-2 rounded-lg border border-gray-200 hover:border-[#4ECDC4] hover:text-[#4ECDC4]"
+                                    :class="{'bg-[#4ECDC4] text-white': currentPage === page}"
+                                    @click="changePage(page)"
+                                >
+                                    {{ page }}
+                                </button>
+                                <button 
+                                    class="p-2 rounded-lg border border-gray-200 text-gray-500 hover:border-[#4ECDC4] hover:text-[#4ECDC4]"
+                                    @click="changePage(currentPage + 1)"
+                                    :disabled="currentPage === totalPages"
+                                >
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                </button>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -102,15 +154,22 @@
             return {
                 opportunities: [],
                 filteredOpportunities: [],
-                searchQuery: "",
-                activeFilters: [],
                 currentPage: 1,
                 itemsPerPage: 9,
+                searchVille: "",
+                searchLocation: "",
+                sortOption: "recent",
+                activeFilters: [],
                 filters: [
                     { label: "🌍 Social", value: "Social" },
                     { label: "🌱 Environnement", value: "Environnement" },
+                    { label: "🏥 Santé", value: "Santé" },
                     { label: "🎓 Éducation", value: "Éducation" },
                     { label: "🎭 Culture", value: "Culture" },
+                    { label: "⚽ Sport", value: "Sport" },
+                    { label: "💻 Technologie", value: "Technologie" },
+                    { label: "💰 Économie", value: "Économie" },
+                    { label: "❓ Autre", value: "Autre" },
                 ],
             };
         },
@@ -128,7 +187,7 @@
             try {
                 const response = await opportuniteApi.getAll();
                 this.opportunities = response.data.opportunites;
-                this.filteredOpportunities = this.opportunities;
+                this.filteredOpportunities = [...this.opportunities];
             } catch (error) {
                 console.error("Erreur lors du chargement des opportunités :", error);
             }
@@ -136,18 +195,30 @@
         methods: {
             filterOpportunities() {
                 this.filteredOpportunities = this.opportunities.filter(opportunite => {
-                    const matchesQuery = this.searchQuery
-                        ? opportunite.titre.toLowerCase().includes(this.searchQuery.toLowerCase())
+                    const matchesQuery = this.searchVille
+                        ? opportunite.titre.toLowerCase().includes(this.searchVille.toLowerCase())
+                        : true;
+    
+                    const matchesLocation = this.searchLocation
+                        ? opportunite.ville.toLowerCase().includes(this.searchLocation.toLowerCase())
                         : true;
     
                     const matchesFilters = this.activeFilters.length
-                        ? this.activeFilters.includes(opportunite.type)
+                        ? this.activeFilters.some(filter => opportunite.type === filter)
                         : true;
     
-                    return matchesQuery && matchesFilters;
+                    return matchesQuery && matchesLocation && matchesFilters;
                 });
     
-                this.currentPage = 1;   
+                this.sortOpportunities();
+                this.currentPage = 1; 
+            },
+            sortOpportunities() {
+                if (this.sortOption === "popular") {
+                    this.filteredOpportunities.sort((a, b) => b.postules_count - a.postules_count);
+                } else {
+                    this.filteredOpportunities.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                }
             },
             changePage(page) {
                 if (page >= 1 && page <= this.totalPages) {

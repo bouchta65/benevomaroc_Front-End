@@ -3,7 +3,6 @@
   <ErrorComponent v-else-if="error" :message="error" />
   <div class="bg-gray-50 min-h-screen py-8" v-else-if="opportunite">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Navigation précédente -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div class="lg:col-span-2 space-y-6">
                 <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
@@ -36,6 +35,36 @@
                                 </svg>
                                 <span class="text-gray-600">Places: {{ opportunite.nb_benevole - opportunite.postules_count }}/{{ opportunite.nb_benevole }} disponibles</span>
                             </div>
+                        </div>
+                           <div class="prose max-w-none">
+                            <h2 class="text-xl font-semibold mb-3">Description</h2>
+                            <p class="text-gray-600 mb-4">
+                              {{ opportunite.description }}
+                            </p>
+                            
+                            <h3 class="text-lg font-semibold mb-2">Missions principales:</h3>
+                            <ul class="list-disc pl-5 mb-4 text-gray-600">
+                              {{ opportunite.missions_principales }}
+                            </ul>
+
+                            <h3 class="text-lg font-semibold mb-2">Compétences recherchées:</h3>
+                            <ul class="list-disc pl-5 mb-4 text-gray-600">
+                              {{ opportunite.competences }}
+                            </ul>
+                        </div>
+                    </div>
+      
+                     
+          
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm p-6">
+                    <h2 class="text-xl font-semibold mb-4">À propos de l'association</h2>
+                    <div class="flex items-center space-x-4">
+                        <img :src="opportunite.association.logo" alt="Logo Association" class="w-16 h-16 rounded-full">
+                        <div>
+                            <h3 class="font-semibold text-gray-900">{{ opportunite.association.nom_association }}</h3>
+                            <p class="text-gray-600 text-sm">{{ opportunite.association.fonction_occupee }}</p>
                         </div>
                     </div>
                 </div>

@@ -25,26 +25,21 @@ export default {
   props: {
     id: {
       type: String,
-      required: true, // The ID is passed from the route as a prop
+      required: true,
     },
   },
   data() {
     return {
-      opportunite: null, // This will store the fetched opportunity details
+      opportunite: null, 
     };
   },
-  methods: {
-    async fetchOpportunite() {
-      try {
-        const response = await opportuniteApi.getById(this.id); 
-        this.opportunite = response.data.opportunite;
-      } catch (error) {
-        console.error("Failed to fetch opportunity details:", error);
-      }
-    },
-  },
-  mounted() {
-    this.fetchOpportunite(); // Fetch opportunity details when the component is mounted
-  },
+  async mounted() {
+  try {
+    const response = await opportuniteApi.getById(this.id);
+    this.opportunite = response.data.opportunite;
+  } catch (error) {
+    console.error("Erreur lors du chargement des opportunités :", error);
+  }
+},
 };
 </script>

@@ -13,8 +13,8 @@
                   <span class="text-gray-600">{{ opportunite.engagement_requis }}</span>
                 </div>
                 <div class="flex justify-between text-sm">
-                  <span class="font-medium text-gray-700">Bénévoles recherchés:</span>
-                  <span class="text-gray-600">{{ opportunite.postules_count }}/{{ opportunite.nb_benevole }}</span>
+                  <span class="font-medium text-gray-700">places disponibles:</span>
+                  <span class="text-gray-600">{{ opportunite.nb_benevole - opportunite.postules_count }}/{{ opportunite.nb_benevole }}</span>
                 </div>
               </div>
                <router-link :to="`/opportunites/${opportunite.id}`" class="bg-[#4ECDC4] hover:bg-[#3BAFA8] text-white text-center py-2 px-4 rounded-full block transition duration-300">Postuler</router-link>
@@ -33,8 +33,8 @@
     },
     async mounted() {
   try {
-    const response = await opportuniteApi.getAll();
-    this.opportunites = response.data.opportunites;
+    const response = await opportuniteApi.getTop3();
+    this.opportunites = response.data.top_opportunites;
     console.log(this.opportunites);  
   } catch (error) {
     console.error('Erreur lors du chargement des opportunités :', error);

@@ -19,20 +19,6 @@ export default {
     const params = { ville, titre, types, sort };
     return axios.get(`${API}/search`, { params });
   },
-  
-  filtreOpportunites(types) {
-    return axios.get(`${API}/type`,{
-      params: { 'types': types }
-    });
-  },
-
-  getPopularOpportunites() {
-    return axios.get(`${API}/populare`);
-  },
-
-  getRecentOpportunites() {
-    return axios.get(`${API}/recent`);
-  },
 
   getSimilarOpportunites(id) {
     return axios.get(`${API}/${id}/similar`);

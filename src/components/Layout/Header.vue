@@ -57,6 +57,7 @@
           </div>
         </div>
 
+        <!-- Mobile Menu -->
         <div v-if="isMobileMenuOpen" id="mobile-menu" class="mobile-menu md:hidden border-t border-gray-200">
           <div class="px-4 py-2 space-y-1">
             <router-link to="/" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">Accueil</router-link>
@@ -64,6 +65,12 @@
             <router-link to="/faq" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">FAQ</router-link>
             <router-link to="/propos" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">A propos</router-link>
             <router-link to="/contact" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">Contact</router-link>
+          </div>
+          <div class="px-4 py-2 space-y-1">
+            <router-link to="/Bénévoles" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">Bénévoles</router-link>
+            <router-link to="/associations" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">Associations</router-link>
+            <router-link to="/formations" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">Formation</router-link>
+            <router-link to="/guide-Juridique" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">Guide Juridique</router-link>
           </div>
           <div class="px-4 py-3">
             <router-link to="/inscription">
@@ -76,95 +83,91 @@
       </div>
     </header>
 
-    <div class="bg-white border-t border-gray-200">
+    <div class="bg-white border-t border-gray-200 hidden sm:block">
       <div class="max-w-7xl mx-auto">
-        <div class="px-4 py-2">
-          <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-            <div class="overflow-x-auto -mx-4 px-4 md:mx-0 no-scrollbar mb-4 md:mb-0">
-              <div class="flex items-center space-x-3 min-w-max">
-                <div class="flex items-center bg-gray-50 rounded-lg px-3 py-1.5">
-                  <svg class="w-4 h-4 text-[#00B3AD] mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  <span class="current-date text-sm font-medium text-gray-600">{{ currentDate }}</span>
-                </div>
+        <div class="px-4 py-3">
+          <div class="flex items-center justify-between space-x-4 overflow-x-auto no-scrollbar">
+            <div class="flex items-center space-x-4">
+              <div class="flex items-center bg-gray-50 rounded-lg px-3 py-1.5">
+                <svg class="w-5 h-5 text-[#00B3AD] mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span class="current-date text-sm font-medium text-gray-600">{{ currentDate }}</span>
+              </div>
 
-                <div class="flex items-center bg-gray-50 rounded-lg px-3 py-1.5">
-                  <svg class="w-4 h-4 text-[#00B3AD] mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <span class="current-time text-sm font-medium text-gray-600">{{ currentTime }}</span>
-                  <span class="ml-2 text-xs text-gray-400">UTC</span>
-                </div>
+              <div class="flex items-center bg-gray-50 rounded-lg px-3 py-1.5">
+                <svg class="w-5 h-5 text-[#00B3AD] mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="current-time text-sm font-medium text-gray-600">{{ currentTime }}</span>
+                <span class="ml-2 text-xs text-gray-400">UTC</span>
+              </div>
 
-                <div class="flex items-center bg-gray-50 rounded-lg px-3 py-1.5">
-                  <svg class="w-4 h-4 text-[#00B3AD] mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  </svg>
-                  <span class="text-sm font-medium text-gray-600 whitespace-nowrap">Casablanca</span>
-                  <span class="ml-2 text-xs text-gray-400">Maroc</span>
-                </div>
+              <div class="flex items-center bg-gray-50 rounded-lg px-3 py-1.5">
+                <svg class="w-5 h-5 text-[#00B3AD] mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                </svg>
+                <span class="text-sm font-medium text-gray-600 whitespace-nowrap">Casablanca</span>
+                <span class="ml-2 text-xs text-gray-400">Maroc</span>
               </div>
             </div>
 
-            <div class="overflow-x-auto -mx-4 px-4 md:mx-0">
-              <nav class="flex space-x-6 min-w-max">
-                <router-link
-                  :to="'/Bénévoles'"
-                  :class="{
-                    'border-[#00B3AD] text-[#00B3AD]': $route.path === '/Bénévoles',
-                    'border-transparent text-gray-600': $route.path !== '/Bénévoles'
-                  }"
-                  class="flex items-center py-2 border-b-2 transition-colors duration-200 group"
-                >
-                  <svg class="w-5 h-5 mr-2" :class="{'text-[#00B3AD]': $route.path === '/Bénévoles', 'text-gray-400': $route.path !== '/Bénévoles'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                  <span class="text-sm font-medium whitespace-nowrap" :class="{'text-[#00B3AD]': $route.path === '/Bénévoles', 'text-gray-600': $route.path !== '/Bénévoles'}">Bénévoles</span>
-                </router-link>
+            <div class="flex items-center space-x-6">
+              <router-link
+                :to="'/Bénévoles'"
+                :class="{
+                  'border-[#00B3AD] text-[#00B3AD]': $route.path === '/Bénévoles',
+                  'border-transparent text-gray-600': $route.path !== '/Bénévoles'
+                }"
+                class="flex items-center py-2 border-b-2 transition-colors duration-200 group"
+              >
+                <svg class="w-5 h-5 mr-2" :class="{'text-[#00B3AD]': $route.path === '/Bénévoles', 'text-gray-400': $route.path !== '/Bénévoles'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                <span class="text-sm font-medium whitespace-nowrap">Bénévoles</span>
+              </router-link>
 
-                <router-link
-                  :to="'/associations'"
-                  :class="{
-                    'border-[#00B3AD] text-[#00B3AD]': $route.path === '/associations',
-                    'border-transparent text-gray-600': $route.path !== '/associations'
-                  }"
-                  class="flex items-center py-2 border-b-2 transition-colors duration-200 group"
-                >
-                  <svg class="w-5 h-5 mr-2" :class="{'text-[#00B3AD]': $route.path === '/associations', 'text-gray-400': $route.path !== '/associations'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                  </svg>
-                  <span class="text-sm font-medium whitespace-nowrap" :class="{'text-[#00B3AD]': $route.path === '/associations', 'text-gray-600': $route.path !== '/associations'}">Associations</span>
-                </router-link>
+              <router-link
+                :to="'/associations'"
+                :class="{
+                  'border-[#00B3AD] text-[#00B3AD]': $route.path === '/associations',
+                  'border-transparent text-gray-600': $route.path !== '/associations'
+                }"
+                class="flex items-center py-2 border-b-2 transition-colors duration-200 group"
+              >
+                <svg class="w-5 h-5 mr-2" :class="{'text-[#00B3AD]': $route.path === '/associations', 'text-gray-400': $route.path !== '/associations'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+                <span class="text-sm font-medium whitespace-nowrap">Associations</span>
+              </router-link>
 
-                <router-link
-                  :to="'/formations'"
-                  :class="{
-                    'border-[#00B3AD] text-[#00B3AD]': $route.path === '/formations',
-                    'border-transparent text-gray-600': $route.path !== '/formations'
-                  }"
-                  class="flex items-center py-2 border-b-2 transition-colors duration-200 group"
-                >
-                  <svg class="w-5 h-5 mr-2" :class="{'text-[#00B3AD]': $route.path === '/formations', 'text-gray-400': $route.path !== '/formations'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                  <span class="text-sm font-medium whitespace-nowrap" :class="{'text-[#00B3AD]': $route.path === '/formations', 'text-gray-600': $route.path !== '/formations'}">Formation</span>
-                </router-link>
+              <router-link
+                :to="'/formations'"
+                :class="{
+                  'border-[#00B3AD] text-[#00B3AD]': $route.path === '/formations',
+                  'border-transparent text-gray-600': $route.path !== '/formations'
+                }"
+                class="flex items-center py-2 border-b-2 transition-colors duration-200 group"
+              >
+                <svg class="w-5 h-5 mr-2" :class="{'text-[#00B3AD]': $route.path === '/formations', 'text-gray-400': $route.path !== '/formations'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+                <span class="text-sm font-medium whitespace-nowrap">Formation</span>
+              </router-link>
 
-                <router-link
-                  :to="'/guide-Juridique'"
-                  :class="{
-                    'border-[#00B3AD] text-[#00B3AD]': $route.path === '/guide-Juridique',
-                    'border-transparent text-gray-600': $route.path !== '/guide-Juridique'
-                  }"
-                  class="flex items-center py-2 border-b-2 transition-colors duration-200 group"
-                >
-                  <svg class="w-5 h-5 mr-2" :class="{'text-[#00B3AD]': $route.path === '/guide-Juridique', 'text-gray-400': $route.path !== '/guide-Juridique'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                  </svg>
-                  <span class="text-sm font-medium whitespace-nowrap" :class="{'text-[#00B3AD]': $route.path === '/guide-Juridique', 'text-gray-600': $route.path !== '/guide-Juridique'}">Guide Juridique</span>
-                </router-link>
-              </nav>
+              <router-link
+                :to="'/guide-Juridique'"
+                :class="{
+                  'border-[#00B3AD] text-[#00B3AD]': $route.path === '/guide-Juridique',
+                  'border-transparent text-gray-600': $route.path !== '/guide-Juridique'
+                }"
+                class="flex items-center py-2 border-b-2 transition-colors duration-200 group"
+              >
+                <svg class="w-5 h-5 mr-2" :class="{'text-[#00B3AD]': $route.path === '/guide-Juridique', 'text-gray-400': $route.path !== '/guide-Juridique'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+                <span class="text-sm font-medium whitespace-nowrap">Guide Juridique</span>
+              </router-link>
             </div>
           </div>
         </div>
@@ -201,4 +204,3 @@ export default {
   }
 };
 </script>
-

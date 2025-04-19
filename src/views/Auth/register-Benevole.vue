@@ -1,6 +1,5 @@
 <template>
     <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-        <!-- Header Section -->
         <div class="relative bg-[#C9559B] text-white py-16">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center">
@@ -34,7 +33,8 @@
                                     <div class="flex-1 flex items-center justify-center space-x-4">
                                         <span :class="['w-10 h-10 rounded-full flex items-center justify-center text-lg font-semibold',
                                             activeSection === 'volunteer' ? 'bg-[#00B3AD] text-white' : 'bg-gray-200 text-gray-600']">2</span>
-                                        <button type="button"  @click.prevent="validateAndProceed" 
+                                        <button type="button" 
+                                         @click.prevent="validateAndProceed" 
                                             :class="['text-base font-bold focus:outline-none',
                                             activeSection === 'volunteer' ? 'text-[#00B3AD]' : 'text-gray-600']">
                                             Profil Bénévole
@@ -44,9 +44,7 @@
                             </div>
                         </div>
 
-                        <!-- Personal Information Section -->
                         <div v-if="activeSection === 'personal'" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                            <!-- Left Column -->
                             <div class="space-y-6">
                                 <h3 class="text-xl font-semibold text-gray-900">Informations Personnelles</h3>
                                 
@@ -120,7 +118,6 @@
                                 </div>
                             </div>
 
-                            <!-- Right Column -->
                             <div class="space-y-6">
                                 <h3 class="text-xl font-semibold text-gray-900">Compte et Contact</h3>
 
@@ -195,6 +192,121 @@
                                 </div>
                             </div>
                         </div>
+                        <div v-if="activeSection === 'volunteer'" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                         <div class="space-y-6">
+                             <h3 class="text-xl font-semibold text-gray-900">Profil Bénévole</h3>
+ 
+                             <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700">Domaines d'action <span class="text-red-500">*</span></label>
+                                
+                                <div class="flex flex-wrap gap-4">
+                                        <label v-for="option in domaines_action" :key="option.value" class="flex items-center space-x-2">
+                                            <input type="checkbox" :value="option.value" v-model="formDataProfil.domaines_action" class="text-[#00B3AD] focus:ring-[#00B3AD]"/>
+                                            <span>{{ option.label }}</span>
+                                        </label>
+                                        </div>
+                            </div>
+ 
+                             <div>
+                                 <label class="block text-sm font-medium text-gray-700 mb-2">
+                                     Types de mission 
+                                 </label>
+                                 <select v-model="formDataProfil.types_mission" name="types_mission" required
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#00B3AD] focus:border-transparent">
+                                <option value="" disabled>Sélectionnez un type de mission</option>
+                                <option value="ponctuel">Missions ponctuelles</option>
+                                <option value="regulier">Engagement régulier</option>
+                                <option value="distance">À distance</option>
+                                <option value="terrain">Sur le terrain</option>
+                            </select>
+                             </div>
+ 
+                             <div>
+                                 <label class="block text-sm font-medium text-gray-700 mb-2">
+                                     Disponibilités
+                                 </label>
+                                 <select v-model="formDataProfil.disponibilites"  required
+                                         class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#00B3AD] focus:border-transparent">
+                                     <option value="" disabled selected>Sélectionnez disponibilités</option>
+                                     <option value="semaine">En semaine</option>
+                                     <option value="weekend">Weekend</option>
+                                     <option value="matin">Matin</option>
+                                     <option value="apres-midi">Après-midi</option>
+                                     <option value="soir">Soir</option>
+                                 </select>
+                             </div>
+ 
+                             <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700">Missions préférées </label>
+                                
+                                <div class="flex flex-wrap gap-4">
+                                        <label v-for="option in missions_preferrees" :key="option.value" class="flex items-center space-x-2">
+                                            <input type="checkbox" :value="option.value" v-model="formDataProfil.missions_preferrees" class="text-[#00B3AD] focus:ring-[#00B3AD]"/>
+                                            <span>{{ option.label }}</span>
+                                        </label>
+                                        </div>
+                            </div>
+                         </div>
+ 
+                         <div class="space-y-6">
+                             <h3 class="text-xl font-semibold text-gray-900">Expérience et Compétences</h3>
+ 
+                             <div>
+                                 <label class="block text-sm font-medium text-gray-700 mb-2">
+                                     Niveau d'études
+                                 </label>
+                                 <select v-model="formDataProfil.niveau_etudes" name="niveau_etudes"
+                                         class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#00B3AD] focus:border-transparent">
+                                     <option value="" disabled>Sélectionnez un niveau</option>
+                                     <option value="bac">Baccalauréat</option>
+                                     <option value="bac+2">Bac+2</option>
+                                     <option value="bac+3">Bac+3</option>
+                                     <option value="bac+5">Bac+5</option>
+                                     <option value="doctorat">Doctorat</option>
+                                 </select>
+                             </div>
+ 
+                             <div>
+                                 <label class="block text-sm font-medium text-gray-700 mb-2">
+                                     Métier actuel
+                                 </label>
+                                 <input v-model="formDataProfil.metier" type="text" name="metier"
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#00B3AD] focus:border-transparent"
+                                        placeholder="Votre profession actuelle">
+                             </div>
+ 
+                             <div>
+                                 <label class="block text-sm font-medium text-gray-700 mb-2">
+                                     Talents et compétences
+                                 </label>
+                                 <textarea v-model="formDataProfil.talents" name="talents" rows="3"
+                                           class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#00B3AD] focus:border-transparent"
+                                           placeholder="Décrivez vos talents et compétences particulières"></textarea>
+                             </div>
+ 
+                             <!-- CV Upload -->
+                             <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                                <div class="space-y-4">
+                                    <div class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center">
+                                        <i v-if="!formDataProfil.cv" class="fas fa-file-pdf text-3xl text-gray-400"></i>
+                                        <i v-else class="fas fa-check-circle text-3xl text-green-500"></i>
+                                    </div>
+                                    <div>
+                                        <label class="inline-flex items-center px-4 py-2 bg-[#00B3AD] text-white rounded-lg cursor-pointer hover:bg-[#009B96] transition-colors">
+                                            <i class="fas fa-upload mr-2"></i>
+                                            <span>Ajouter votre CV</span>
+                                            <input type="file" @change="handleCVUpload" name="cv" class="hidden" accept=".pdf">
+                                        </label>
+                                        <p class="text-xs text-gray-500 mt-2">Format PDF uniquement, max 2MB</p>
+                                    </div>
+                                    <div v-if="formDataProfil.cvName" class="text-sm text-gray-700 mt-2">
+                                        <strong>Fichier téléchargé :</strong> {{ formDataProfil.cvName }}
+                                    </div>
+                                </div>
+                            </div>
+                         </div>
+                     </div>
+ 
 
                         <div v-if="activeSection === 'personal'" class="mt-6">
                             <button @click.prevent="validateAndProceed" type="button"
@@ -208,7 +320,7 @@
                             <button @click.prevent="validateAndProceed" type="button"
                                     class="w-full bg-[#00B3AD] text-white py-4 rounded-lg hover:bg-[#009B96] 
                                            transition-colors duration-200 flex items-center justify-center space-x-2 text-lg">
-                                <span>Continuer vers l'étape suivante</span>
+                                <span>Valider l’inscription</span>
                                 <i class="fas fa-arrow-right"></i>
                             </button>
                         </div>
@@ -219,7 +331,6 @@
                     </form>
                 </div>
 
-                <!-- Login Link -->
                 <div class="border-t border-gray-200 p-8 bg-gray-50 rounded-b-2xl">
                     <div class="max-w-6xl mx-auto flex justify-between items-center">
                         <p class="text-gray-600">
@@ -255,6 +366,29 @@ export default {
                 image: null,
                 imagePreview: null,
             },
+            formDataProfil: {
+                types_mission: "",
+                disponibilites: "",
+                missions_preferrees: [],
+                niveau_etudes: '',
+                metier: '',
+                talents: '',
+                cv: null,
+                domaines_action: [],
+            },
+            domaines_action: [
+                { value: "education", label: "Éducation" },
+                { value: "sante", label: "Santé" },
+                { value: "environnement", label: "Environnement" },
+                { value: "culture", label: "Culture" },
+                { value: "social", label: "Action sociale" },
+                { value: "sport", label: "Sport" },
+                ],
+            missions_preferrees: [
+                 { value: "Urgence", label: "Urgence" },
+                { value: "Mission Régulière", label: "Mission Régulière" },
+                { value: "Télé-bénévolat", label: "Télé-bénévolat" },
+            ],
             formError: ''
         }
     },
@@ -272,6 +406,14 @@ export default {
                     this.formError = 'Veuillez remplir tous les champs obligatoires';
                     return false;
                 }
+            }
+            const phonePattern = /^\+212[0-9]{9}$/;
+            if (
+                !phonePattern.test(this.formDataPersonnelles.telephone_1) ||
+                (this.formDataPersonnelles.telephone_2 && !phonePattern.test(this.formDataPersonnelles.telephone_2))
+            ) {
+                this.formError = 'Les numéros de téléphone doivent respecter le format +212XXXXXXXXX';
+                return false;
             }
 
             if (this.formDataPersonnelles.password !== this.formDataPersonnelles.password_confirmation) {
@@ -297,6 +439,26 @@ export default {
 
             return true;
         },
+        validateVolunteerProfile() {
+            this.formError = '';
+            const requiredVolunteerInputs = [
+                'domaines_action'
+            ];
+
+            for (const input of requiredVolunteerInputs) {
+                if (!this.formDataProfil[input] || this.formDataProfil[input].length === 0) {
+                    this.formError = 'Veuillez remplir tous les champs obligatoires du profil bénévole';
+                    return false;
+                }
+            }
+
+            if (this.formDataProfil.cv && this.formDataProfil.cv.size > 2 * 1024 * 1024) {
+                this.formError = 'Le CV ne doit pas dépasser 2MB';
+                return false;
+            }
+
+            return true;
+        },
 
         handleImageUpload(event) {
             const file = event.target.files[0];
@@ -315,9 +477,25 @@ export default {
             }
         },
 
+        handleCVUpload(event) {
+            const file = event.target.files[0];
+            if (file && file.type !== 'application/pdf') {
+                this.formError = 'Format de fichier invalide. Utilisez uniquement le format PDF';
+                return;
+            }
+            this.formDataProfil.cv = file;
+            this.formDataProfil.cvName = file.name;
+        },
+
         validateAndProceed() {
-            if (this.validateForm()) {
-                this.activeSection = 'volunteer';
+            if (this.activeSection === 'personal') {
+                if (this.validateForm()) {
+                    this.activeSection = 'volunteer';
+                }
+            } else if (this.activeSection === 'volunteer') {
+                if (this.validateVolunteerProfile()) {
+                    alert('Formulaire validé avec succès !');
+                }
             }
         },
     }

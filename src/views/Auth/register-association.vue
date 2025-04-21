@@ -1,5 +1,4 @@
 <template>
-    <LoadingSpinner v-if="isLoading" />
         <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
             <div class="relative bg-[#C9559B] text-white py-16">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -21,15 +20,9 @@
                                 <div class="max-w-5xl mx-auto">
                                     <div class="flex flex-wrap justify-between items-center gap-4 p-4 md:p-8">
                                         <div class="flex items-center space-x-4">
-                                            <span class="w-10 h-10 rounded-full flex items-center justify-center text-lg font-semibold bg-gray-200 text-gray-600">1</span>
-                                            <button type="button" class="text-sm md:text-base font-bold text-gray-600">
+                                            <span class="w-10 h-10 rounded-full flex items-center justify-center text-lg font-semibold bg-[#00B3AD] text-white">1</span>
+                                            <button type="button" @click="activeSection = 'personal'" class="text-sm md:text-base font-bold text-[#00B3AD]">
                                                 Informations Personnelles
-                                            </button>
-                                        </div>
-                                        <div class="flex items-center space-x-4">
-                                            <span class="w-10 h-10 rounded-full flex items-center justify-center text-lg font-semibold bg-gray-200 text-gray-600">2</span>
-                                            <button type="button" class="text-sm md:text-base font-bold text-gray-600">
-                                                Profil Association
                                             </button>
                                         </div>
                                     </div>
@@ -155,32 +148,18 @@
                                                 class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#00B3AD] focus:border-transparent"
                                                 placeholder="Votre adresse complète"></textarea>
                                     </div>
-                                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                                        <div class="space-y-4">
-                                            <div class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden">
-                                                <img class="w-full h-full object-cover" alt="Preview">
-                                                <i class="fas fa-user text-3xl text-gray-400"></i>
-                                            </div>
-                                            <div>
-                                                <label class="inline-flex items-center px-4 py-2 bg-[#00B3AD] text-white rounded-lg cursor-pointer hover:bg-[#009B96] transition-colors">
-                                                    <i class="fas fa-upload mr-2"></i>
-                                                    <span>Ajouter une photo</span>
-                                                    <input type="file" name="image" class="hidden" accept="image/*" required>
-                                                </label>
-                                                <p class="text-xs text-gray-500 mt-2">Format JPG ou PNG, max 2MB</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
                                 </div>
                             </div>
                             <div class="mt-6">
-                                <button type="button"
+                                <button type="button" @click.prevent="validateForm"
                                         class="w-full bg-[#00B3AD] text-white py-4 rounded-lg hover:bg-[#009B96] 
                                             transition-colors duration-200 flex items-center justify-center space-x-2 text-lg">
                                     <span>Valider l’inscription</span>
                                     <i class="fas fa-arrow-right"></i>
                                 </button>
+                            </div>
+                            <div v-if="formError" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4">
+                                {{ formError }}
                             </div>
                         </form>
                     </div>
@@ -188,3 +167,63 @@
             </div>
         </div>
     </template>
+    
+    <script>
+    import LoadingSpinner from "@/components/LoadingSpinner.vue";
+    
+    export default {
+        components: {
+            LoadingSpinner,
+        },
+        data() {
+            return {
+                activeSection: 'personal',
+                formError: '',
+            };
+        },
+        methods: {
+            validateForm() {
+                this.formError = '';
+                const requiredInputs = [
+                    'civilite', 'cin', 'prenom', 'nom', 'date_naissance',
+                    'telephone_1', 'email', 'password', 'password_confirmation',
+                    'ville', 'adresse'
+                ];
+    
+                for (const input of requiredInputs) {
+                    if (!this[input]) {
+                        this.formError = 'Veuillez remplir tous les champs obligatoires';
+                        return false;
+                    }
+                }
+                const phonePattern = /^(?:\+212|0)[5-7][0-9]{8}$/;
+                if (!phonePattern.test(this.telephone_1)) {
+                    this.formError = 'Les numéros de téléphone doivent respecter le format +212XXXXXXXXX';
+                    return false;
+                }
+    
+                if (this.password !== this.password_confirmation) {
+                    this.formError = 'Les mots de passe ne correspondent pas';
+                    return false;
+                }
+                const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?.&]).{8,}$/;
+                if (!passwordRegex.test(this.password)) {
+                    this.formError = 'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial';
+                    return false;
+                }
+    
+                if (this.date_naissance) {
+                    const birthDate = new Date(this.date_naissance);
+                    const today = new Date();
+                    const age = Math.floor((today - birthDate) / (365.25 * 24 * 60 * 60 * 1000));
+                    
+                    if (age < 18) {
+                        this.formError = 'Vous devez avoir au moins 18 ans pour vous inscrire';
+                        return false;
+                    }
+                }
+                return true;
+            }
+        },
+    };
+    </script>

@@ -113,7 +113,16 @@ export default {
             this.errorMessage = ""; 
             try {
                 const response = await authapi.login(this.formData);
-                this.$router.push('/dashboard');
+                document.cookie = `authToken=${response.data.token}; Secure; SameSite=Strict; path=/`;
+                const role = response.data.user.role;
+                if (role === "admin") {
+                     this.$router.push("/dashboard");
+                } else if (role === "association"){
+                     this.$router.push("/dashboard");
+                }else{
+                    this.$router.push("/profile");
+                }
+                
             } catch (error) {
                 this.errorMessage = "Email ou mot de passe incorrect. Veuillez réessayer.";
             } finally {

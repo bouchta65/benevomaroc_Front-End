@@ -3,7 +3,9 @@ import axios from 'axios';
 const api = 'http://127.0.0.1:8000/api';
 
 export default {
-
+  login(data) {
+    return axios.post(`${api}/login`, data);
+  },
 
   registerBenevole(data) {
     return axios.post(`${api}/benevole`, data, {
@@ -21,5 +23,11 @@ export default {
     });
   },
 
-
+  authStatus(token) {
+    return axios.get(`${api}/auth-status`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    }
 };

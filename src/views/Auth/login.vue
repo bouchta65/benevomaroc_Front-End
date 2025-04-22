@@ -1,4 +1,6 @@
 <template>
+        <LoadingSpinner v-if="isLoading" />
+
     <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
         <div class="container mx-auto px-4 py-16">
             <div class="text-center mb-16 animate-fade-in-down">
@@ -26,7 +28,7 @@
                                 </div>
                             </div>
 
-                            <form class="mb-6">
+                            <form @submit.prevent="onSubmit" class="mb-6">
                                 <div class="space-y-5">
                                     <div>
                                         <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
@@ -34,7 +36,7 @@
                                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                                 <i class="fas fa-envelope text-[#00B3AD]"></i>
                                             </div>
-                                            <input type="email" id="email" name="email" 
+                                            <input v-model="formData.email" type="email" id="email" name="email" 
                                                 class="block w-full pl-10 pr-3 py-2 bg-gray-50 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#00B3AD] focus:border-[#00B3AD]" 
                                                 placeholder="votre@email.com">
                                         </div>
@@ -49,14 +51,14 @@
                                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                                 <i class="fas fa-lock text-[#00B3AD]"></i>
                                             </div>
-                                            <input type="password" id="password" name="password" 
+                                            <input v-model="formData.password" type="password" id="password" name="password" 
                                                 class="block w-full pl-10 pr-3 py-2 bg-gray-50 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#00B3AD] focus:border-[#00B3AD]" 
                                                 placeholder="••••••••">
                                         </div>
                                     </div>
                                     
                                     <div class="flex items-center">
-                                        <input id="remember" name="remember" type="checkbox" class="h-4 w-4 text-[#00B3AD] border-gray-300 rounded">
+                                        <input v-model="formData.remember" id="remember" name="remember" type="checkbox" class="h-4 w-4 text-[#00B3AD] border-gray-300 rounded">
                                         <label for="remember" class="ml-2 block text-sm text-gray-600">
                                             Se souvenir de moi
                                         </label>
@@ -81,5 +83,38 @@
         </div>
     </div>
 </template>
+
 <script>
+import authapi from "@/api/auth";   
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
+
+export default {
+    components: {
+        LoadingSpinner,
+    },
+    data() {
+        return {
+            formData: {
+                email: "",
+                password: "",
+                remember: false,
+            },
+            isLoading: false,
+        };
+    },
+    methods: {
+        async onSubmit() {
+            this.isLoading = true;
+            try {
+                const response = await authapi.login(this.formData);
+                console.log("Login successful:", response.data);
+            } catch (error) {
+                console.error("Login failed:", error.response?.data || error.message);
+                alert("Erreur de connexion. Veuillez vérifier vos identifiants.");
+            } finally {
+                this.isLoading = false;
+            }
+        },
+    },
+};
 </script>

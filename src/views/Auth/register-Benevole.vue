@@ -1,6 +1,6 @@
     <template>
         <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-            <div class="relative bg-[#C9559B] text-white py-16">
+            <div class="relative bg-[#00B3AD] text-white py-16">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center">
                         <h1 class="text-4xl font-bold mb-4">Devenir Bénévole</h1>
@@ -21,21 +21,21 @@
                                     <div class="flex flex-wrap justify-between items-center gap-4 p-4 md:p-8">
                                         <div class="flex items-center space-x-4">
                                             <span :class="['w-10 h-10 rounded-full flex items-center justify-center text-lg font-semibold',
-                                                activeSection === 'personal' ? 'bg-[#00B3AD] text-white' : 'bg-gray-200 text-gray-600']">1</span>
+                                                activeSection === 'personal' ? 'bg-[#C9559B] text-white' : 'bg-gray-200 text-gray-600']">1</span>
                                             <button type="button" 
                                                 @click="activeSection = 'personal'"
                                                 :class="['text-sm md:text-base font-bold focus:outline-none',
-                                                activeSection === 'personal' ? 'text-[#00B3AD]' : 'text-gray-600']">
+                                                activeSection === 'personal' ? 'text-[#C9559B]' : 'text-gray-600']">
                                                 Informations Personnelles
                                             </button>
                                         </div>
                                         <div class="flex items-center space-x-4">
                                             <span :class="['w-10 h-10 rounded-full flex items-center justify-center text-lg font-semibold',
-                                                activeSection === 'volunteer' ? 'bg-[#00B3AD] text-white' : 'bg-gray-200 text-gray-600']">2</span>
+                                                activeSection === 'volunteer' ? 'bg-[#C9559B] text-white' : 'bg-gray-200 text-gray-600']">2</span>
                                             <button type="button" 
                                                 @click.prevent="validateAndProceed" 
                                                 :class="['text-sm md:text-base font-bold focus:outline-none',
-                                                activeSection === 'volunteer' ? 'text-[#00B3AD]' : 'text-gray-600']">
+                                                activeSection === 'volunteer' ? 'text-[#C9559B]' : 'text-gray-600']">
                                                 Profil Bénévole
                                             </button>
                                         </div>
@@ -384,7 +384,7 @@
                         return false;
                     }
                 }
-                const phonePattern = /^\+212[0-9]{9}$/;
+                const phonePattern =  /^(?:\+212|0)[5-7][0-9]{8}$/;
                 if (
                     !phonePattern.test(this.formDataPersonnelles.telephone_1) ||
                     (this.formDataPersonnelles.telephone_2 && !phonePattern.test(this.formDataPersonnelles.telephone_2))

@@ -1,5 +1,5 @@
 <template>
-        <LoadingSpinner v-if="isLoading" />
+    <LoadingSpinner v-if="isLoading" />
 
     <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
         <div class="container mx-auto px-4 py-16">
@@ -13,7 +13,7 @@
             </div>
     
             <div class="max-w-xl mx-auto">
-                <div >
+                <div>
                     <div class="relative overflow-hidden bg-white rounded-2xl shadow-xl">
                         <div class="absolute top-0 left-0 right-0 h-2 bg-[#00B3AD]"></div>
                         
@@ -26,6 +26,10 @@
                                     <h3 class="text-2xl font-bold text-gray-900">Connexion</h3>
                                     <p class="text-gray-500">Accédez à votre compte</p>
                                 </div>
+                            </div>
+
+                            <div v-if="errorMessage" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                                {{ errorMessage }}
                             </div>
 
                             <form @submit.prevent="onSubmit" class="mb-6">
@@ -100,17 +104,18 @@ export default {
                 remember: false,
             },
             isLoading: false,
+            errorMessage: "", 
         };
     },
     methods: {
         async onSubmit() {
             this.isLoading = true;
+            this.errorMessage = ""; 
             try {
                 const response = await authapi.login(this.formData);
-                console.log("Login successful:", response.data);
+                this.$router.push('/dashboard');
             } catch (error) {
-                console.error("Login failed:", error.response?.data || error.message);
-                alert("Erreur de connexion. Veuillez vérifier vos identifiants.");
+                this.errorMessage = "Email ou mot de passe incorrect. Veuillez réessayer.";
             } finally {
                 this.isLoading = false;
             }

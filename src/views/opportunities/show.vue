@@ -1,5 +1,4 @@
 <template>
-    <LoadingSpinner v-if="isLoading" />
     <section class="min-h-screen bg-gray-50">
         <div class="bg-gradient-to-br from-[#4ECDC4]/10 to-white pt-6 pb-8 md:pt-8 md:pb-12">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -56,7 +55,6 @@
                             </div>
                         </div>
                     </div>
-        
                     <div class="md:col-span-3">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="text-xl font-bold text-gray-900">
@@ -67,6 +65,7 @@
                                 <option value="popular">Les plus populaires</option>
                             </select>
                         </div>
+                        <LoadingSpinner v-if="isLoading" />
                         <div v-if="opportunities.length === 0" class="flex items-center justify-center h-80">
                         <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 text-center max-w-md">
                             <div class="text-red-500 mb-4 sm:mb-6">
@@ -196,7 +195,7 @@
 
 <script>
 import opportuniteApi from "@/api/opportunite";
-import LoadingSpinner from "@/components/LoadingSpinner.vue";
+import LoadingSpinner from "@/components/opportunites/opportunitesspinner.vue";
 
 export default {
     components: {
@@ -231,7 +230,6 @@ export default {
     },
     methods: {
         async fetchOpportunities() {
-            this.isLoading = true;
             try {
                 const response = await opportuniteApi.getAll(this.currentPage); 
                 this.opportunities = response.data.data || [];

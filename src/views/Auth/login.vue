@@ -107,22 +107,36 @@ export default {
             errorMessage: "", 
         };
     },
+    mounted() {
+        const savedToken = localStorage.getItem("authToken");
+        if (savedToken) {
+            this.$router.push("/");
+        }
+    },
     methods: {
         async onSubmit() {
             this.isLoading = true;
             this.errorMessage = ""; 
             try {
                 const response = await authapi.login(this.formData);
-                document.cookie = `authToken=${response.data.token}; Secure; SameSite=Strict; path=/`;
+                const token = response.data.token;
+
+                if (this.formData.remember) {
+                    localStorage.setItem("authToken", token);
+                } else {
+                    sessionStorage.setItem("authToken", token);
+                }
+
+                document.cookie = `authToken=${token}; Secure; SameSite=Strict; path=/`;
+
                 const role = response.data.user.role;
                 if (role === "admin") {
-                     this.$router.push("/dashboard");
-                } else if (role === "association"){
-                     this.$router.push("/dashboard");
-                }else{
+                    this.$router.push("/dashboard");
+                } else if (role === "association") {
+                    this.$router.push("/dashboard");
+                } else {
                     this.$router.push("/profile");
                 }
-                
             } catch (error) {
                 this.errorMessage = "Email ou mot de passe incorrect. Veuillez réessayer.";
             } finally {

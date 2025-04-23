@@ -304,6 +304,9 @@
                             <div v-if="formError" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4">
                                 {{ formError }}
                             </div>
+                            <div v-if="successMessage" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                                {{ successMessage }}
+                            </div>
                         </form>
                     </div>
                     <div class="border-t border-gray-200 p-8 bg-gray-50 rounded-b-2xl">
@@ -366,7 +369,8 @@
                     { value: "Mission Régulière", label: "Mission Régulière" },
                     { value: "Télé-bénévolat", label: "Télé-bénévolat" },
                 ],
-                formError: ''
+                formError: '',
+                successMessage: '',
             };
         },
         methods: {
@@ -418,6 +422,7 @@
             },
             validateVolunteerProfile() {
                 this.formError = '';
+                this.successMessage = '';
                 const requiredVolunteerInputs = [
                     'domaines_action'
                 ];
@@ -474,8 +479,8 @@
                 }
             },
             async submitForm() {
-                if (!this.validateVolunteerProfile()) {
-            return; 
+                if (!this.validateForm() || !this.validateVolunteerProfile()) {
+                    return; 
                 }
                 try {
                     const formData = new FormData();
@@ -497,7 +502,12 @@
                     const response = await authapi.registerBenevole(formData);
 
                     if (response.status === 201) {
-                        alert('Votre inscription a été effectuée avec succès !');
+                        this.formError = '';
+                        this.successMessage = 'Votre association a été enregistrée avec succès !';
+            
+                        setTimeout(() => {
+                            this.$router.push('/login');
+                        }, 1500);
                     }
                 } catch (error) {
                     if (error.response && error.response.data && error.response.data.message && error.response.data.errors) {
@@ -508,7 +518,7 @@
                     } else {
                         this.formError = 'Une erreur est survenue lors de l\'inscription.'; 
                     }
-                }
+        }
             }
         },
     }

@@ -61,12 +61,7 @@
                                         </div>
                                     </div>
                                     
-                                    <div class="flex items-center">
-                                        <input v-model="formData.remember" id="remember" name="remember" type="checkbox" class="h-4 w-4 text-[#00B3AD] border-gray-300 rounded">
-                                        <label for="remember" class="ml-2 block text-sm text-gray-600">
-                                            Se souvenir de moi
-                                        </label>
-                                    </div>
+
                                 </div>
                                 
                                 <button type="submit" class="w-full mt-6 flex justify-center py-2 px-4 border border-transparent rounded-xl shadow-sm text-white bg-[#00B3AD] hover:bg-[#00B3AD]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#00B3AD]">
@@ -89,6 +84,7 @@
 </template>
 
 <script>
+import { authStore } from "@/stores/auth";
 import authapi from "@/api/auth";   
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
@@ -107,12 +103,6 @@ export default {
             errorMessage: "", 
         };
     },
-    mounted() {
-        const savedToken = localStorage.getItem("authToken");
-        if (savedToken) {
-            this.$router.push("/");
-        }
-    },
     methods: {
         async onSubmit() {
             this.isLoading = true;
@@ -121,13 +111,16 @@ export default {
                 const response = await authapi.login(this.formData);
                 const token = response.data.token;
 
-                if (this.formData.remember) {
-                    localStorage.setItem("authToken", token);
-                } else {
-                    sessionStorage.setItem("authToken", token);
-                }
+      
+                sessionStorage.setItem("authToken", token);
+                
 
                 document.cookie = `authToken=${token}; Secure; SameSite=Strict; path=/`;
+
+                authStore.login({
+                    role: response.data.user.role,
+                    ...response.data.user
+                });
 
                 const role = response.data.user.role;
                 if (role === "admin") {

@@ -1,6 +1,6 @@
 <template>
-    <div class="flex items-center justify-center min-h-screen bg-white">
-      <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-red-500 border-opacity-70"></div>
+<div class="fixed inset-0 top-0 flex items-center justify-center bg-white/50 z-50 w-screen">
+  <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-red-500 border-opacity-70"></div>
     </div>
   </template>
   

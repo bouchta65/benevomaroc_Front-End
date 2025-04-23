@@ -1,5 +1,4 @@
 <template>
-    <LoadingSpinner v-if="isLoading" />
         <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
             <div class="relative bg-[#C9559B] text-white py-16">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -333,12 +332,8 @@
     
     <script>
     import authapi from "@/api/auth";   
-    import LoadingSpinner from "@/components/LoadingSpinner.vue";
     
     export default {
-        components: {
-            LoadingSpinner,
-        },
         data() {
             return {
                 activeSection: 'personal',
@@ -399,7 +394,7 @@
                             return false;
                         }
                     }
-                    const phonePattern = /^\+212[0-9]{9}$/;
+                    const phonePattern =  /^(?:\+212|0)[5-7][0-9]{8}$/;
                     if (
                         !phonePattern.test(this.formDataPersonnelles.telephone_1) ||
                         (this.formDataPersonnelles.telephone_2 && !phonePattern.test(this.formDataPersonnelles.telephone_2))
@@ -515,7 +510,6 @@
             this.formError = '';
             this.formDataAssociation.status_association = file;
             this.formDataAssociation.status_associationName = file.name;
-            this.formDataPersonnelles.pdfPreview = URL.createObjectURL(file);
     
         }
     },
@@ -525,7 +519,6 @@
         if (!this.validateForm() || !this.validateForm2()) {
             return; 
         }
-        this.isLoading = true;
         try {
             const formData = new FormData();
     
@@ -536,7 +529,6 @@
             for (const key in this.formDataAssociation) {
                 formData.append(key, this.formDataAssociation[key]);
             }
-            console.log([...formData.entries()]);
             const response = await authapi.registerAssociation(formData);
     
             if (response.status === 201) {
@@ -545,7 +537,7 @@
     
                 setTimeout(() => {
                     this.$router.push('/login');
-                }, 3000);
+                }, 1500);
             }
         } catch (error) {
                 if (error.response && error.response.data && error.response.data.message && error.response.data.errors) {
@@ -556,8 +548,6 @@
                 } else {
                     this.formError = 'Une erreur est survenue lors de l\'inscription.'; 
                 }
-            } finally {
-            this.isLoading = false;
         }
     }
         },

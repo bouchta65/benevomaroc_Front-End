@@ -23,11 +23,20 @@ export default {
     });
   },
 
+
   authStatus(token) {
     return axios.get(`${api}/auth-status`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
-    }
+    },
+
+    logout(token) {
+      return axios.post(`${api}/logout`, null, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+    },
 };

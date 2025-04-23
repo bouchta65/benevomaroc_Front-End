@@ -38,11 +38,33 @@
           </nav>
 
           <div class="hidden md:block">
-            <router-link to="/inscription">
-              <button class="signup-button text-white rounded-md focus:outline-none bg-[#00B3AD] hover:bg-[#3BAFA8] transition-colors">
+            <div class="flex items-center space-x-4">
+              <router-link v-if="authStore.isLoggedIn " to="/profile">
+              <button class="signup-button text-white rounded-md focus:outline-none bg-[#00B3AD] hover:bg-[#3BAFA8] transition-colors flex items-center space-x-2 px-3 py-2">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+              </button>
+            </router-link>
+            <button class="p-2 text-gray-700 hover:text-[#00B3AD] transition-colors relative">
+            <i class="fas fa-bell text-xl"></i>
+            <span class="absolute -top-1 -right-1 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+              3
+            </span>
+           </button>
+            <button v-if="authStore.isLoggedIn" @click="goToFormation" class="p-2 text-gray-700 hover:text-[#00B3AD] transition-colors">
+            <i class="fas fa-graduation-cap text-xl"></i>
+          </button>
+            <button v-if="authStore.isLoggedIn" @click="logout" class="p-2 text-gray-700 hover:text-red-600 transition-colors">
+              <i class="fas fa-sign-out-alt text-xl"></i>
+            </button>
+
+            <router-link v-else to="/inscription">
+              <button class="signup-button text-white rounded-md focus:outline-none bg-[#00B3AD] hover:bg-[#3BAFA8] transition-colors px-3 py-2">
                 S'inscrire
               </button>
             </router-link>
+          </div>
+
           </div>
 
           <div class="md:hidden">
@@ -54,6 +76,12 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
+            <button class="p-2 text-gray-700 hover:text-[#00B3AD] transition-colors relative">
+            <i class="fas fa-bell text-xl"></i>
+            <span class="absolute -top-1 -right-1 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+              3
+            </span>
+           </button>
           </div>
         </div>
 
@@ -73,7 +101,13 @@
             <router-link to="/guide-Juridique" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">Guide Juridique</router-link>
           </div>
           <div class="px-4 py-3">
-            <router-link to="/inscription">
+            <router-link v-if="authStore.isLoggedIn " to="/profile">
+              <button class="w-full signup-button text-white rounded-md focus:outline-none hover:bg-blue-700 transition-colors  items-center space-x-2 px-3 py-2">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+              </button>
+            </router-link>
+            <router-link v-else to="/inscription">
               <button class="w-full signup-button text-white rounded-md focus:outline-none hover:bg-blue-700 transition-colors" @click="closeMobileMenu">
                 S'inscrire
               </button>
@@ -177,12 +211,15 @@
 </template>
 
 <script>
+import { authStore } from "@/stores/auth";
+
 export default {
   data() {
     return {
       isMobileMenuOpen: false,
       currentDate: new Date().toLocaleDateString(),
       currentTime: new Date().toLocaleTimeString(),
+      authStore, 
     };
   },
   methods: {
@@ -196,9 +233,13 @@ export default {
       const now = new Date();
       this.currentDate = now.toISOString().split('T')[0];
       this.currentTime = now.toTimeString().split(' ')[0];
+    },
+    logout() {
+      authStore.logout();
+      this.$router.push('/login');
     }
   },
-  mounted() {
+  mounted() { 
     this.updateDateTime();
     setInterval(this.updateDateTime, 1000);
   }

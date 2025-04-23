@@ -15,10 +15,21 @@ export const authStore = reactive({
     }));
   },
 
-  logout() {
+  async logout() {
+    const token = sessionStorage.getItem('authToken');
+    
+    if (token) {
+      try {
+        await authapi.logout(token); 
+      } catch (error) {
+        console.error("Logout failed:", error);
+      }
+    }
+
     this.isLoggedIn = false;
     this.role = null;
     this.user = null;
+    sessionStorage.removeItem('authToken');
     document.cookie = "authToken=; expires=Thu, 17 Jan 2003 00:00:00 UTC; path=/;";
   },
 

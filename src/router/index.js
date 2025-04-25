@@ -6,19 +6,18 @@ import registerBenevole from '../views/Auth/register-Benevole.vue';
 import registerAssociation from '../views/Auth/register-association.vue';
 import auth_index from '../views/Auth/auth-index.vue';
 import login from '../views/Auth/login.vue';
-import unauthorized from "../views/Auth/unauthorized.vue";
-
+import profile from '../views/benevole/profile.vue';
 import authapi from "@/api/auth"; 
 
 const routes = [
-  {path: '/',name: 'home',component: home},
-  {path: '/opportunites',name: 'opportunites',component: opportunites , meta: { requiresAuth: true, role: "benevole" } },
-  {path: "/opportunites/:id",name: "OpportuniteDetails",component: OpportuniteDetails, props: true,},
-  {path: "/benevole/",name: "registerBenevole",component: registerBenevole},
-  {path: "/association/",name: "registerAssociation",component: registerAssociation},
-  {path: "/inscription/",name: "auth_index",component: auth_index},
-  {path: "/login/",name: "login",component: login},
-  {path: "/unauthorized/",name: "unauthorized",component: unauthorized},
+  { path: '/', name: 'home', component: home },
+  { path: '/opportunites', name: 'opportunites', component: opportunites },
+  { path: '/opportunites/:id', name: 'OpportuniteDetails', component: OpportuniteDetails, props: true },
+  { path: '/register-benevole/', name: 'registerBenevole', component: registerBenevole, meta: { guestOnly: true } },
+  { path: '/register-association/', name: 'registerAssociation', component: registerAssociation, meta: { guestOnly: true } },
+  { path: '/register/', name: 'auth_index', component: auth_index, meta: { guestOnly: true } },
+  { path: '/login/', name: 'login', component: login, meta: { guestOnly: true } },
+  { path: '/profile/', name: 'profile', component: profile , meta: { requiresAuth: true, role: "benevole" } },
 ];
 
 const router = createRouter({
@@ -26,16 +25,23 @@ const router = createRouter({
   routes
 });
 
-function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  return parts[1]?.split(';')[0] || null;
+function getSessionStorage(name) {
+  return sessionStorage.getItem(name);
 }
 
 router.beforeEach(async (to, from, next) => {
+  if (to.meta.unauthorized !== undefined) {
+    to.meta.unauthorized = false;
+  }
+
+  const token = getSessionStorage("authToken");
+  
+  if (token && to.meta.guestOnly) {
+    return next('/profile'); 
+  }
+
   if (!to.meta.requiresAuth) return next();
 
-  const token = getCookie("authToken");
   if (!token) return next("/login");
 
   try {
@@ -43,7 +49,7 @@ router.beforeEach(async (to, from, next) => {
     const user = data.user;
 
     if (to.meta.role && user.role !== to.meta.role) {
-      return next("/unauthorized");
+      return next('/unauthorized'); 
     }
 
     next();
@@ -51,7 +57,5 @@ router.beforeEach(async (to, from, next) => {
     next("/login");
   }
 });
-
-
 
 export default router;

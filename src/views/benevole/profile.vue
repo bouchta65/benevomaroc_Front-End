@@ -20,7 +20,6 @@
       alt="Profile"
       class="w-full h-full object-cover"
     />
-    <!-- Add overlay when uploading -->
     <div v-if="imageUploading" class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
       <i class="fas fa-spinner fa-spin text-white text-2xl"></i>
     </div>
@@ -35,7 +34,6 @@
     <i class="fas fa-spinner fa-spin text-[#00B3AD]" v-else></i>
   </button>
   
-  <!-- Add error message -->
   <div v-if="imageError" class="absolute -bottom-10 left-0 right-0 text-xs text-red-600 bg-red-100 p-2 rounded">
     {{ imageError }}
   </div>
@@ -66,10 +64,14 @@
                       <i class="fas fa-edit mr-2"></i>
                       Modifier le profil
                     </button>
-                    <button class="px-4 py-2 bg-[#00B3AD] text-white rounded-lg hover:bg-[#00B3AD]/90 transition-colors duration-200 flex items-center font-medium text-sm">
-                      <i class="fas fa-download mr-2"></i>
-                      CV
-                    </button>
+                    <a 
+                  :href="profileData.cv"
+                  download
+                  class="px-4 py-2 bg-[#00B3AD] text-white rounded-lg hover:bg-[#00B3AD]/90 transition-colors duration-200 flex items-center font-medium text-sm"
+                  :class="{'opacity-50 cursor-not-allowed': !profileData.cv}">
+                  <i class="fas fa-download mr-2"></i>
+                  CV
+                </a>
                   </div>
                 </div>
               </div>
@@ -496,7 +498,7 @@ export default {
     const response = await profileApi.updateUserInfo(formData, token);
     await this.fetchProfileData();
     console.log('Image updated successfully');
-    
+
   } catch (error) {    
     if (error.response?.status === 500) {
       this.imageError = "Erreur lors du téléchargement de l'image. Veuillez réessayer.";

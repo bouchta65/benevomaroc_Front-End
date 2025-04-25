@@ -10,6 +10,7 @@ export default {
       }
     });
   },
+
   updateUserInfo(data, token) {
     return axios.put(`${api}/profile/benevole/userInfo`, data, {
       headers: {
@@ -18,6 +19,7 @@ export default {
       }
     });
   },
+
   updateBenevoleDetails(data, token) {
     return axios.post(`${api}/profile/benevole/details`, data, {
       headers: {
@@ -25,6 +27,7 @@ export default {
       }
     });
   },
+
   getTop3Opportunites(token) {
     return axios.get(`${api}/profile/benevole/top3Opportunites`, {
       headers: {
@@ -32,4 +35,5 @@ export default {
       }
     });
   },
+  
 }

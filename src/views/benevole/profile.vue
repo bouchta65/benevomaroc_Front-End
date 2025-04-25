@@ -14,17 +14,32 @@
             <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-start gap-8">
               <div class="flex-shrink-0">
                 <div class="relative group">
-                  <div class="w-36 h-36 rounded-full overflow-hidden bg-gray-100 border-4 border-white shadow-lg">
-                    <img 
-                    :src="profileData.image" 
-                      alt="Profile"
-                      class="w-full h-full object-cover"
-                    />
-                  </div>
-                  <button class="absolute bottom-2 right-2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-colors">
-                    <i class="fas fa-camera text-[#00B3AD]"></i>
-                  </button>
-                </div>
+  <div class="w-36 h-36 rounded-full overflow-hidden bg-gray-100 border-4 border-white shadow-lg">
+    <img 
+      :src="profileData.image" 
+      alt="Profile"
+      class="w-full h-full object-cover"
+    />
+    <!-- Add overlay when uploading -->
+    <div v-if="imageUploading" class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+      <i class="fas fa-spinner fa-spin text-white text-2xl"></i>
+    </div>
+  </div>
+  
+  <button 
+    @click="changeimagebenevole" 
+    class="absolute bottom-2 right-2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-colors"
+    :disabled="imageUploading"
+  >
+    <i class="fas fa-camera text-[#00B3AD]" v-if="!imageUploading"></i>
+    <i class="fas fa-spinner fa-spin text-[#00B3AD]" v-else></i>
+  </button>
+  
+  <!-- Add error message -->
+  <div v-if="imageError" class="absolute -bottom-10 left-0 right-0 text-xs text-red-600 bg-red-100 p-2 rounded">
+    {{ imageError }}
+  </div>
+</div>
               </div>
 
               <div class="flex-1">
@@ -237,7 +252,7 @@
                       <div class="absolute top-3 right-3">
                         <span 
                         class="bg-gray-100 text-gray-800 px-3 py-1 text-xs font-semibold rounded-full shadow-sm">
-                          {{ opportunite.date }}
+                          {{ opportunite.type }}
                         </span>
                       </div>
                       
@@ -250,7 +265,7 @@
                       <div class="flex items-center justify-between text-sm">
                         <div class="flex items-center text-gray-600">
                           <i class="fas fa-calendar-alt text-[#C9559B] mr-2"></i>
-                          <span>{{ formatDate(opportunite.date_debut) }}</span>
+                          <span>{{ formatDate(opportunite.date) }}</span>
                         </div>
                         
                         <div class="flex items-center text-gray-600">
@@ -386,6 +401,8 @@ export default {
       showUserInfoModal: false,
       showBenevoleDetailsModal: false,
       topOpportunites: [],
+      imageUploading: false,
+      imageError: null,
     };
   },
 
@@ -445,6 +462,49 @@ export default {
         return [];
       }
     },
+    changeimagebenevole() {
+    this.imageError = null;
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/jpeg,image/png,image/jpg';
+    fileInput.onchange = this.changeimage;
+    fileInput.click();
+  },
+  
+  async changeimage(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+  if (!validTypes.includes(file.type)) {
+    this.imageError = 'Format de fichier non valide. Utilisez JPG, JPEG ou PNG.';
+    return;
+  }
+  
+  if (file.size > 2 * 1024 * 1024) {
+    this.imageError = 'L\'image ne doit pas dépasser 2MB.';
+    return;
+  }
+  
+  try {
+    this.imageUploading = true;
+    
+    const formData = new FormData();
+    formData.append('image', file); 
+    
+    const token = sessionStorage.getItem('authToken');
+    const response = await profileApi.updateUserInfo(formData, token);
+    await this.fetchProfileData();
+    console.log('Image updated successfully');
+    
+  } catch (error) {    
+    if (error.response?.status === 500) {
+      this.imageError = "Erreur lors du téléchargement de l'image. Veuillez réessayer.";
+    }
+  } finally {
+    this.imageUploading = false;
+  }
+},
     
     toggleUserInfoModal() {
       this.showUserInfoModal = !this.showUserInfoModal;

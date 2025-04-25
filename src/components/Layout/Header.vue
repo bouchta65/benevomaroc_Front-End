@@ -58,7 +58,7 @@
               <i class="fas fa-sign-out-alt text-xl"></i>
             </button>
 
-            <router-link v-else to="/inscription">
+            <router-link v-else to="/register">
               <button class="signup-button text-white rounded-md focus:outline-none bg-[#00B3AD] hover:bg-[#3BAFA8] transition-colors px-3 py-2">
                 S'inscrire
               </button>
@@ -107,7 +107,7 @@
                 <span>Profile</span>
               </button>
             </router-link>
-            <router-link v-else to="/inscription">
+            <router-link v-else to="/register">
               <button class="w-full signup-button text-white rounded-md focus:outline-none hover:bg-blue-700 transition-colors" @click="closeMobileMenu">
                 S'inscrire
               </button>

@@ -19,11 +19,17 @@ export default {
     });
   },
   updateBenevoleDetails(data, token) {
-    return axios.put(`${api}/profile/benevole/details`, data, {
+    return axios.post(`${api}/profile/benevole/details`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
       }
     });
-  }
+  },
+  getTop3Opportunites(token) {
+    return axios.get(`${api}/profile/benevole/top3Opportunites`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  },
 }

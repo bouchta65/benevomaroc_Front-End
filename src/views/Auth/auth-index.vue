@@ -21,7 +21,7 @@
                                             scale-x-0 peer-checked:scale-x-100 transition-transform duration-300"></div>
                                 
                                 <div class="p-8">
-                                 <router-link :to="'/benevole'">
+                                 <router-link :to="'/register-benevole/'">
                                     
                                     <div class="flex items-center mb-6">
                                         <div class="w-16 h-16 bg-[#00B3AD]/10 rounded-2xl flex items-center justify-center mr-4 
@@ -78,7 +78,7 @@
                                             scale-x-0 peer-checked:scale-x-100 transition-transform duration-300"></div>
                                 
                                 <div class="p-8">
-                                    <router-link :to="'/association'">
+                                    <router-link :to="'/register-association/'">
                                     <div class="flex items-center mb-6">
                                         <div class="w-16 h-16 bg-[#C9559B]/10 rounded-2xl flex items-center justify-center mr-4 
                                                     transform -rotate-3">

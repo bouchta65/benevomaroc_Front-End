@@ -11,7 +11,6 @@
                 </div>
                 <div class="absolute bottom-0 left-0 right-0 h-16 bg-gray-50 transform skew-y-2 -mb-10"></div>
             </div>
-    
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div class="bg-white rounded-2xl shadow-xl">
                     <div class="max-w-6xl mx-auto p-8">
@@ -399,7 +398,7 @@
                         !phonePattern.test(this.formDataPersonnelles.telephone_1) ||
                         (this.formDataPersonnelles.telephone_2 && !phonePattern.test(this.formDataPersonnelles.telephone_2))
                     ) {
-                        this.formError = 'Les numéros de téléphone doivent respecter le format +212XXXXXXXXX';
+                        this.formError = 'Format invalide. Exemple: 0612345678 ou +212612345678';
                         return false;
                     }
     

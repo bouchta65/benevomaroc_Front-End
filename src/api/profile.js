@@ -12,10 +12,10 @@ export default {
   },
 
   updateUserInfo(data, token) {
-    return axios.put(`${api}/profile/benevole/userInfo`, data, {
+    return axios.post(`${api}/profile/benevole/userInfo`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        
       }
     });
   },
@@ -35,5 +35,5 @@ export default {
       }
     });
   },
-  
+
 }

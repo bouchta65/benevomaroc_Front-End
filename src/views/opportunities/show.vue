@@ -55,29 +55,35 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="md:col-span-3">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="text-xl font-bold text-gray-900">
                                 {{ totalOpportunities }} opportunités trouvées
                             </h2>
-                            <select v-model="sortValue" class="border border-gray-200 rounded-lg px-4 py-2 bg-white focus:outline-none focus:border-[#4ECDC4] text-sm"@change="handleSortChange">
-                                <option  value="recent" >Les plus récents</option>
+                            <select v-model="sortValue" class="border border-gray-200 rounded-lg px-4 py-2 bg-white focus:outline-none focus:border-[#4ECDC4] text-sm" @change="handleSortChange">
+                                <option value="recent">Les plus récents</option>
                                 <option value="popular">Les plus populaires</option>
                             </select>
                         </div>
-                        <LoadingSpinner v-if="isLoading" />
-                        <div v-if="opportunities.length === 0" class="flex items-center justify-center h-80">
-                        <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 text-center max-w-md">
-                            <div class="text-red-500 mb-4 sm:mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 11-12.728 0 9 9 0 0112.728 0zM12 8v4m0 4h.01" />
-                        </svg>
+                        
+                        <div v-if="isLoading" class="flex items-center justify-center h-80">
+                            <LoadingSpinner />
                         </div>
-                            <h2 class="text-xl font-semibold text-gray-700 mb-2">Aucune opportunité trouvée</h2>
-                            <p class="text-gray-500">Essayez de modifier les filtres ou les critères de recherche pour obtenir de meilleurs résultats.</p>
+                        
+                        <div v-else-if="opportunities.length === 0" class="flex items-center justify-center h-80">
+                            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 text-center max-w-md">
+                                <div class="text-red-500 mb-4 sm:mb-6">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 11-12.728 0 9 9 0 0112.728 0zM12 8v4m0 4h.01" />
+                                    </svg>
+                                </div>
+                                <h2 class="text-xl font-semibold text-gray-700 mb-2">Aucune opportunité trouvée</h2>
+                                <p class="text-gray-500">Essayez de modifier les filtres ou les critères de recherche pour obtenir de meilleurs résultats.</p>
+                            </div>
                         </div>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                        
+                        <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                             <div 
                                 v-for="opportunite in opportunities" 
                                 :key="opportunite.id" 
@@ -155,7 +161,7 @@
                             </div>
                         </div>
                     
-                        <div class="mt-8 flex justify-center">
+                        <div v-if="!isLoading && opportunities.length > 0" class="mt-8 flex justify-center">
                             <nav class="flex items-center space-x-2">
                                 <button 
                                     class="p-2 rounded-lg border border-gray-200 text-gray-500 hover:border-[#4ECDC4] hover:text-[#4ECDC4]"
@@ -195,7 +201,7 @@
 
 <script>
 import opportuniteApi from "@/api/opportunite";
-import LoadingSpinner from "@/components/opportunites/opportunitesspinner.vue";
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
 export default {
     components: {

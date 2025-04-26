@@ -1,5 +1,6 @@
 <template>
   <div class="flex overflow-hidden">
+    <!-- Sidebar avec navigation -->
     <div :class="`bg-white w-64 shadow-lg fixed inset-y-0 left-0 transform transition-transform duration-300 z-20 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`">
       <div class="flex items-center justify-between p-4 border-b">
         <div class="flex items-center">
@@ -20,57 +21,80 @@
 
       <nav class="p-4 overflow-y-auto" style="max-height: calc(100vh - 140px);">
         <div class="space-y-1">
-            <a @click="setActivePage('dashboard')" :class="[activePage === 'dashboard' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
-              <svg class="text-gray-500 mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': activePage === 'dashboard'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <router-link to="/dashboard" 
+                       :class="[$route.path === '/dashboard' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
+                               'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
+              <svg class="mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': $route.path === '/dashboard', 'text-gray-500': $route.path !== '/dashboard'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
               </svg>
               Tableau de Bord
-            </a>
-            <a @click="setActivePage('benevoles')" :class="[activePage === 'benevoles' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
-              <svg class="text-gray-500 mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': activePage === 'benevoles'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            </router-link>
+            
+            <router-link to="/dashboard/benevoles" 
+                       :class="[$route.path === '/dashboard/benevoles' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
+                               'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
+              <svg class="mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': $route.path === '/dashboard/benevoles', 'text-gray-500': $route.path !== '/dashboard/benevoles'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
               Bénévoles
-            </a>
-            <a @click="setActivePage('opportunites')" :class="[activePage === 'opportunites' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
-              <svg class="text-gray-500 mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': activePage === 'opportunites'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            </router-link>
+            
+            <router-link to="/dashboard/opportunites" 
+                       :class="[$route.path === '/dashboard/opportunites' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
+                               'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
+              <svg class="mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': $route.path === '/dashboard/opportunites', 'text-gray-500': $route.path !== '/dashboard/opportunites'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
               Opportunités
-            </a>
-            <a @click="setActivePage('formations')" :class="[activePage === 'formations' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
-              <svg class="text-gray-500 mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': activePage === 'formations'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            </router-link>
+            
+            <router-link to="/dashboard/formations" 
+                       :class="[$route.path === '/dashboard/formations' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
+                               'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
+              <svg class="mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': $route.path === '/dashboard/formations', 'text-gray-500': $route.path !== '/dashboard/formations'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998a12.078 12.078 0 01.665-6.479L12 14z" />
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998a12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
               </svg>
               Formations
-            </a>
-            <a @click="setActivePage('evenements')" :class="[activePage === 'evenements' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
-              <svg class="text-gray-500 mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': activePage === 'evenements'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            </router-link>
+            
+            <router-link to="/dashboard/evenements" 
+                       :class="[$route.path === '/dashboard/evenements' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
+                               'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
+              <svg class="mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': $route.path === '/dashboard/evenements', 'text-gray-500': $route.path !== '/dashboard/evenements'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
               Événements
-            </a>
-            <a @click="setActivePage('certifications')" :class="[activePage === 'certifications' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
-              <svg class="text-gray-500 mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': activePage === 'certifications'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            </router-link>
+            
+            <router-link to="/dashboard/certifications" 
+                       :class="[$route.path === '/dashboard/certifications' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
+                               'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
+              <svg class="mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': $route.path === '/dashboard/certifications', 'text-gray-500': $route.path !== '/dashboard/certifications'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
               </svg>
               Certifications
-            </a>
-            <a @click="setActivePage('stats')" :class="[activePage === 'stats' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
-              <svg class="text-gray-500 mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': activePage === 'stats'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            </router-link>
+            
+            <router-link to="/dashboard/stats" 
+                       :class="[$route.path === '/dashboard/stats' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
+                               'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
+              <svg class="mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': $route.path === '/dashboard/stats', 'text-gray-500': $route.path !== '/dashboard/stats'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
               Statistiques
-            </a>
-            <a @click="setActivePage('settings')" :class="[activePage === 'settings' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
-              <svg class="text-gray-500 mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': activePage === 'settings'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            </router-link>
+            
+            <router-link to="/dashboard/settings" 
+                       :class="[$route.path === '/dashboard/settings' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
+                               'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
+              <svg class="mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': $route.path === '/dashboard/settings', 'text-gray-500': $route.path !== '/dashboard/settings'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
               Paramètres
-            </a>
+            </router-link>
           </div>
       </nav>
 
@@ -94,8 +118,9 @@
               </svg>
             </button>
             <div>
-              <h1 class="text-xl font-bold text-gray-800">{{ getPageTitle }}</h1>
-            </div>
+            <h1 class="text-2xl font-bold text-gray-800">{{ getPageTitle }}</h1>
+            <p v-if="getPageSubtitle" class="text-gray-500">{{ getPageSubtitle }}</p>
+          </div>
           </div>
 
           <div class="flex items-center space-x-4">
@@ -107,103 +132,92 @@
                 <span class="absolute -top-1 -right-1 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">3</span>
               </button>
             </div>
-
-            <div class="relative">
-              <button class="p-2 bg-gray-100 rounded-full text-gray-600 hover:bg-gray-200">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                <span class="absolute -top-1 -right-1 h-5 w-5 bg-[#C9559B] text-white text-xs rounded-full flex items-center justify-center">5</span>
-              </button>
-            </div>
-
             <div class="relative" ref="profileMenu">
               <button @click="profileMenuOpen = !profileMenuOpen" class="flex items-center space-x-2 focus:outline-none">
                 <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="w-8 h-8 rounded-full border-2 border-[#00B3AD]">
-                <span class="hidden md:block text-sm font-medium">{{ username }}</span>
-                <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
+                <span class="hidden md:block text-sm font-medium">Dar Assalam</span>
               </button>
-
-              <div v-if="profileMenuOpen" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-1 z-30">
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md">Mon Profil</a>
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md">Paramètres</a>
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md">Messages</a>
-                <div class="border-t border-gray-100 my-1"></div>
-                <a href="#" @click="logout" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md">Déconnexion</a>
-              </div>
             </div>
           </div>
         </div>
       </div>
+      
     </div>
   </div>
 </template>
 
-
-
-
-  
-  <script>
-  export default {
-    name: 'DashboardNavbar',
-    data() {
-      return {
-        username: 'bouchta65',
-        formattedDateTime: '2025-04-25 15:43:55',
-        sidebarOpen: false,
-        profileMenuOpen: false,
-        activePage: 'dashboard'
+<script>
+export default {
+  name: 'DashboardNavbar',
+  data() {
+    return {
+      sidebarOpen: false,
+      profileMenuOpen: false
+    };
+  },
+  computed: {
+    getPageTitle() {
+      const path = this.$route.path;
+      const titles = {
+        '/dashboard': 'Tableau de Bord',
+        '/dashboard/benevoles': 'Gestion des Bénévoles',
+        '/dashboard/opportunites': 'Gestion des Opportunités',
+        '/dashboard/formations': 'Formations',
+        '/dashboard/evenements': 'Événements',
+        '/dashboard/certifications': 'Certifications',
+        '/dashboard/stats': 'Statistiques',
+        '/dashboard/settings': 'Paramètres'
       };
+      return titles[path] || 'Tableau de Bord';
     },
-    computed: {
-      getPageTitle() {
-        const titles = {
-          dashboard: 'Tableau de Bord',
-          benevoles: 'Gestion des Bénévoles',
-          opportunites: 'Opportunités',
-          formations: 'Formations',
-          evenements: 'Événements',
-          certifications: 'Certifications',
-          stats: 'Statistiques',
-          settings: 'Paramètres'
-        };
-        return titles[this.activePage] || 'Tableau de Bord';
-      }
-    },
-    methods: {
-      toggleSidebar() {
-        this.sidebarOpen = !this.sidebarOpen;
-      },
-      setActivePage(page) {
-        this.activePage = page;
-        this.sidebarOpen = false; 
-      },
-      logout() {
-        alert('Déconnexion en cours...');
-      },
-      closeProfileMenu(event) {
-        if (this.$refs.profileMenu && !this.$refs.profileMenu.contains(event.target)) {
-          this.profileMenuOpen = false;
-        }
-      }
-    },
-    mounted() {
-      document.addEventListener('click', this.closeProfileMenu);
-    },
-    beforeUnmount() {
-      document.removeEventListener('click', this.closeProfileMenu);
+    getPageSubtitle() {
+      const path = this.$route.path;
+      const subtitles = {
+        '/dashboard': 'Bienvenue sur votre espace de gestion',
+        '/dashboard/benevoles': 'Gérez vos annonces de bénévolat et suivez les candidatures',
+        '/dashboard/opportunites': 'Créez et gérez vos offres de bénévolat',
+        '/dashboard/formations': 'Proposez et suivez des programmes de formation',
+        '/dashboard/evenements': 'Organisez et gérez vos événements',
+        '/dashboard/certifications': 'Attribuez et suivez les certifications',
+        '/dashboard/stats': 'Consultez et analysez les statistiques',
+        '/dashboard/settings': 'Configurez votre compte et vos préférences'
+      };
+      return subtitles[path] || '';
     }
-  };
-  </script>
-  
-  <style scoped>
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
+  },
+  methods: {
+    toggleSidebar() {
+      this.sidebarOpen = !this.sidebarOpen;
+    },
+    logout() {
+      alert('Déconnexion en cours...');
+    },
+    closeProfileMenu(event) {
+      if (this.$refs.profileMenu && !this.$refs.profileMenu.contains(event.target)) {
+        this.profileMenuOpen = false;
+      }
+    }
+  },
+  mounted() {
+    document.addEventListener('click', this.closeProfileMenu);
+    this.$router.afterEach(() => {
+      if (this.sidebarOpen) {
+        this.sidebarOpen = false;
+      }
+    });
+  },
+  beforeUnmount() {
+    document.removeEventListener('click', this.closeProfileMenu);
   }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  </style>
+};
+</script>
+
+<style scoped>
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+</style>

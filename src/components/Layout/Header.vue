@@ -39,35 +39,48 @@
 
           <div class="hidden md:block">
             <div class="flex items-center space-x-4">
-              <router-link v-if="authStore.isLoggedIn " to="/profile">
-              <button class="signup-button text-white rounded-md focus:outline-none bg-[#00B3AD] hover:bg-[#3BAFA8] transition-colors flex items-center space-x-2 px-3 py-2">
-                <i class="fas fa-user"></i>
-                <span>Profile</span>
+              <router-link v-if="authStore.isLoggedIn && authStore.role === 'benevole'"   to="/profile">
+                <button class="signup-button text-white rounded-md focus:outline-none bg-[#00B3AD] hover:bg-[#3BAFA8] transition-colors flex items-center space-x-2 px-3 py-2">
+                  <i class="fas fa-user"></i>
+                  <span>Profile</span>
+                </button>
+              </router-link>
+              
+              <router-link v-if="authStore.isLoggedIn && (authStore.role === 'association' || authStore.role === 'admin' )"   to="/dashboard">
+                <button class="signup-button text-white rounded-md focus:outline-none bg-[#00B3AD] hover:bg-[#3BAFA8] transition-colors flex items-center space-x-2 px-3 py-2">
+                  <i class="fas fa-user"></i>
+                  <span>Dashboard</span>
+                </button>
+              </router-link> 
+
+              <button v-if="authStore.isLoggedIn && authStore.role === 'benevole'" class="p-2 text-gray-700 hover:text-[#00B3AD] transition-colors relative">
+                <i class="fas fa-bell text-xl"></i>
+                <span class="absolute -top-1 -right-1 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                  3
+                </span>
               </button>
-            </router-link>
+              <button v-if="authStore.isLoggedIn && authStore.role === 'benevole'" @click="goToFormation" class="p-2 text-gray-700 hover:text-[#00B3AD] transition-colors">
+                <i class="fas fa-graduation-cap text-xl"></i>
+              </button>
+              <button v-if="authStore.isLoggedIn" @click="logout" class="p-2 text-gray-700 hover:text-red-600 transition-colors">
+                <i class="fas fa-sign-out-alt text-xl"></i>
+              </button>
+
+              <router-link v-else to="/register">
+                <button class="signup-button text-white rounded-md focus:outline-none bg-[#00B3AD] hover:bg-[#3BAFA8] transition-colors px-3 py-2">
+                  S'inscrire
+                </button>
+              </router-link>
+            </div>
+          </div>
+
+          <div class="md:hidden flex items-center space-x-2">
             <button v-if="authStore.isLoggedIn" class="p-2 text-gray-700 hover:text-[#00B3AD] transition-colors relative">
-            <i class="fas fa-bell text-xl"></i>
-            <span class="absolute -top-1 -right-1 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-              3
-            </span>
-           </button>
-            <button v-if="authStore.isLoggedIn" @click="goToFormation" class="p-2 text-gray-700 hover:text-[#00B3AD] transition-colors">
-            <i class="fas fa-graduation-cap text-xl"></i>
-          </button>
-            <button v-if="authStore.isLoggedIn" @click="logout" class="p-2 text-gray-700 hover:text-red-600 transition-colors">
-              <i class="fas fa-sign-out-alt text-xl"></i>
+              <i class="fas fa-bell text-xl"></i>
+              <span class="absolute -top-1 -right-1 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                3
+              </span>
             </button>
-
-            <router-link v-else to="/register">
-              <button class="signup-button text-white rounded-md focus:outline-none bg-[#00B3AD] hover:bg-[#3BAFA8] transition-colors px-3 py-2">
-                S'inscrire
-              </button>
-            </router-link>
-          </div>
-
-          </div>
-
-          <div class="md:hidden">
             <button @click="toggleMobileMenu" class="p-1 text-gray-500 focus:outline-none">
               <svg v-if="!isMobileMenuOpen" id="menu-open-icon" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -76,16 +89,9 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <button v-if="authStore.isLoggedIn" class="p-2 text-gray-700 hover:text-[#00B3AD] transition-colors relative">
-            <i class="fas fa-bell text-xl"></i>
-            <span class="absolute -top-1 -right-1 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-              3
-            </span>
-           </button>
           </div>
         </div>
 
-        <!-- Mobile Menu -->
         <div v-if="isMobileMenuOpen" id="mobile-menu" class="mobile-menu md:hidden border-t border-gray-200">
           <div class="px-4 py-2 space-y-1">
             <router-link to="/" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">Accueil</router-link>
@@ -94,21 +100,57 @@
             <router-link to="/propos" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">A propos</router-link>
             <router-link to="/contact" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">Contact</router-link>
           </div>
-          <div class="px-4 py-2 space-y-1">
+          
+          <div class="px-4 py-2 space-y-1 border-t border-gray-200">
             <router-link to="/Bénévoles" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">Bénévoles</router-link>
             <router-link to="/associations" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">Associations</router-link>
             <router-link to="/formations" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">Formation</router-link>
             <router-link to="/guide-Juridique" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">Guide Juridique</router-link>
           </div>
-          <div class="px-4 py-3">
-            <router-link v-if="authStore.isLoggedIn " to="/profile">
-              <button class="w-full signup-button text-white rounded-md focus:outline-none hover:bg-blue-700 transition-colors  items-center space-x-2 px-3 py-2">
-                <i class="fas fa-user"></i>
-                <span>Profile</span>
-              </button>
-            </router-link>
+
+          <div class="px-4 py-4 border-t border-gray-200 bg-gray-50">
+            <div v-if="authStore.isLoggedIn  && authStore.role === 'benevole'" class="space-y-3">
+              <div class="grid grid-cols-2 gap-3">
+                <router-link to="/profile" @click="closeMobileMenu">
+                  <button class="w-full flex items-center justify-center px-4 py-2 bg-[#00B3AD] text-white rounded-md hover:bg-[#00B3AD]/90 transition-colors text-sm">
+                    <i class="fas fa-user-circle mr-2"></i>
+                    <span>Mon Profil</span>
+                  </button>
+                </router-link>
+                
+                <router-link to="/formations" @click="closeMobileMenu">
+                  <button class="w-full flex items-center justify-center px-4 py-2 bg-[#00B3AD]/10 text-[#00B3AD] rounded-md hover:bg-[#00B3AD]/20 transition-colors text-sm">
+                    <i class="fas fa-graduation-cap mr-2"></i>
+                    <span>Formations</span>
+                  </button>
+                </router-link>
+              </div>
+              <button @click="logout" class="w-full flex items-center justify-center px-4 py-2 mt-3 bg-red-50 text-red-600 rounded-md hover:bg-red-100 transition-colors text-sm border border-red-200">
+              <i class="fas fa-sign-out-alt mr-2"></i>
+              <span>Déconnexion</span>
+            </button>
+            </div>
+
+            <div v-if="authStore.isLoggedIn && (authStore.role === 'association' || authStore.role === 'admin' )" class="space-y-3">
+              <div class="grid grid-cols-2 gap-3">
+                <router-link to="/profile" @click="closeMobileMenu">
+                  <button class="w-full flex items-center justify-center px-4 py-2 bg-[#00B3AD] text-white rounded-md hover:bg-[#00B3AD]/90 transition-colors text-sm">
+                    <i class="fas fa-user-circle mr-2"></i>
+                    <span>Mon dashboard</span>
+                  </button>
+                </router-link>
+                
+                  <button @click="logout" class="w-full flex items-center justify-center px-4 py-2 bg-red-50 text-red-600 rounded-md hover:bg-[#00B3AD]/20 transition-colors text-sm">
+                    <i class="fas fa-sign-out-alt mr-2"></i>
+                    <span>Formations</span>
+                  </button>
+              </div>
+          
+            </div>
+
             <router-link v-else to="/register">
-              <button class="w-full signup-button text-white rounded-md focus:outline-none hover:bg-blue-700 transition-colors" @click="closeMobileMenu">
+              <button class="w-full signup-button text-white rounded-md focus:outline-none bg-[#00B3AD] hover:bg-[#00B3AD]/90 transition-colors py-2 px-4" @click="closeMobileMenu">
+                <i class="fas fa-user-plus mr-2"></i>
                 S'inscrire
               </button>
             </router-link>
@@ -126,14 +168,14 @@
                 <svg class="w-5 h-5 text-[#00B3AD] mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                <span class="current-date text-sm font-medium text-gray-600">{{ currentDate }}</span>
+                <span class="current-date text-sm font-medium text-gray-600">2025-04-25</span>
               </div>
 
               <div class="flex items-center bg-gray-50 rounded-lg px-3 py-1.5">
                 <svg class="w-5 h-5 text-[#00B3AD] mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span class="current-time text-sm font-medium text-gray-600">{{ currentTime }}</span>
+                <span class="current-time text-sm font-medium text-gray-600">14:29:38</span>
                 <span class="ml-2 text-xs text-gray-400">UTC</span>
               </div>
 
@@ -234,9 +276,14 @@ export default {
       this.currentDate = now.toISOString().split('T')[0];
       this.currentTime = now.toTimeString().split(' ')[0];
     },
-    logout() {
-      authStore.logout();
-      this.$router.push('/login');
+    async logout() {
+    this.closeMobileMenu();
+    await authStore.logout();
+    this.$router.push('/login');
+
+    },
+    goToFormation() {
+      this.$router.push('/formations');
     }
   },
   mounted() { 
@@ -245,3 +292,25 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.navbar-shadow {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  
+  scrollbar-width: none; 
+}
+
+@media (max-width: 640px) {
+  .mobile-menu {
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+  }
+}
+</style>

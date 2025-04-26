@@ -3,15 +3,17 @@ import authapi from "@/api/auth";
 
 export const authStore = reactive({
   isLoggedIn: false,
-  role: null,
+  role: null,   
   user: null,
 
   login(userData) {
     this.isLoggedIn = true;
     this.role = userData.role;
+    this.user = userData;  
     localStorage.setItem('userData', JSON.stringify({
       isLoggedIn: true,
       role: userData.role,
+      user: userData
     }));
   },
 
@@ -30,6 +32,7 @@ export const authStore = reactive({
     this.role = null;
     this.user = null;
     sessionStorage.removeItem('authToken');
+    localStorage.removeItem('userData'); 
     document.cookie = "authToken=; expires=Thu, 17 Jan 2003 00:00:00 UTC; path=/;";
   },
 
@@ -42,7 +45,7 @@ export const authStore = reactive({
       this.user = userData.user;
     }
 
-    const token =sessionStorage.getItem('authToken');
+    const token = sessionStorage.getItem('authToken');
     if (token) {
       try {
         const { data } = await authapi.authStatus(token);

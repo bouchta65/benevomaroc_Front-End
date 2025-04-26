@@ -7,6 +7,10 @@ import registerAssociation from '../views/Auth/register-association.vue';
 import auth_index from '../views/Auth/auth-index.vue';
 import login from '../views/Auth/login.vue';
 import profile from '../views/benevole/profile.vue';
+import unauthorized from '../components/layout/unauthorized.vue';
+import dashboard_association from '../views/association/dashboard.vue';
+import dashboard_opportunites from '../views/association/opportunites.vue';
+import NotFound from '../components/layout/notFound.vue';
 import authapi from "@/api/auth"; 
 
 const routes = [
@@ -18,6 +22,11 @@ const routes = [
   { path: '/register/', name: 'auth_index', component: auth_index, meta: { guestOnly: true } },
   { path: '/login/', name: 'login', component: login, meta: { guestOnly: true } },
   { path: '/profile/', name: 'profile', component: profile , meta: { requiresAuth: true, role: "benevole" } },
+  { path: '/dashboard/', name: 'dashboard_association', component: dashboard_association, meta: { requiresAuth: true, role: "association" }  },
+  { path: '/unauthorized', name: 'unauthorized', component: unauthorized},
+  { path: '/dashboard/opportunites', name: 'dashboard_opportunites', component: dashboard_opportunites, meta: { requiresAuth: true, role: "association" }},
+  
+  { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFound }
 ];
 
 const router = createRouter({
@@ -37,7 +46,21 @@ router.beforeEach(async (to, from, next) => {
   const token = getSessionStorage("authToken");
   
   if (token && to.meta.guestOnly) {
-    return next('/profile'); 
+    try {
+      const { data } = await authapi.authStatus(token);
+      const user = data.user;
+      
+      if (user.role === "benevole") {
+        return next('/profile');
+      } else if (user.role === "association" || user.role === "admin") {
+        return next('/dashboard');
+      } else {
+        return next('/');
+      }
+    } catch {
+      sessionStorage.removeItem("authToken");
+      return next();
+    }
   }
 
   if (!to.meta.requiresAuth) return next();

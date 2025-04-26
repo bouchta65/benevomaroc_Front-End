@@ -119,13 +119,15 @@
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div class="flex space-x-2">
-                      <button class="text-indigo-600 hover:text-indigo-900" title="Voir">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                      </button>
-                      <button class="text-blue-600 hover:text-blue-900" title="Modifier">
+                        <RouterLink :to="`/opportunites/${opp.id}`" class="inline-flex">
+                        <button class="text-indigo-600 hover:text-indigo-900" title="Voir">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        </button>
+                        </RouterLink>
+                      <button @click="openEditModal(opp)" class="text-blue-600 hover:text-blue-900" title="Modifier">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                         </svg>
@@ -140,9 +142,14 @@
                 </tr>
               </tbody>
             </table>
+            <EditOpportunityModal 
+            :show="showEditModal" 
+            :opportunity="selectedOpportunity"
+            @close="showEditModal = false"
+            @updated="handleUpdated"
+          />
           </div>
           
-          <!-- Pagination simplifiée -->
           <div class="border-t border-gray-200 px-6 py-4 flex items-center justify-between">
             <div class="flex-1 flex items-center justify-between">
               <div>
@@ -175,14 +182,21 @@
   
   <script>
   import associationDashboardApi from "@/api/associationDashboard";
+  import EditOpportunityModal from './updateOpportunite.vue';
+  import { RouterLink } from "vue-router";
   
   export default {
+    components: {
+    EditOpportunityModal
+  },
     data() {
       return {
         opportunities: [],
         currentPage: 1,
         lastPage: 1,
-        isLoading: true
+        isLoading: true,
+        showEditModal: false,
+        selectedOpportunity: null
       };
     },
     mounted() {
@@ -243,7 +257,22 @@
           'archive': 'bg-red-100 text-red-800'
         };
         return statusClasses[status?.toLowerCase()] || 'bg-gray-100 text-gray-800';
+      },
+      openEditModal(opportunity) {
+      this.selectedOpportunity = opportunity;
+      this.showEditModal = true;
+    },
+    
+    handleUpdated(updatedOpportunity) {
+      const index = this.opportunities.findIndex(opp => opp.id === updatedOpportunity.id);
+      if (index !== -1) {
+        this.opportunities[index] = updatedOpportunity;
       }
+      
+      this.fetchOpportunities();
+      
+      alert("L'opportunité a été mise à jour avec succès!");
+    }
     }
   };
   </script>

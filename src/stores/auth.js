@@ -9,9 +9,11 @@ export const authStore = reactive({
   login(userData) {
     this.isLoggedIn = true;
     this.role = userData.role;
+    this.user = userData;
     localStorage.setItem('userData', JSON.stringify({
       isLoggedIn: true,
       role: userData.role,
+      user: userData
     }));
   },
 
@@ -29,20 +31,15 @@ export const authStore = reactive({
     this.isLoggedIn = false;
     this.role = null;
     this.user = null;
+    
     sessionStorage.removeItem('authToken');
+    localStorage.removeItem('userData'); 
     document.cookie = "authToken=; expires=Thu, 17 Jan 2003 00:00:00 UTC; path=/;";
   },
 
   async initialize() {
-    const storedData = localStorage.getItem('userData');
-    if (storedData) {
-      const userData = JSON.parse(storedData);
-      this.isLoggedIn = userData.isLoggedIn;
-      this.role = userData.role;
-      this.user = userData.user;
-    }
-
-    const token =sessionStorage.getItem('authToken');
+    const token = sessionStorage.getItem('authToken');
+    
     if (token) {
       try {
         const { data } = await authapi.authStatus(token);
@@ -50,8 +47,22 @@ export const authStore = reactive({
           role: data.user.role,
           ...data.user
         });
+        return; 
       } catch (error) {
         this.logout();
+        return;
+      }
+    }
+    
+    const storedData = localStorage.getItem('userData');
+    if (storedData) {
+      const userData = JSON.parse(storedData);
+      if (userData && userData.isLoggedIn) {
+        this.isLoggedIn = userData.isLoggedIn;
+        this.role = userData.role;
+        this.user = userData.user;
+      } else {
+        localStorage.removeItem('userData');
       }
     }
   }

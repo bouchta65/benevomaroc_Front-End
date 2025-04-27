@@ -191,10 +191,9 @@
                                                placeholder="Nom de l'association">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700">Sigle de l'Association <span class="text-red-500">*</span></label>
-                                        <input v-model="formDataAssociation.sigle_association" type="text" name="sigle_association" required
-                                               class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#00B3AD] focus:border-transparent"
-                                               placeholder="Sigle">
+                                        <label class="block text-sm font-medium text-gray-700">Date decréationde de l'Association <span class="text-red-500">*</span></label>
+                                               <input v-model="formDataAssociation.date_creation" type="date" name="date_naissance" required
+                                               class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#00B3AD] focus:border-transparent">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700">Numéro RNA <span class="text-red-500">*</span></label>
@@ -203,7 +202,7 @@
                                                placeholder="Numéro RNA">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700">Objet Social <span class="text-red-500">*</span></label>
+                                        <label class="block text-sm font-medium text-gray-700">Présentation sur votre association <span class="text-red-500">*</span></label>
                                         <textarea v-model="formDataAssociation.objet_social" name="objet_social" rows="3" required
                                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#00B3AD] focus:border-transparent"
                                                   placeholder="Objet social de l'association"></textarea>
@@ -354,7 +353,7 @@
                 },
                 formDataAssociation: {
                     nom_association: '',
-                    sigle_association: '',
+                    date_creation: '',
                     numero_rna_association: '',
                     objet_social: '',
                     site_web: '',
@@ -429,7 +428,7 @@
                     this.formError = '';
                     this.successMessage = '';
                     const requiredInputs = [
-                        'nom_association', 'sigle_association', 'numero_rna_association',
+                        'nom_association', 'date_creation', 'numero_rna_association',
                         'objet_social', 'logo', 'status_association', 'carte_nationale'
                     ];
     

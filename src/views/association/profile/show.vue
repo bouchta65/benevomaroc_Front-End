@@ -21,22 +21,6 @@
                         alt="Logo Association"
                         class="w-full h-full object-cover"
                       />
-                      <div v-if="imageUploading" class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                        <i class="fas fa-spinner fa-spin text-white text-2xl"></i>
-                      </div>
-                    </div>
-                    
-                    <button 
-                      @click="changeLogoAssociation" 
-                      class="absolute bottom-2 right-2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-colors"
-                      :disabled="imageUploading"
-                    >
-                      <i class="fas fa-camera text-[#00B3AD]" v-if="!imageUploading"></i>
-                      <i class="fas fa-spinner fa-spin text-[#00B3AD]" v-else></i>
-                    </button>
-                    
-                    <div v-if="imageError" class="absolute -bottom-10 left-0 right-0 text-xs text-red-600 bg-red-100 p-2 rounded">
-                      {{ imageError }}
                     </div>
                   </div>
                 </div>
@@ -72,14 +56,6 @@
                         <i class="fas fa-edit mr-2"></i>
                         Modifier le profil
                       </button>
-                      <a 
-                        :href="profileData.documents_juridiques"
-                        download
-                        class="px-4 py-2 bg-[#00B3AD] text-white rounded-lg hover:bg-[#00B3AD]/90 transition-colors duration-200 flex items-center font-medium text-sm"
-                        :class="{'opacity-50 cursor-not-allowed': !profileData.documents_juridiques}">
-                        <i class="fas fa-file-pdf mr-2"></i>
-                        Documents
-                      </a>
                     </div>
                   </div>
                 </div>
@@ -373,7 +349,6 @@
                   </div>
                   
                   <div class="space-y-6">
-                    <!-- Statuts de l'association -->
                     <div v-if="profileData.status_association" class="p-4 rounded-lg bg-gray-50">
                       <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-4">
@@ -400,7 +375,6 @@
                       </div>
                     </div>
                     
-                    <!-- Carte nationale d'identité -->
                     <div v-if="profileData.carte_nationale" class="p-4 rounded-lg bg-gray-50">
                       <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-4">
@@ -441,14 +415,13 @@
         @updated="handleUserInfoUpdated"
       />
       
-
     </div>
   </template>
   
   <script>
   import associationDashboardApi from '@/api/associationDashboard';
   import LoadingSpinner from "@/components/LoadingSpinner.vue";
-  import UpdateUserInfoModal from './updateAssociationModal.vue';
+  import UpdateUserInfoModal from './updatePrisidnetModal.vue';
   import { RouterLink } from 'vue-router';
   
   export default {
@@ -492,8 +465,6 @@
         showUserInfoModal: false,
         showAssociationDetailsModal: false,
         opportunities: [],
-        imageUploading: false,
-        imageError: null,
       };
     },
   
@@ -533,48 +504,6 @@
         } catch (error) {
           console.error('Error fetching opportunities:', error);
           return [];
-        }
-      },
-      
-      changeLogoAssociation() {
-        this.imageError = null;
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = 'image/jpeg,image/png,image/jpg';
-        fileInput.onchange = this.changeLogo;
-        fileInput.click();
-      },
-      
-      async changeLogo(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-        
-        const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-        if (!validTypes.includes(file.type)) {
-          this.imageError = 'Format de fichier non valide. Utilisez JPG, JPEG ou PNG.';
-          return;
-        }
-        
-        if (file.size > 2 * 1024 * 1024) {
-          this.imageError = 'L\'image ne doit pas dépasser 2MB.';
-          return;
-        }
-        
-        try {
-          this.imageUploading = true;
-          
-          const formData = new FormData();
-          formData.append('logo', file); 
-          
-          const token = sessionStorage.getItem('authToken');
-          await associationDashboardApi.updateAssociationLogo(formData, token);
-          await this.fetchProfileData();
-        } catch (error) {    
-          if (error.response?.status === 500) {
-            this.imageError = "Erreur lors du téléchargement de l'image. Veuillez réessayer.";
-          }
-        } finally {
-          this.imageUploading = false;
         }
       },
       

@@ -134,7 +134,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                       </svg>
                     </button>
-                    <button class="text-red-600 hover:text-red-900" title="Supprimer">
+                    <button @click="confirmDelete(opp)" class="text-red-600 hover:text-red-900" title="Supprimer">
                       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
@@ -145,6 +145,7 @@
             </tbody>
           </table>
           
+          <!-- Modals -->
           <EditOpportunityModal 
             :show="showEditModal" 
             :opportunity="selectedOpportunity"
@@ -157,6 +158,47 @@
             @close="showAddModal = false"
             @created="handleCreated"
           />
+          
+          <!-- Modal de confirmation de suppression -->
+          <div v-if="showDeleteModal" class="fixed inset-0 z-50 overflow-y-auto">
+            <div class="fixed inset-0 bg-black bg-opacity-50" @click="showDeleteModal = false"></div>
+            <div class="relative min-h-screen flex items-center justify-center p-4">
+              <div class="relative bg-white rounded-lg max-w-md w-full shadow-xl p-6">
+                <div class="mb-4">
+                  <h3 class="text-lg font-semibold text-gray-900">Confirmer la suppression</h3>
+                  <p class="mt-2 text-sm text-gray-600">
+                    Êtes-vous sûr de vouloir supprimer cette opportunité ? Cette action est irréversible.
+                  </p>
+                  <div class="mt-3 p-3 bg-red-50 border border-red-200 rounded-md">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0 h-10 w-10 bg-white rounded-md flex items-center justify-center overflow-hidden border border-gray-200 mr-3">
+                        <img v-if="opportunityToDelete?.image" :src="opportunityToDelete.image" class="w-full h-full object-cover">
+                      </div>
+                      <div>
+                        <div class="font-medium">{{ opportunityToDelete?.titre }}</div>
+                        <div class="text-sm text-gray-500">{{ formatDate(opportunityToDelete?.date) }} - {{ opportunityToDelete?.ville }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex justify-end space-x-3">
+                  <button 
+                    @click="showDeleteModal = false" 
+                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                  >
+                    Annuler
+                  </button>
+                  <button 
+                    @click="deleteOpportunity"
+                    :disabled="isDeleting"
+                    class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 disabled:opacity-50"
+                  >
+                    {{ isDeleting ? 'Suppression...' : 'Supprimer' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         
         <div class="border-t border-gray-200 px-6 py-4 flex items-center justify-between">
@@ -208,7 +250,10 @@ export default {
       isLoading: true,
       showEditModal: false,
       showAddModal: false, 
-      selectedOpportunity: null
+      showDeleteModal: false,
+      isDeleting: false,
+      selectedOpportunity: null,
+      opportunityToDelete: null
     };
   },
   mounted() {
@@ -224,10 +269,9 @@ export default {
           return;
         }
         
-        const response = await associationDashboardApi.getOpportunitesOfAssociation(token);
+        const response = await associationDashboardApi.getOpportunitesOfAssociation(token, this.currentPage);
         
         this.opportunities = response.data.data;
-        
         this.currentPage = response.data.current_page || 1;
         this.lastPage = response.data.last_page || 1;
       } catch (error) {
@@ -280,6 +324,35 @@ export default {
       this.showAddModal = true;
     },
     
+    confirmDelete(opportunity) {
+      this.opportunityToDelete = opportunity;
+      this.showDeleteModal = true;
+    },
+    
+    async deleteOpportunity() {
+      if (!this.opportunityToDelete) return;
+      
+      this.isDeleting = true;
+      
+      try {
+        const token = sessionStorage.getItem('authToken') || localStorage.getItem('authToken');
+        await associationDashboardApi.deleteOpportunite(token, this.opportunityToDelete.id);
+        
+        this.showDeleteModal = false;
+        
+        this.fetchOpportunities();
+        
+        this.showSuccessMessage('L\'opportunité a été supprimée avec succès!');
+      } catch (error) {
+        console.error("Erreur lors de la suppression:", error);
+        
+        this.showErrorMessage('Erreur lors de la suppression. Veuillez réessayer.');
+      } finally {
+        this.isDeleting = false;
+        this.opportunityToDelete = null;
+      }
+    },
+    
     handleUpdated(updatedOpportunity) {
       const index = this.opportunities.findIndex(opp => opp.id === updatedOpportunity.id);
       if (index !== -1) {
@@ -287,10 +360,18 @@ export default {
       }
       
       this.fetchOpportunities();
-      
+      this.showSuccessMessage('L\'opportunité a été mise à jour avec succès!');
+    },
+    
+    handleCreated(newOpportunity) {
+      this.fetchOpportunities();
+      this.showSuccessMessage('L\'opportunité a été créée avec succès!');
+    },
+    
+    showSuccessMessage(message) {
       const successMessage = document.createElement('div');
       successMessage.className = 'fixed bottom-4 right-4 bg-green-50 text-green-800 p-4 rounded-lg shadow-lg border border-green-200 z-50';
-      successMessage.innerHTML = '<div class="flex items-center"><svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>L\'opportunité a été mise à jour avec succès!</div>';
+      successMessage.innerHTML = `<div class="flex items-center"><svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>${message}</div>`;
       document.body.appendChild(successMessage);
       
       setTimeout(() => {
@@ -298,16 +379,14 @@ export default {
       }, 3000);
     },
     
-    handleCreated(newOpportunity) {
-      this.fetchOpportunities();
-      
-      const successMessage = document.createElement('div');
-      successMessage.className = 'fixed bottom-4 right-4 bg-green-50 text-green-800 p-4 rounded-lg shadow-lg border border-green-200 z-50';
-      successMessage.innerHTML = '<div class="flex items-center"><svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>L\'opportunité a été créée avec succès!</div>';
-      document.body.appendChild(successMessage);
+    showErrorMessage(message) {
+      const errorMessage = document.createElement('div');
+      errorMessage.className = 'fixed bottom-4 right-4 bg-red-50 text-red-800 p-4 rounded-lg shadow-lg border border-red-200 z-50';
+      errorMessage.innerHTML = `<div class="flex items-center"><svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>${message}</div>`;
+      document.body.appendChild(errorMessage);
       
       setTimeout(() => {
-        successMessage.remove();
+        errorMessage.remove();
       }, 3000);
     }
   }

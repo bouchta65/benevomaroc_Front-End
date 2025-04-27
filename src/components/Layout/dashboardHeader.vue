@@ -1,6 +1,5 @@
 <template>
   <div class="flex overflow-hidden">
-    <!-- Sidebar avec navigation -->
     <div :class="`bg-white w-64 shadow-lg fixed inset-y-0 left-0 transform transition-transform duration-300 z-20 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`">
       <div class="flex items-center justify-between p-4 border-b">
         <div class="flex items-center">
@@ -47,10 +46,9 @@
               </svg>
               Opportunités
             </router-link>
-            
-            <router-link to="/dashboard/formations" 
-                       :class="[$route.path === '/dashboard/formations' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
-                               'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
+            <div v-if="authStore.isLoggedIn && authStore.role === 'admin'" >
+            <router-link to="/dashboard/formations"  :class="[$route.path === '/dashboard/formations' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
+              'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
               <svg class="mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': $route.path === '/dashboard/formations', 'text-gray-500': $route.path !== '/dashboard/formations'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path d="M12 14l9-5-9-5-9 5 9 5z" />
                 <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998a12.078 12.078 0 01.665-6.479L12 14z" />
@@ -58,16 +56,7 @@
               </svg>
               Formations
             </router-link>
-            
-            <router-link to="/dashboard/evenements" 
-                       :class="[$route.path === '/dashboard/evenements' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
-                               'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
-              <svg class="mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': $route.path === '/dashboard/evenements', 'text-gray-500': $route.path !== '/dashboard/evenements'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              Événements
-            </router-link>
-            
+          </div>
             <router-link to="/dashboard/certifications" 
                        :class="[$route.path === '/dashboard/certifications' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
                                'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
@@ -77,23 +66,14 @@
               Certifications
             </router-link>
             
-            <router-link to="/dashboard/stats" 
-                       :class="[$route.path === '/dashboard/stats' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
-                               'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
-              <svg class="mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': $route.path === '/dashboard/stats', 'text-gray-500': $route.path !== '/dashboard/stats'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-              Statistiques
-            </router-link>
-            
-            <router-link to="/dashboard/settings" 
-                       :class="[$route.path === '/dashboard/settings' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
+            <router-link to="/dashboard/profile" 
+                       :class="[$route.path === '/dashboard/profile' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
                                'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
               <svg class="mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': $route.path === '/dashboard/settings', 'text-gray-500': $route.path !== '/dashboard/settings'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              Paramètres
+              Profile
             </router-link>
           </div>
       </nav>
@@ -147,12 +127,15 @@
 </template>
 
 <script>
+import { authStore } from "@/stores/auth";
+
 export default {
   name: 'DashboardNavbar',
   data() {
     return {
       sidebarOpen: false,
-      profileMenuOpen: false
+      profileMenuOpen: false,
+      authStore,
     };
   },
   computed: {
@@ -163,10 +146,8 @@ export default {
         '/dashboard/benevoles': 'Gestion des Bénévoles',
         '/dashboard/opportunites': 'Gestion des Opportunités',
         '/dashboard/formations': 'Formations',
-        '/dashboard/evenements': 'Événements',
         '/dashboard/certifications': 'Certifications',
-        '/dashboard/stats': 'Statistiques',
-        '/dashboard/settings': 'Paramètres'
+        '/dashboard/profile': 'profile'
       };
       return titles[path] || 'Tableau de Bord';
     },
@@ -177,10 +158,8 @@ export default {
         '/dashboard/benevoles': 'Gérez vos annonces de bénévolat et suivez les candidatures',
         '/dashboard/opportunites': 'Créez et gérez vos offres de bénévolat',
         '/dashboard/formations': 'Proposez et suivez des programmes de formation',
-        '/dashboard/evenements': 'Organisez et gérez vos événements',
         '/dashboard/certifications': 'Attribuez et suivez les certifications',
-        '/dashboard/stats': 'Consultez et analysez les statistiques',
-        '/dashboard/settings': 'Configurez votre compte et vos préférences'
+        '/dashboard/profile': 'Personnalisez votre profil et vos paramètres.'
       };
       return subtitles[path] || '';
     }
@@ -189,8 +168,10 @@ export default {
     toggleSidebar() {
       this.sidebarOpen = !this.sidebarOpen;
     },
-    logout() {
-      alert('Déconnexion en cours...');
+    async logout() {
+    await authStore.logout();
+    this.$router.push('/login');
+
     },
     closeProfileMenu(event) {
       if (this.$refs.profileMenu && !this.$refs.profileMenu.contains(event.target)) {

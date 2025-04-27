@@ -21,7 +21,18 @@ getOpportunitesOfAssociation(token){
     });
   }, 
 
+  getAllCategorie() {
+    return axios.get(`http://127.0.0.1:8000/api/categorie`);
+},
 
+createOpportunite(data, token) {
+    return axios.post(`${api}/opportunite`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
+  },
 
+  
 
   }

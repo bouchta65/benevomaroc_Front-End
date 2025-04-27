@@ -1,8 +1,4 @@
-<!-- 
-  Date: 2025-04-27 00:36:37
-  Author: bouchta65
-  Description: Profil d'association avec informations, statistiques et gestion des opportunités
--->
+<!-- Association Profile Page -->
 <template>
     <div class="min-h-screen bg-[#F8F9FE]">
       <template v-if="loading">
@@ -94,66 +90,16 @@
   
         <div class="container mx-auto px-4 py-8">
           <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-              <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <div class="flex items-center">
-                  <div class="h-12 w-12 rounded-lg flex items-center justify-center bg-[#00B3AD]/10">
-                    <i class="fas fa-bullhorn text-[#00B3AD] text-xl"></i>
-                  </div>
-                  <div class="ml-4">
-                    <p class="text-sm text-gray-500">Opportunités Publiées</p>
-                    <p class="text-2xl font-bold text-gray-900">{{ profileData.opportunites_count || 0 }}</p>
-                  </div>
-                </div>
-              </div>
-  
-              <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <div class="flex items-center">
-                  <div class="h-12 w-12 rounded-lg flex items-center justify-center bg-[#C9559B]/10">
-                    <i class="fas fa-users text-[#C9559B] text-xl"></i>
-                  </div>
-                  <div class="ml-4">
-                    <p class="text-sm text-gray-500">Bénévoles Recrutés</p>
-                    <p class="text-2xl font-bold text-gray-900">{{ profileData.benevoles_count || 0 }}</p>
-                  </div>
-                </div>
-              </div>
-  
-              <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <div class="flex items-center">
-                  <div class="h-12 w-12 rounded-lg flex items-center justify-center bg-[#00B3AD]/10">
-                    <i class="fas fa-star text-[#00B3AD] text-xl"></i>
-                  </div>
-                  <div class="ml-4">
-                    <p class="text-sm text-gray-500">Note Moyenne</p>
-                    <p class="text-2xl font-bold text-gray-900">4.7/5</p>
-                  </div>
-                </div>
-              </div>
-  
-              <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <div class="flex items-center">
-                  <div class="h-12 w-12 rounded-lg flex items-center justify-center bg-[#C9559B]/10">
-                    <i class="fas fa-calendar-check text-[#C9559B] text-xl"></i>
-                  </div>
-                  <div class="ml-4">
-                    <p class="text-sm text-gray-500">Missions Complétées</p>
-                    <p class="text-2xl font-bold text-gray-900">{{ profileData.completed_missions || 0 }}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-  
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div class="space-y-8">
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                   <div class="flex items-center justify-between mb-6">
                     <div class="flex items-center space-x-3">
-                      <i class="fas fa-info-circle text-[#C9559B] text-xl"></i>
-                      <h2 class="text-xl font-semibold text-gray-900">Informations Légales</h2>
+                      <i class="fas fa-user-tie text-[#C9559B] text-xl"></i>
+                      <h2 class="text-xl font-semibold text-gray-900">Président de l'Association</h2>
                     </div>
                     <button 
-                      @click="toggleAssociationDetailsModal"
+                      @click="toggleUserInfoModal"
                       class="p-2 text-gray-500 hover:text-[#00B3AD] transition-colors rounded-lg hover:bg-[#00B3AD]/10"
                       title="Modifier les informations"
                     >
@@ -161,6 +107,56 @@
                     </button>
                   </div>
   
+                  <div class="space-y-4">
+                    <div class="p-4 rounded-lg bg-gray-50 flex items-center space-x-4">
+                      <div class="h-10 w-10 rounded-lg flex items-center justify-center bg-[#00B3AD]/10">
+                        <i class="fas fa-user text-[#00B3AD]"></i>
+                      </div>
+                      <div>
+                        <p class="text-sm text-gray-500">Nom complet</p>
+                        <p class="font-medium text-gray-900">{{ profileData.nom }} {{ profileData.prenom }}</p>
+                      </div>
+                    </div>
+  
+                    <div class="p-4 rounded-lg bg-gray-50 flex items-center space-x-4">
+                      <div class="h-10 w-10 rounded-lg flex items-center justify-center bg-[#00B3AD]/10">
+                        <i class="fas fa-envelope text-[#00B3AD]"></i>
+                      </div>
+                      <div>
+                        <p class="text-sm text-gray-500">Email</p>
+                        <p class="font-medium text-gray-900">{{ profileData.email }}</p>
+                      </div>
+                    </div>
+  
+                    <div class="p-4 rounded-lg bg-gray-50 flex items-center space-x-4">
+                      <div class="h-10 w-10 rounded-lg flex items-center justify-center bg-[#00B3AD]/10">
+                        <i class="fas fa-id-card text-[#00B3AD]"></i>
+                      </div>
+                      <div>
+                        <p class="text-sm text-gray-500">N° Carte Nationale</p>
+                        <p class="font-medium text-gray-900">{{ profileData.cin }}</p>
+                      </div>
+                    </div>
+  
+                    <div class="p-4 rounded-lg bg-gray-50 flex items-center space-x-4">
+                      <div class="h-10 w-10 rounded-lg flex items-center justify-center bg-[#00B3AD]/10">
+                        <i class="fas fa-phone text-[#00B3AD]"></i>
+                      </div>
+                      <div>
+                        <p class="text-sm text-gray-500">Téléphone</p>
+                        <p class="font-medium text-gray-900">{{ profileData.telephone_1 }}</p>
+                        <p v-if="profileData.telephone_2" class="font-medium text-gray-900">{{ profileData.telephone_2 }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                  <div class="flex items-center space-x-3 mb-6">
+                    <i class="fas fa-balance-scale text-[#C9559B] text-xl"></i>
+                    <h2 class="text-xl font-semibold text-gray-900">Informations Légales</h2>
+                  </div>
+                  
                   <div class="space-y-4">
                     <div class="p-4 rounded-lg bg-gray-50 flex items-center space-x-4">
                       <div class="h-10 w-10 rounded-lg flex items-center justify-center bg-[#00B3AD]/10">
@@ -184,23 +180,22 @@
   
                     <div class="p-4 rounded-lg bg-gray-50 flex items-center space-x-4">
                       <div class="h-10 w-10 rounded-lg flex items-center justify-center bg-[#00B3AD]/10">
-                        <i class="fas fa-phone text-[#00B3AD]"></i>
-                      </div>
-                      <div>
-                        <p class="text-sm text-gray-500">Téléphones</p>
-                        <p class="font-medium text-gray-900">{{ profileData.telephone_1 }}</p>
-                        <p class="font-medium text-gray-900">{{ profileData.telephone_2 }}</p>
-                      </div>
-                    </div>
-  
-                    <div class="p-4 rounded-lg bg-gray-50 flex items-center space-x-4">
-                      <div class="h-10 w-10 rounded-lg flex items-center justify-center bg-[#00B3AD]/10">
                         <i class="fas fa-map-marker-alt text-[#00B3AD]"></i>
                       </div>
                       <div>
                         <p class="text-sm text-gray-500">Siège social</p>
                         <p class="font-medium text-gray-900">{{ profileData.siege_social }}</p>
                         <p class="font-medium text-gray-900">{{ profileData.ville }}, Maroc</p>
+                      </div>
+                    </div>
+  
+                    <div class="p-4 rounded-lg bg-gray-50 flex items-center space-x-4">
+                      <div class="h-10 w-10 rounded-lg flex items-center justify-center bg-[#00B3AD]/10">
+                        <i class="fas fa-file-contract text-[#00B3AD]"></i>
+                      </div>
+                      <div>
+                        <p class="text-sm text-gray-500">Statut juridique</p>
+                        <p class="font-medium text-gray-900">{{ profileData.statut_juridique }}</p>
                       </div>
                     </div>
                   </div>
@@ -285,7 +280,7 @@
                   
                   <div class="bg-gray-50 rounded-lg p-5">
                     <div class="prose prose-sm max-w-none text-gray-700">
-                      <p v-if="profileData.description">{{ profileData.description }}</p>
+                      <p v-if="profileData.objet_social">{{ profileData.objet_social }}</p>
                       <p v-else class="text-gray-500 italic text-center">Aucune description disponible</p>
                     </div>
                   </div>
@@ -295,7 +290,7 @@
                   <div class="flex items-center justify-between mb-6">
                     <div class="flex items-center space-x-3">
                       <i class="fas fa-bullhorn text-[#C9559B] text-xl"></i>
-                      <h2 class="text-xl font-semibold text-gray-900">Opportunités en cours</h2>
+                      <h2 class="text-xl font-semibold text-gray-900">Dernières 4 opportunités</h2>
                     </div>
                     <RouterLink to="/dashboard/opportunites" class="p-2 text-gray-500 hover:text-[#00B3AD] transition-colors rounded-lg hover:bg-[#00B3AD]/10">
                       <i class="fas fa-external-link-alt text-lg"></i>
@@ -354,12 +349,12 @@
                         <div class="flex items-center justify-between">
                           <div class="flex items-center text-sm">
                             <span class="bg-[#00B3AD]/10 text-[#00B3AD] px-2 py-1 rounded-md font-medium">
-                              <i class="fas fa-users mr-1"></i> {{ opportunity.postules_count || 0 }}/{{ opportunity.nb_benevole }}
+                              <i class="fas fa-users mr-1"></i> {{ opportunity.postules_count }}/{{ opportunity.nb_benevole }}
                             </span>
                           </div>
                           
                           <RouterLink 
-                            :to="`/dashboard/opportunites/${opportunity.id}`" 
+                            :to="`/dashboard/opportunites`" 
                             class="text-[#00B3AD] hover:text-[#009b96] font-medium text-sm"
                           >
                             Gérer
@@ -372,22 +367,63 @@
                 </div>
                 
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                  <div class="flex items-center justify-between mb-6">
-                    <div class="flex items-center space-x-3">
-                      <i class="fas fa-tags text-[#C9559B] text-xl"></i>
-                      <h2 class="text-xl font-semibold text-gray-900">Domaines d'intervention</h2>
-                    </div>
+                  <div class="flex items-center space-x-3 mb-6">
+                    <i class="fas fa-file-alt text-[#C9559B] text-xl"></i>
+                    <h2 class="text-xl font-semibold text-gray-900">Documents Officiels</h2>
                   </div>
                   
-                  <div class="grid grid-cols-1 gap-6">
-                    <div class="space-y-3">
-                      <div class="flex flex-wrap gap-2">
-                        <span 
-                          v-for="domaine in parsedDomaines" 
-                          class="px-3 py-1.5 bg-[#00B3AD]/10 text-[#00B3AD] rounded-full text-sm font-medium hover:bg-[#00B3AD]/15 transition-colors">
-                          {{ domaine }}
-                        </span>
-                        <span v-if="parsedDomaines.length === 0" class="text-gray-500 italic">Aucun domaine d'intervention spécifié</span>
+                  <div class="space-y-6">
+                    <!-- Statuts de l'association -->
+                    <div v-if="profileData.status_association" class="p-4 rounded-lg bg-gray-50">
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                          <div class="h-12 w-12 rounded-lg flex items-center justify-center bg-red-100">
+                            <i class="fas fa-file-pdf text-red-600 text-2xl"></i>
+                          </div>
+                          <div>
+                            <p class="text-sm text-gray-500">Statuts de l'association</p>
+                            <p class="text-sm font-medium text-gray-900">Document juridique officiel</p>
+                          </div>
+                        </div>
+                        <div class="flex space-x-2">
+                          <a :href="profileData.status_association" target="_blank" 
+                             class="p-2 rounded-md bg-gray-200 hover:bg-gray-300 transition-colors" 
+                             title="Visualiser">
+                            <i class="fas fa-eye text-gray-700"></i>
+                          </a>
+                          <a :href="profileData.status_association" download 
+                             class="p-2 rounded-md bg-[#00B3AD]/10 hover:bg-[#00B3AD]/20 transition-colors" 
+                             title="Télécharger">
+                            <i class="fas fa-download text-[#00B3AD]"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- Carte nationale d'identité -->
+                    <div v-if="profileData.carte_nationale" class="p-4 rounded-lg bg-gray-50">
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                          <div class="h-12 w-12 rounded-lg flex items-center justify-center bg-blue-100">
+                            <i class="fas fa-id-card text-blue-600 text-2xl"></i>
+                          </div>
+                          <div>
+                            <p class="text-sm text-gray-500">Carte Nationale d'Identité</p>
+                            <p class="text-sm font-medium text-gray-900">Document d'identité du président</p>
+                          </div>
+                        </div>
+                        <div class="flex space-x-2">
+                          <a :href="profileData.carte_nationale" target="_blank" 
+                             class="p-2 rounded-md bg-gray-200 hover:bg-gray-300 transition-colors" 
+                             title="Visualiser">
+                            <i class="fas fa-eye text-gray-700"></i>
+                          </a>
+                          <a :href="profileData.carte_nationale" download 
+                             class="p-2 rounded-md bg-[#00B3AD]/10 hover:bg-[#00B3AD]/20 transition-colors" 
+                             title="Télécharger">
+                            <i class="fas fa-download text-[#00B3AD]"></i>
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -398,26 +434,28 @@
         </div>
       </template>
       
-      <UpdateAssociationModal 
-        :show="showAssociationDetailsModal"
-        :association-data="profileData"
-        @close="toggleAssociationDetailsModal"
-        @updated="handleAssociationUpdated"
+      <UpdateUserInfoModal 
+        :show="showUserInfoModal"
+        :user-data="profileData"
+        @close="toggleUserInfoModal"
+        @updated="handleUserInfoUpdated"
       />
+      
+
     </div>
   </template>
   
   <script>
   import associationDashboardApi from '@/api/associationDashboard';
   import LoadingSpinner from "@/components/LoadingSpinner.vue";
-  import { RouterLink } from "vue-router";
-  import UpdateAssociationModal from './updateAssociationModal.vue';
+  import UpdateUserInfoModal from './updateAssociationModal.vue';
+  import { RouterLink } from 'vue-router';
   
   export default {
     components: {
       LoadingSpinner,
-      RouterLink,
-      UpdateAssociationModal
+      UpdateUserInfoModal,
+      RouterLink
     },
     data() {
       return {
@@ -431,6 +469,7 @@
           siege_social: '',
           ville: '',
           description: '',
+          objet_social: '',
           telephone_1: '',
           telephone_2: '',
           date_creation: '',
@@ -441,10 +480,16 @@
           linkedin: '',
           documents_juridiques: null,
           verified: false,
-          opportunites_count: 0,
-          benevoles_count: 0,
-          completed_missions: 0
+          statut_juridique: 'Association',
+          status_association: null,
+          carte_nationale: null,
+          nom: '',
+          prenom: '',
+          cin: '',
+          adresse: '',
+          date_naissance: '',
         },
+        showUserInfoModal: false,
         showAssociationDetailsModal: false,
         opportunities: [],
         imageUploading: false,
@@ -465,11 +510,12 @@
     methods: {
       async fetchProfileData() {
         try {
-          const token = sessionStorage.getItem('authToken') || localStorage.getItem('authToken');
-          const response = await associationDashboardApi.getAssociationProfile(token);
+          const token = sessionStorage.getItem('authToken');
+          const response = await associationDashboardApi.getProfileAssociation(token);
           
           if (response.data.association) {
             this.profileData = {
+              ...this.profileData, 
               ...response.data.association,
             };
           } 
@@ -480,9 +526,10 @@
       
       async fetchOpportunities() {
         try {
-          const token = sessionStorage.getItem('authToken') || localStorage.getItem('authToken');
-          const response = await associationDashboardApi.getOpportunitesOfAssociation(token, 1, 4);
-          return response.data.data || [];
+          const token = sessionStorage.getItem('authToken');
+          const response = await associationDashboardApi.getLastThreeOpportunites(token);
+          
+          return response.data || []; 
         } catch (error) {
           console.error('Error fetching opportunities:', error);
           return [];
@@ -519,7 +566,7 @@
           const formData = new FormData();
           formData.append('logo', file); 
           
-          const token = sessionStorage.getItem('authToken') || localStorage.getItem('authToken');
+          const token = sessionStorage.getItem('authToken');
           await associationDashboardApi.updateAssociationLogo(formData, token);
           await this.fetchProfileData();
         } catch (error) {    
@@ -531,10 +578,18 @@
         }
       },
       
+      toggleUserInfoModal() {
+        this.showUserInfoModal = !this.showUserInfoModal;
+      },
+      
       toggleAssociationDetailsModal() {
         this.showAssociationDetailsModal = !this.showAssociationDetailsModal;
       },
   
+      handleUserInfoUpdated() {
+        this.fetchProfileData();
+      },
+      
       handleAssociationUpdated() {
         this.fetchProfileData();
       },

@@ -39,7 +39,7 @@
                       <div class="mt-2 text-gray-600 space-y-1">
                         <p class="flex items-center">
                           <i class="fas fa-map-marker-alt w-5 text-[#C9559B]"></i>
-                          {{ profileData.siege_social }}, {{ profileData.ville }}
+                           {{ profileData.ville }}, Maroc
                         </p>
                         <p class="flex items-center">
                           <i class="fas fa-envelope w-5 text-[#C9559B]"></i>
@@ -415,6 +415,13 @@
         @updated="handleUserInfoUpdated"
       />
       
+      <UpdateAssociationDetailsModal 
+        :show="showAssociationDetailsModal"
+        :user-data="profileData"
+        @close="toggleAssociationDetailsModal"
+        @updated="handleAssociationUpdated"
+      />
+      
     </div>
   </template>
   
@@ -422,12 +429,14 @@
   import associationDashboardApi from '@/api/associationDashboard';
   import LoadingSpinner from "@/components/LoadingSpinner.vue";
   import UpdateUserInfoModal from './updatePrisidnetModal.vue';
+  import UpdateAssociationDetailsModal from './updateAssociationDetails.vue';
   import { RouterLink } from 'vue-router';
   
   export default {
     components: {
       LoadingSpinner,
       UpdateUserInfoModal,
+      UpdateAssociationDetailsModal,
       RouterLink
     },
     data() {

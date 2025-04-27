@@ -14,7 +14,6 @@
         </div>
 
         <div class="p-4">
-          <!-- Message d'erreur -->
           <div v-if="errorMessage" class="mb-4 p-3 bg-red-50 text-red-600 border border-red-200 rounded-md text-sm">
             {{ errorMessage }}
           </div>
@@ -139,7 +138,7 @@ export default {
       imagePreview: null, 
       loading: false, 
       categories: [],
-      errorMessage: '' // Nouvelle propriété pour stocker les messages d'erreur
+      errorMessage: ''
     };
   },
   watch: {
@@ -148,7 +147,7 @@ export default {
       handler(opp) {
         if (!opp) return;
         this.imagePreview = null;
-        this.errorMessage = ''; // Réinitialiser le message d'erreur
+        this.errorMessage = ''; 
         this.form = {
           titre: opp.titre || '', description: opp.description || '',
           categorie_id: opp.categorie?.id || null, ville: opp.ville || '',
@@ -165,7 +164,7 @@ export default {
     },
     show(visible) { 
       if(visible) {
-        this.errorMessage = ''; // Réinitialiser le message d'erreur
+        this.errorMessage = '';
         if(!this.categories.length) this.loadCategories(); 
       }
     }
@@ -186,7 +185,7 @@ export default {
       const file = event.target.files[0];
       if (!file) return;
       
-      this.errorMessage = ''; // Réinitialiser le message d'erreur
+      this.errorMessage = ''; 
       
       if (file.size > 2*1024*1024) {
         this.errorMessage = "Image trop volumineuse (max 2MB)";
@@ -207,7 +206,7 @@ export default {
       return new Date(dateString).toISOString().split('T')[0];
     },
     async submitForm() {
-      this.errorMessage = ''; // Réinitialiser le message d'erreur
+      this.errorMessage = ''; 
       this.loading = true;
       try {
         const token = sessionStorage.getItem('authToken') || localStorage.getItem('authToken');
@@ -230,7 +229,6 @@ export default {
         if (error.response?.data?.message) {
           this.errorMessage = error.response.data.message;
         } else if (error.response?.data?.errors) {
-          // Si le backend renvoie plusieurs erreurs de validation
           const errorMessages = Object.values(error.response.data.errors).flat();
           this.errorMessage = errorMessages.join(', ');
         } else {

@@ -17,6 +17,16 @@
         </div>
 
         <div class="p-4">
+          <!-- Message d'erreur -->
+          <div v-if="error" class="mb-4 p-3 bg-red-50 text-red-600 border border-red-200 rounded-md text-sm">
+            {{ error }}
+          </div>
+          
+          <!-- Message de succès -->
+          <div v-if="successMessage" class="mb-4 p-3 bg-green-50 text-green-600 border border-green-200 rounded-md text-sm">
+            {{ successMessage }}
+          </div>
+          
           <form @submit.prevent="handleSubmit">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div class="space-y-4">
@@ -55,7 +65,7 @@
                     <option value="soir">Soir</option>
                   </select>
                 </div>
-                   <div class="border border-dashed border-gray-300 rounded-lg p-1 text-center">
+                <div class="border border-dashed border-gray-300 rounded-lg p-1 text-center">
                   <div class="space-y-1">
                     <div class="mx-auto w-14 h-14 bg-gray-50 rounded-full flex items-center justify-center">
                       <i v-if="!formData.cv" class="fas fa-file-pdf text-xl text-gray-400"></i>
@@ -119,14 +129,7 @@
                     placeholder="Décrivez vos talents et compétences"
                   ></textarea>
                 </div>
-
-             
               </div>
-            </div>
-
-            <div class="mt-3">
-              <p v-if="error" class="text-sm text-red-600">{{ error }}</p>
-              <p v-if="successMessage" class="text-sm text-green-600">{{ successMessage }}</p>
             </div>
           </form>
         </div>
@@ -199,6 +202,10 @@ export default {
   watch: {
     userData: {
       handler(newData) {
+        // Réinitialiser les messages
+        this.error = null;
+        this.successMessage = '';
+        
         this.formData = {
           ...this.formData,
           domaines_action: Array.isArray(newData.domaines_action) 
@@ -212,27 +219,36 @@ export default {
         };
       },
       immediate: true
+    },
+    show(visible) {
+      if (visible) {
+        // Réinitialiser les messages lors de l'ouverture du modal
+        this.error = null;
+        this.successMessage = '';
+      }
     }
   },
 
   methods: {
     handleCVUpload(event) {
       const file = event.target.files[0];
-      if (file) {
-        if (file.type !== 'application/pdf') {
-          this.error = 'Le fichier doit être au format PDF';
-          event.target.value = '';
-          return;
-        }
-        if (file.size > 2 * 1024 * 1024) {
-          this.error = 'La taille du fichier ne doit pas dépasser 2MB';
-          event.target.value = '';
-          return;
-        }
-        this.formData.cv = file;
-        this.formData.cvName = file.name;
-        this.error = null;
+      if (!file) return;
+      
+      // Réinitialiser l'erreur avant de vérifier le fichier
+      this.error = null;
+      
+      if (file.type !== 'application/pdf') {
+        this.error = 'Le fichier doit être au format PDF';
+        event.target.value = '';
+        return;
       }
+      if (file.size > 2 * 1024 * 1024) {
+        this.error = 'La taille du fichier ne doit pas dépasser 2MB';
+        event.target.value = '';
+        return;
+      }
+      this.formData.cv = file;
+      this.formData.cvName = file.name;
     },
 
     async handleSubmit() {

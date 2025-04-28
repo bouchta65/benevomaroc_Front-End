@@ -205,39 +205,33 @@ export default {
       if (!dateString) return '';
       return new Date(dateString).toISOString().split('T')[0];
     },
-    async submitForm() {
-      this.errorMessage = ''; 
-      this.loading = true;
-      try {
-        const token = sessionStorage.getItem('authToken') || localStorage.getItem('authToken');
-        const formData = new FormData();
-        
-        for (const key in this.form) {
-          if (key !== 'image' && this.form[key]) formData.append(key, this.form[key]);
+      async submitForm() {
+    this.errorMessage = ''; 
+    this.loading = true;
+    try {
+      const token = sessionStorage.getItem('authToken') || localStorage.getItem('authToken');
+      const formData = new FormData();
+      
+      for (const key in this.form) {
+        if (key !== 'image' && this.form[key] !== null && this.form[key] !== undefined) {
+          formData.append(key, this.form[key]);
         }
-        
-        if (this.imageFile) formData.append('image', this.imageFile);
-        else if (this.form.image) formData.append('image', this.form.image);
-        
-        const response = await associationDashboardApi.updateOpportunite(token, this.opportunity.id, formData);
-        if (this.imagePreview) URL.revokeObjectURL(this.imagePreview);
-        
-        this.$emit('updated', response.data.opportunite);
-        this.$emit('close');
-      } catch (error) {
-        console.error(error);
-        if (error.response?.data?.message) {
-          this.errorMessage = error.response.data.message;
-        } else if (error.response?.data?.errors) {
-          const errorMessages = Object.values(error.response.data.errors).flat();
-          this.errorMessage = errorMessages.join(', ');
-        } else {
-          this.errorMessage = "Erreur lors de la mise à jour. Veuillez réessayer.";
-        }
-      } finally {
-        this.loading = false;
       }
+      
+      if (this.imageFile) {
+        formData.append('image', this.imageFile);
+      }
+      
+      const response = await associationDashboardApi.updateOpportunite(token, this.opportunity.id, formData);
+      if (this.imagePreview) URL.revokeObjectURL(this.imagePreview);
+      
+      this.$emit('updated', response.data.opportunite);
+      this.$emit('close');
+    } catch (error) {
+    } finally {
+      this.loading = false;
     }
+  }
   }
 };
 </script>

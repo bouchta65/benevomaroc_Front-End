@@ -9,7 +9,8 @@ import login from '../views/Auth/login.vue';
 import profile from '../views/benevole/profile.vue';
 import unauthorized from '../components/layout/unauthorized.vue';
 import dashboard_association from '../views/association/dashboard.vue';
-import dashboard_opportunites from '../views/association/opportunites.vue';
+import dashboard_opportunites from '../views/association/opportunites/show.vue';
+import dashboard_profile from '../views/association/profile/show.vue';
 import NotFound from '../components/layout/notFound.vue';
 import authapi from "@/api/auth"; 
 
@@ -25,6 +26,7 @@ const routes = [
   { path: '/dashboard/', name: 'dashboard_association', component: dashboard_association, meta: { requiresAuth: true, role: "association" }  },
   { path: '/unauthorized', name: 'unauthorized', component: unauthorized},
   { path: '/dashboard/opportunites', name: 'dashboard_opportunites', component: dashboard_opportunites, meta: { requiresAuth: true, role: "association" }},
+  { path: '/dashboard/profile', name: 'dashboard_profile', component: dashboard_profile, meta: { requiresAuth: true, role: "association" }},
   
   { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFound }
 ];

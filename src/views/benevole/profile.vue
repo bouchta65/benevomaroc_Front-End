@@ -14,30 +14,30 @@
             <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-start gap-8">
               <div class="flex-shrink-0">
                 <div class="relative group">
-  <div class="w-36 h-36 rounded-full overflow-hidden bg-gray-100 border-4 border-white shadow-lg">
-    <img 
-      :src="profileData.image" 
-      alt="Profile"
-      class="w-full h-full object-cover"
-    />
-    <div v-if="imageUploading" class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <i class="fas fa-spinner fa-spin text-white text-2xl"></i>
-    </div>
-  </div>
-  
-  <button 
-    @click="changeimagebenevole" 
-    class="absolute bottom-2 right-2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-colors"
-    :disabled="imageUploading"
-  >
-    <i class="fas fa-camera text-[#00B3AD]" v-if="!imageUploading"></i>
-    <i class="fas fa-spinner fa-spin text-[#00B3AD]" v-else></i>
-  </button>
-  
-  <div v-if="imageError" class="absolute -bottom-10 left-0 right-0 text-xs text-red-600 bg-red-100 p-2 rounded">
-    {{ imageError }}
-  </div>
-</div>
+                <div class="w-36 h-36 rounded-full overflow-hidden bg-gray-100 border-4 border-white shadow-lg">
+                  <img 
+                    :src="profileData.image" 
+                    alt="Profile"
+                    class="w-full h-full object-cover"
+                  />
+                  <div v-if="imageUploading" class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <i class="fas fa-spinner fa-spin text-white text-2xl"></i>
+                  </div>
+                </div>
+                
+                <button 
+                  @click="changeimagebenevole" 
+                  class="absolute bottom-2 right-2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-colors"
+                  :disabled="imageUploading"
+                >
+                  <i class="fas fa-camera text-[#00B3AD]" v-if="!imageUploading"></i>
+                  <i class="fas fa-spinner fa-spin text-[#00B3AD]" v-else></i>
+                </button>
+                
+                <div v-if="imageError" class="absolute -bottom-10 left-0 right-0 text-xs text-red-600 bg-red-100 p-2 rounded">
+                  {{ imageError }}
+                </div>
+              </div>
               </div>
 
               <div class="flex-1">

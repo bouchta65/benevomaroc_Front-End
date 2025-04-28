@@ -94,7 +94,6 @@
           </div>
         </div>
         
-        <!-- Tableau -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
           <div class="p-5 border-b">
             <h2 class="text-lg font-semibold text-gray-900">Liste des opportunités</h2>
@@ -195,7 +194,6 @@
             </table>
           </div>
   
-          <!-- Pagination -->
           <div v-if="!loading && !error" class="border-t border-gray-200 px-6 py-4 flex items-center justify-between">
             <p class="text-sm text-gray-700">
               Page <span class="font-medium">{{ paginationInfo.current_page }}</span> sur <span class="font-medium">{{ paginationInfo.last_page }}</span>
@@ -221,7 +219,6 @@
       </div>
     </div>
 
-    <!-- Modals -->
     <edit-opportunity-modal 
       :show="showEditModal" 
       :opportunity="selectedOpportunity"
@@ -235,7 +232,6 @@
       @created="handleCreated"
     />
     
-    <!-- Modal de confirmation de suppression -->
     <div v-if="showDeleteModal" class="fixed inset-0 z-50 overflow-y-auto">
       <div class="fixed inset-0 bg-black bg-opacity-50" @click="showDeleteModal = false"></div>
       <div class="relative min-h-screen flex items-center justify-center p-4">
@@ -330,11 +326,6 @@ export default {
       
       try {
         const token = sessionStorage.getItem('authToken') || localStorage.getItem('authToken');
-        if (!token) {
-          this.error = 'Vous devez être connecté pour accéder à cette page';
-          return;
-        }
-        
         const response = await associationDashboardApi.getOpportunitesOfAssociation(token, page);
         const { current_page, data, last_page, total, next_page_url, prev_page_url } = response.data;
         
@@ -344,10 +335,6 @@ export default {
       } catch (error) {
         console.error('Erreur:', error);
         this.error = 'Impossible de récupérer les opportunités';
-        
-        if (error.response?.status === 401) {
-          this.error = 'Session expirée. Veuillez vous reconnecter.';
-        }
       } finally {
         this.loading = false;
       }

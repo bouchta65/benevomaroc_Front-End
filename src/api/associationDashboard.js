@@ -41,6 +41,40 @@ createOpportunite(data, token) {
     });
   },
 
+  getProfileAssociation(token) {
+    return axios.get(`${api}/profile`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  },
+
+  getLastThreeOpportunites(token) {
+    return axios.get(`${api}/lastThreeOpportunites`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
+  },
+
+  updateAssociationInfo(data, token) {
+    return axios.post(`${api}/profile/association/userInfo`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        
+      }
+    });
+  },
+
+  updateAssociationDetails(data, token) {
+    return axios.post(`${api}/profile/association/details`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
+  },
+
+
   
 
   }

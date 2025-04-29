@@ -40,7 +40,7 @@
                 <img :src="opportunite.image" alt="Accompagnement de personnes âgées" class="w-full h-[400px] object-cover">
                 <div class="absolute top-4 left-4 flex space-x-2">
                   <span class="bg-[#4ECDC4] text-white px-3 py-1 rounded-full text-sm">
-                    {{ opportunite.type }}
+                    {{ opportunite.categorie.nom }}
                   </span>
                   <span class="bg-white/90 text-gray-700 px-3 py-1 rounded-full text-sm backdrop-blur-sm">
                     🕒 {{ opportunite.engagement_requis }}

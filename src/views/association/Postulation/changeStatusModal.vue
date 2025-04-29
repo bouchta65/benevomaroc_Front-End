@@ -1,9 +1,7 @@
 <template>
     <div v-if="show" class="fixed inset-0 z-50 overflow-y-auto">
-      <!-- Overlay -->
       <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" @click="close"></div>
       
-      <!-- Modal -->
       <div class="flex min-h-screen items-center justify-center p-4">
         <div class="relative bg-white rounded-lg max-w-md w-full shadow-xl p-6">
           <div class="mb-6">
@@ -14,7 +12,6 @@
               </button>
             </div>
             
-            <!-- Informations du bénévole -->
             <div class="bg-gray-50 p-4 rounded-lg mb-5">
               <div class="flex items-center">
                 <div class="h-12 w-12 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
@@ -32,7 +29,6 @@
               </div>
             </div>
             
-            <!-- Sélection du statut -->
             <div class="mb-5">
               <label class="block text-sm font-medium text-gray-700 mb-2">Statut de la candidature</label>
               <div class="space-y-3">
@@ -55,7 +51,6 @@
             </div>
           </div>
           
-          <!-- Actions -->
           <div class="flex justify-end space-x-3">
             <button 
               @click="close" 
@@ -77,3 +72,78 @@
     </div>
   </template>
   
+  <script>
+  import postuleApi from '@/api/postulation';
+  
+  export default {
+    props: {
+      show: {
+        type: Boolean,
+        default: false
+      },
+      application: {
+        type: Object,
+        default: null
+      }
+    },
+    data() {
+      return {
+        selectedStatus: '',
+        loading: false,
+        statuses: [
+          {
+            value: 'en attente',
+            label: 'En attente',
+            description: 'La candidature est en cours d\'examen',
+            bgColor: 'bg-amber-500'
+          },
+          {
+            value: 'accepté',
+            label: 'Accepté',
+            description: 'Le bénévole est accepté pour cette opportunité',
+            bgColor: 'bg-green-500'
+          },
+          {
+            value: 'refusé',
+            label: 'Refusé',
+            description: 'La candidature a été refusée',
+            bgColor: 'bg-red-500'
+          }
+        ],
+      };
+    },
+    watch: {
+      application(newVal) {
+        if (newVal) {
+          this.selectedStatus = newVal.etat || '';
+        }
+      }
+    },
+    methods: {
+      close() {
+        this.$emit('close');
+      },
+      async updateStatus() {
+        if (!this.selectedStatus || !this.application) return;
+        
+        this.loading = true;
+        
+        try {
+          const token = sessionStorage.getItem('authToken');
+          
+          await postuleApi.changeStatusBenevole(token, this.application.opportunite_id, this.application.benevole_id, this.selectedStatus);
+          this.$emit('updated', {
+            ...this.application,
+            etat: this.selectedStatus,
+          });
+          
+          this.close();
+        } catch (error) {
+          console.error('Erreur lors de la mise à jour du statut:', error);
+        } finally {
+          this.loading = false;
+        }
+      }
+    }
+  };
+  </script>

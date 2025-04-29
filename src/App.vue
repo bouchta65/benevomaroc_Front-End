@@ -39,12 +39,12 @@ const useDashboardLayout = computed(() => layoutType.value === 'dashboard');
 
 @media (min-width: 1024px) {
   .dashboard-container {
-    margin-left: 16rem; /* Ajuster si votre sidebar a une largeur différente */
+    margin-left: 16rem;
   }
 }
 
 .default-container {
-  min-height: calc(100vh - 160px); /* Ajuster selon vos besoins */
+  min-height: calc(100vh - 160px);
   padding: 1rem;
 }
 </style>

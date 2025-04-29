@@ -194,7 +194,7 @@
             </table>
           </div>
   
-          <div v-if="!loading && !error" class="border-t border-gray-200 px-6 py-4 flex items-center justify-between">
+          <div v-if="!loading && !error && paginationInfo.last_page > 1" class="border-t border-gray-200 px-6 py-4 flex items-center justify-between">
             <p class="text-sm text-gray-700">
               Page <span class="font-medium">{{ paginationInfo.current_page }}</span> sur <span class="font-medium">{{ paginationInfo.last_page }}</span>
             </p>

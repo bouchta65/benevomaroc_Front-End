@@ -142,23 +142,23 @@
               </table>
             </div>
     
-            <div v-if="!loading && !error && paginationInfo.last_page > 1" class="px-6 py-3 flex justify-between border-t border-gray-200">
+            <div v-if="!loading && !error && paginationInfo.last_page > 1" class="border-t border-gray-200 px-6 py-4 flex items-center justify-between">
               <p class="text-sm text-gray-700">
                 Page <span class="font-medium">{{ paginationInfo.current_page }}</span> sur <span class="font-medium">{{ paginationInfo.last_page }}</span>
               </p>
               <div class="flex space-x-2">
                 <button 
                   @click="changePage(paginationInfo.current_page - 1)" 
-                  :disabled="!paginationInfo.prev_page_url" 
-                  class="px-4 py-2 border border-gray-300 rounded-md bg-white text-sm"
-                  :class="{'opacity-50': !paginationInfo.prev_page_url}">
+                  :disabled="!paginationInfo.prev_page_url"
+                  class="px-4 py-2 border border-gray-300 rounded-md bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  :class="{'opacity-50 cursor-not-allowed': !paginationInfo.prev_page_url}">
                   Précédent
                 </button>
                 <button 
                   @click="changePage(paginationInfo.current_page + 1)" 
-                  :disabled="!paginationInfo.next_page_url" 
-                  class="px-4 py-2 border border-gray-300 rounded-md bg-white text-sm"
-                  :class="{'opacity-50': !paginationInfo.next_page_url}">
+                  :disabled="!paginationInfo.next_page_url"
+                  class="px-4 py-2 border border-gray-300 rounded-md bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  :class="{'opacity-50 cursor-not-allowed': !paginationInfo.next_page_url}">
                   Suivant
                 </button>
               </div>
@@ -210,7 +210,10 @@
         
         showStatusModal: false,
         showBenevoleModal: false,
-        selectedApplication: null
+        selectedApplication: null,
+        
+        currentDateTime: '2025-04-29 10:41:35',
+        currentUser: 'bouchta65'
       };
     },
     created() {
@@ -263,7 +266,11 @@
       formatDate(dateString) {
         if (!dateString) return 'N/A';
         const date = new Date(dateString);
-        return new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(date);
+        return new Intl.DateTimeFormat('fr-FR', { 
+          day: '2-digit', 
+          month: '2-digit', 
+          year: 'numeric' 
+        }).format(date);
       },
       getStatusClass(status) {
         const classes = {

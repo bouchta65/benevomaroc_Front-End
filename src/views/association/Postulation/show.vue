@@ -166,13 +166,32 @@
           </div>
         </div>
       </div>
+      
+      <status-change-modal
+        :show="showStatusModal"
+        :application="selectedApplication"
+        @close="showStatusModal = false"
+        @updated="handleStatusUpdated"
+      />
+      
+      <benevole-details-modal
+        :show="showBenevoleModal"
+        :application="selectedApplication"
+        @close="showBenevoleModal = false"
+      />
     </div>
   </template>
     
   <script>
   import postuleApi from '@/api/postulation';
+  import StatusChangeModal from './changeStatusModal.vue';
+  import BenevoleDetailsModal from './benevoleDeatilsModal.vue';
     
   export default {
+    components: {
+      StatusChangeModal,
+      BenevoleDetailsModal
+    },
     data() {
       return {
         applications: [],
@@ -187,7 +206,11 @@
           prev_page_url: null
         },
         loading: false,
-        error: null
+        error: null,
+        
+        showStatusModal: false,
+        showBenevoleModal: false,
+        selectedApplication: null
       };
     },
     created() {
@@ -213,6 +236,7 @@
           this.filterApplications();
         } catch (error) {
           console.error('Erreur:', error);
+          this.error = 'Impossible de récupérer les candidatures';
         } finally {
           this.loading = false;
         }
@@ -250,10 +274,24 @@
         return classes[status] || 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800';
       },
       viewBenevole(application) {
-        console.log('View benevole', application);
+        this.selectedApplication = application;
+        this.showBenevoleModal = true;
       },
       changeStatus(application) {
-        console.log('Change status for', application);
+        this.selectedApplication = application;
+        this.showStatusModal = true;
+      },
+      handleStatusUpdated(updatedApplication) {
+        const index = this.applications.findIndex(app => 
+          app.id === updatedApplication.id || 
+          (app.benevole_id === updatedApplication.benevole_id && 
+           app.opportunite_id === updatedApplication.opportunite_id)
+        );
+        
+        if (index !== -1) {
+          this.applications[index] = updatedApplication;
+          this.filterApplications(); 
+        }
       },
       changePage(page) {
         if (page >= 1 && page <= this.paginationInfo.last_page) {

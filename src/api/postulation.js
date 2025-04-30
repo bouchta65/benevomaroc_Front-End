@@ -11,7 +11,7 @@ export default {
     });
   },
   changeStatusBenevole(token, opportuniteId, benevoleId, status) {
-    return axios.post(`${api}/dashboard/opportunite/${opportuniteId}/postulations/${benevoleId}`, 
+    return axios.put(`${api}/dashboard/opportunite/${opportuniteId}/postulations/${benevoleId}`, 
       { etat: status },
       {
         headers: {

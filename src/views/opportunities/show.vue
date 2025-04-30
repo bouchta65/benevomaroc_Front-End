@@ -84,6 +84,7 @@
                         </div>
                         
                         <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                            
                             <div 
                                 v-for="opportunite in opportunities" 
                                 :key="opportunite.id" 
@@ -97,7 +98,7 @@
                                             class="w-full h-56 object-cover"
                                         >
                                         <div class="absolute top-4 left-4 bg-[#4ECDC4] text-white text-xs font-medium px-3 py-1 rounded-full shadow-md">
-                                            {{ opportunite.type }}
+                                            {{ opportunite.categorie.nom }}
                                         </div>
                                     </div>
 

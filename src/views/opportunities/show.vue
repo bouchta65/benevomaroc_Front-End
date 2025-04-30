@@ -134,7 +134,7 @@
                                             <div class="flex flex-col">
                                                 <span class="text-gray-500">Places:</span>
                                                 <span class="text-gray-900 font-medium">
-                                                    {{ opportunite.nb_benevole - opportunite.postules_count }}/{{ opportunite.nb_benevole }}
+                                                    {{ getAvailablePlaces(opportunite) }}/{{ opportunite.nb_benevole }}
                                                 </span>
                                             </div>
                                         </div>
@@ -197,6 +197,7 @@
                 </div>
             </div>
         </div>
+     
     </section>
 </template>
 
@@ -217,17 +218,17 @@ export default {
             searchTitre: '',
             searchVille: '',
             activeFilters: [], 
-            sortValue:'recent',
+            sortValue: 'recent',
             filters: [
-                    { label: "🌍 Social", value: "Social" },
-                    { label: "🌱 Environnement", value: "Environnement" },
-                    { label: "🏥 Santé", value: "Santé" },
-                    { label: "🎓 Éducation", value: "Éducation" },
-                    { label: "🎭 Culture", value: "Culture" },
-                    { label: "⚽ Sport", value: "Sport" },
-                    { label: "💻 Technologie", value: "Technologie" },
-                    { label: "💰 Économie", value: "Économie" },
-                    { label: "❓ Autre", value: "Autre" },
+                { label: "🌍 Social", value: "Social" },
+                { label: "🌱 Environnement", value: "Environnement" },
+                { label: "🏥 Santé", value: "Santé" },
+                { label: "🎓 Éducation", value: "Éducation" },
+                { label: "🎭 Culture", value: "Culture" },
+                { label: "⚽ Sport", value: "Sport" },
+                { label: "💻 Technologie", value: "Technologie" },
+                { label: "💰 Économie", value: "Économie" },
+                { label: "❓ Autre", value: "Autre" },
             ],
             isLoading: true,
         };
@@ -255,7 +256,7 @@ export default {
         async searchOpportunities() {   
             this.isLoading = true;
             try {
-                const response = await opportuniteApi.searchOpportunites(this.searchVille,this.searchTitre,this.activeFilters,this.sortvalue);
+                const response = await opportuniteApi.searchOpportunites(this.searchVille, this.searchTitre, this.activeFilters, this.sortValue);
                 this.opportunities = response.data.data || [];
                 this.totalOpportunities = response.data.total || 0;
                 this.totalPages = response.data.last_page || 1;
@@ -275,6 +276,10 @@ export default {
             const options = { year: "numeric", month: "long", day: "numeric" };
             return new Intl.DateTimeFormat("fr-FR", options).format(new Date(date));
         },
+        getAvailablePlaces(opportunite) {
+            const availablePlaces = opportunite.nb_benevole - opportunite.postules_count;
+            return availablePlaces < 1 ? 0 : availablePlaces;
+        }
     },
 };
 </script>

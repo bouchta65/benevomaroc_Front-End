@@ -12,7 +12,15 @@ export default {
         });
         },
         getAssociationStatistics(token){
-            return axios.get(`${api}/opportunitess/Statistics`, {
+            return axios.get(`${api}/dashboard/opportunitess/Statistics`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+        });
+        },
+
+        getAdminStatistics(token){
+            return axios.get(`${api}/dashboard/admin/Statistics`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

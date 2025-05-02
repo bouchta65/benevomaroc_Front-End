@@ -17,5 +17,15 @@ export default {
               Authorization: `Bearer ${token}`,
             },
           });
+        },
+
+        getCertificationBenevole(token){
+            return axios.get(`${api}/benevole/Certififctaion`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+        });
         }
+
+        
 }

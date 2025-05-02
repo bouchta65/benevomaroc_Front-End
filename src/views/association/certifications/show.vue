@@ -68,7 +68,6 @@
           <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
             <div class="p-5 border-b flex justify-between items-center">
               <h2 class="text-lg font-semibold">Gestion des certificats</h2>
-              <div class="text-sm text-gray-500">2025-04-30 15:42:25 | bouchta65</div>
             </div>
             
             <div v-if="loading" class="p-10 text-center">
@@ -370,14 +369,6 @@
           return;
         }
         window.open(benevole.certificat_image, '_blank');
-      },
-      
-      showNotification(notification) {
-        this.notification = notification;
-        
-        setTimeout(() => {
-          this.notification = null;
-        }, 3000);
       },
       
       changePage(page) {

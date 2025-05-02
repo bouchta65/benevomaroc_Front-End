@@ -246,7 +246,7 @@
                   >
                     <div class="relative h-40 overflow-hidden">
                       <img 
-                        :src="opportunite.image || 'https://via.placeholder.com/400x200?text=Mission'" 
+                        :src="opportunite.image" 
                         :alt="opportunite.titre"
                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"/>
                       <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -515,7 +515,6 @@ export default {
   },
 
   methods: {
-    // Helper method for JSON parsing with error handling
     parseJsonField(field) {
       try {
         return JSON.parse(field);
@@ -524,14 +523,12 @@ export default {
       }
     },
     
-    // Format date for display
     formatDate(date) {
       if (!date) return 'N/A';
       const options = { year: "numeric", month: "long", day: "numeric" };
       return new Intl.DateTimeFormat("fr-FR", options).format(new Date(date));
     },
 
-    // API Calls
     async loadAllData() {
       try {
         this.loading = true;

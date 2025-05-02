@@ -12,6 +12,8 @@ import dashboard_association from '../views/association/dashboard.vue';
 import dashboard_opportunites from '../views/association/opportunites/show.vue';
 import dashboard_profile from '../views/association/profile/show.vue';
 import dashboard_benevole from '../views/association/Postulation/show.vue';
+import dashboard_certification from '../views/association/certifications/show.vue';
+import AllcertificationBenevole from '../views/benevole/certificationodal.vue';
 import NotFound from '../components/layout/notFound.vue';
 import authapi from "@/api/auth"; 
 
@@ -29,6 +31,8 @@ const routes = [
   { path: '/dashboard/opportunites', name: 'dashboard_opportunites', component: dashboard_opportunites, meta: { requiresAuth: true, role: "association" }},
   { path: '/dashboard/profile', name: 'dashboard_profile', component: dashboard_profile, meta: { requiresAuth: true, role: "association" }},
   { path: '/dashboard/benevoles', name: 'dashboard_benevole', component: dashboard_benevole, meta: { requiresAuth: true, role: "association" }},
+  { path: '/dashboard/certifications', name: 'dashboard_certification', component: dashboard_certification, meta: { requiresAuth: true, role: "association" }},
+  { path: '/certifications', name: 'AllcertificationBenevole', component: AllcertificationBenevole, meta: { requiresAuth: true, role: "benevole" }},
   
   { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFound }
 ];

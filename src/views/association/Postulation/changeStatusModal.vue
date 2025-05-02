@@ -29,6 +29,11 @@
               </div>
             </div>
             
+            <!-- Simple error message -->
+            <div v-if="error" class="mb-4 p-3 rounded-md bg-red-50 border border-red-200 text-sm text-red-700">
+              {{ error }}
+            </div>
+            
             <div class="mb-5">
               <label class="block text-sm font-medium text-gray-700 mb-2">Statut de la candidature</label>
               <div class="space-y-3">
@@ -90,6 +95,7 @@
       return {
         selectedStatus: '',
         loading: false,
+        error: '',
         statuses: [
           {
             value: 'en attente',
@@ -116,6 +122,12 @@
       application(newVal) {
         if (newVal) {
           this.selectedStatus = newVal.etat || '';
+          this.error = ''; // Reset error when application changes
+        }
+      },
+      show(newVal) {
+        if (newVal) {
+          this.error = ''; // Reset error when modal opens
         }
       }
     },
@@ -127,11 +139,13 @@
         if (!this.selectedStatus || !this.application) return;
         
         this.loading = true;
+        this.error = '';
         
         try {
           const token = sessionStorage.getItem('authToken');
           
           await postuleApi.changeStatusBenevole(token, this.application.opportunite_id, this.application.benevole_id, this.selectedStatus);
+          
           this.$emit('updated', {
             ...this.application,
             etat: this.selectedStatus,
@@ -140,6 +154,13 @@
           this.close();
         } catch (error) {
           console.error('Erreur lors de la mise à jour du statut:', error);
+          
+          // Simple error handling
+          if (error.response && error.response.data && error.response.data.message) {
+            this.error = error.response.data.message;
+          } else {
+            this.error = 'Une erreur est survenue. Veuillez réessayer.';
+          }
         } finally {
           this.loading = false;
         }

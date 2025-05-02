@@ -19,7 +19,6 @@ export const authStore = reactive({
 
   async logout() {
     const token = sessionStorage.getItem('authToken');
-    
     if (token) {
       try {
         await authapi.logout(token); 

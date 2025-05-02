@@ -69,9 +69,6 @@
           </div>
           
           <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-            <div class="p-5 border-b">
-              <h2 class="text-lg font-semibold">Liste des candidatures</h2>
-            </div>
             
             <div v-if="loading" class="p-10 text-center">
               <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#00B3AD]"></div>
@@ -211,9 +208,6 @@
         showStatusModal: false,
         showBenevoleModal: false,
         selectedApplication: null,
-        
-        currentDateTime: '2025-04-29 10:41:35',
-        currentUser: 'bouchta65'
       };
     },
     created() {
@@ -288,16 +282,15 @@
         this.selectedApplication = application;
         this.showStatusModal = true;
       },
-      handleStatusUpdated(updatedApplication) {
-        const index = this.applications.findIndex(app => 
-          app.id === updatedApplication.id || 
-          (app.benevole_id === updatedApplication.benevole_id && 
-           app.opportunite_id === updatedApplication.opportunite_id)
-        );
+      async handleStatusUpdated(updatedApplication) {
         
-        if (index !== -1) {
-          this.applications[index] = updatedApplication;
-          this.filterApplications(); 
+        this.loading = true;
+        
+        try {
+          await this.fetchApplications(this.paginationInfo.current_page);
+          
+        } catch (error) {
+          console.error('Error refreshing data after status update:', error);
         }
       },
       changePage(page) {

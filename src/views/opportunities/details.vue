@@ -63,7 +63,7 @@
                     <svg class="w-5 h-5 text-[#4ECDC4] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
-                    <span class="text-gray-600">Places: {{ opportunite.nb_benevole - opportunite.postules_count }}/{{ opportunite.nb_benevole }} disponibles</span>
+                    <span class="text-gray-600">Places: {{ getAvailablePlaces(opportunite) }}/{{ opportunite.nb_benevole }} disponibles</span>
                   </div>
                 </div>
                 
@@ -112,7 +112,7 @@
                 </div>
                 <div class="flex justify-between text-sm border-b pb-4">
                   <span class="text-gray-600">Places disponibles:</span>
-                  <span class="font-medium">{{ opportunite.nb_benevole - opportunite.postules_count }}/{{ opportunite.nb_benevole }}</span>
+                  <span class="font-medium">{{ getAvailablePlaces(opportunite) }}/{{ opportunite.nb_benevole }}</span>
                 </div>
                 <div class="flex justify-between text-sm pb-4">
                   <span class="text-gray-600">Début de la mission:</span>
@@ -253,7 +253,7 @@
         submitting: false,
         alreadyApplied: false,
         postulationMessage: null,
-        isSuccess: false
+        isSuccess: false,
       };
     },
     methods: {
@@ -268,6 +268,11 @@
       shareOnTwitter() {
         const url = window.location.href;
         window.location.href = `https://twitter.com/intent/tweet?url=${url}`;
+      },
+      
+      getAvailablePlaces(opportunite) {
+        const availablePlaces = opportunite.nb_benevole - opportunite.postules_count;
+        return availablePlaces < 1 ? 0 : availablePlaces;
       },
       
       async postuler() {

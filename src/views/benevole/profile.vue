@@ -126,7 +126,7 @@
                 </div>
                 <div class="ml-4">
                   <p class="text-sm text-gray-500">Certifications</p>
-                  <p class="text-2xl font-bold text-gray-900">3</p>
+                  <p class="text-2xl font-bold text-gray-900">{{ certifications.length }}</p>
                 </div>
               </div>
             </div>
@@ -254,7 +254,7 @@
                       <div class="absolute top-3 right-3">
                         <span 
                         class="bg-gray-100 text-gray-800 px-3 py-1 text-xs font-semibold rounded-full shadow-sm">
-                          {{ opportunite.type }}
+                          {{ opportunite.categorie.nom }}
                         </span>
                       </div>
                       
@@ -285,6 +285,68 @@
                   </div>
                 </div>
               </div>
+
+              <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div class="flex items-center justify-between mb-6">
+                  <div class="flex items-center space-x-3">
+                    <i class="fas fa-award text-[#C9559B] text-xl"></i>
+                    <h2 class="text-xl font-semibold text-gray-900">Mes Certifications</h2>
+                </div>
+              <router-link 
+                to="/certifications" class="text-sm text-[#00B3AD] hover:underline flex items-center gap-1">
+                  <span>Voir tout</span>
+                  <i class="fas fa-chevron-right"></i>
+              </router-link>
+                </div>
+                
+                <div v-if="certifications.length === 0" class="flex flex-col items-center justify-center py-8 bg-gray-50 rounded-lg">
+                  <i class="fas fa-calendar-times text-[#C9559B] text-3xl mb-3"></i>
+                  <p class="text-gray-500">Aucune Certifications pour le moment</p>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  <div 
+                    v-for="cert in certifications" 
+                    :key="cert.id" 
+                    class="group relative bg-white rounded-xl shadow-md overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-gray-100"
+                  >
+                    <div class="relative h-40 overflow-hidden">
+                      <div 
+                          class="relative h-36 w-full overflow-hidden cursor-pointer bg-gray-50"
+                          @click="openCertificationImage(cert.image_path)"
+                        >
+                          <img 
+                            :src="cert.image_path" 
+                            :alt="'Certification '"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"/>
+                          
+                          <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="text-white text-xs px-2 py-1 bg-black/50 rounded">Cliquer pour agrandir</span>
+                          </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 bg-white">
+                      <h4 class="font-medium text-gray-900 line-clamp-1 mb-1">
+                        <i class="fas fa-certificate text-[#C9559B] mr-2"></i>
+                            {{ cert.opportunite.titre }}
+                          </h4>
+                      <div class="flex items-center justify-between text-sm">
+                       
+                        <div class="flex items-center text-gray-600">
+                          <i class="fas fa-calendar-alt text-[#C9559B] mr-2"></i>
+                          <span>{{ formatDate(cert.created_at)  }}</span>
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+       
+
               <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                 <div class="flex items-center justify-between mb-6">
                   <div class="flex items-center space-x-3">
@@ -338,7 +400,6 @@
                       </div>
                     </div>
                   </div>
-                
                 </div>
               </div>
             </div>
@@ -346,6 +407,29 @@
         </div>
       </div>
     </template>
+    
+    <!-- Modal for viewing certification image -->
+    <div
+      v-if="showCertificationImageModal"
+      class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-75"
+      @click="showCertificationImageModal = false"
+    >
+      <div class="relative max-w-4xl max-h-[90vh] bg-white rounded-lg overflow-hidden" @click.stop>
+        <button 
+          @click="showCertificationImageModal = false"
+          class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-lg z-10"
+        >
+          <i class="fas fa-times text-gray-700"></i>
+        </button>
+        <div class="p-2">
+          <img 
+            :src="selectedCertificationImage" 
+            alt="Certification" 
+            class="w-full h-auto max-h-[80vh] object-contain"
+          />
+        </div>
+      </div>
+    </div>
     
     <UpdateUserInfoModal 
       :show="showUserInfoModal"
@@ -362,10 +446,9 @@
   </div>
 </template>
 
-
-
 <script>
 import profileApi from '@/api/profile';
+import certifApi from '@/api/certification';
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import UpdateUserInfoModal from './updateUserInfoModal.vue';
 import UpdateBenevoleDetailsModal from './updateBenevoleDetailsModal.vue';
@@ -405,6 +488,12 @@ export default {
       topOpportunites: [],
       imageUploading: false,
       imageError: null,
+      certifications: [],
+      certificationLoading: false,
+      certificationError: null,
+      showCertificationImageModal: false,
+      selectedCertificationImage: '',
+      showAllCertifications: false,
     };
   },
 
@@ -458,56 +547,76 @@ export default {
         console.log('Token retrieved:', !!token);
         const response = await profileApi.getTop3Opportunites(token);
         console.log('API response:', response);
-        return response.data.opportunites?.slice(0, 3) || [];
+        return response.data.opportunites  || [];
       } catch (error) {
         console.error('Error fetching opportunites:', error);
         return [];
       }
     },
-    changeimagebenevole() {
-    this.imageError = null;
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = 'image/jpeg,image/png,image/jpg';
-    fileInput.onchange = this.changeimage;
-    fileInput.click();
-  },
-  
-  async changeimage(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  
-  const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-  if (!validTypes.includes(file.type)) {
-    this.imageError = 'Format de fichier non valide. Utilisez JPG, JPEG ou PNG.';
-    return;
-  }
-  
-  if (file.size > 2 * 1024 * 1024) {
-    this.imageError = 'L\'image ne doit pas dépasser 2MB.';
-    return;
-  }
-  
-  try {
-    this.imageUploading = true;
-    
-    const formData = new FormData();
-    formData.append('image', file); 
-    
-    const token = sessionStorage.getItem('authToken');
-    const response = await profileApi.updateUserInfo(formData, token);
-    await this.fetchProfileData();
-    console.log('Image updated successfully');
 
-  } catch (error) {    
-    if (error.response?.status === 500) {
-      this.imageError = "Erreur lors du téléchargement de l'image. Veuillez réessayer.";
-    }
+    async fetchCertifications() {
+  try {
+    this.certificationLoading = true;
+    const token = sessionStorage.getItem('authToken');
+    const response = await certifApi.getCertificationBenevole(token);
+    return response.data.last_certifications || [];
+  } catch (error) {
+    console.error('Error fetching certifications:', error);
   } finally {
-    this.imageUploading = false;
+    this.certificationLoading = false;
   }
-},
+    },
+
+    openCertificationImage(imageUrl) {
+      if (!imageUrl) return;
+      this.selectedCertificationImage = imageUrl;
+      this.showCertificationImageModal = true;
+    },
+
+    changeimagebenevole() {
+      this.imageError = null;
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = 'image/jpeg,image/png,image/jpg';
+      fileInput.onchange = this.changeimage;
+      fileInput.click();
+    },
     
+    async changeimage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+      if (!validTypes.includes(file.type)) {
+        this.imageError = 'Format de fichier non valide. Utilisez JPG, JPEG ou PNG.';
+        return;
+      }
+      
+      if (file.size > 2 * 1024 * 1024) {
+        this.imageError = 'L\'image ne doit pas dépasser 2MB.';
+        return;
+      }
+      
+      try {
+        this.imageUploading = true;
+        
+        const formData = new FormData();
+        formData.append('image', file); 
+        
+        const token = sessionStorage.getItem('authToken');
+        const response = await profileApi.updateUserInfo(formData, token);
+        await this.fetchProfileData();
+        console.log('Image updated successfully');
+
+      } catch (error) {    
+        if (error.response?.status === 500) {
+          this.imageError = "Erreur lors du téléchargement de l'image. Veuillez réessayer.";
+        }
+      } finally {
+        this.imageUploading = false;
+      }
+    },
+        
     toggleUserInfoModal() {
       this.showUserInfoModal = !this.showUserInfoModal;
     },
@@ -529,8 +638,6 @@ export default {
       const options = { year: "numeric", month: "long", day: "numeric" };
       return new Intl.DateTimeFormat("fr-FR", options).format(new Date(date));
     },
-    
-
   },
 
   async created() {
@@ -538,6 +645,7 @@ export default {
       this.loading = true;
       await this.fetchProfileData();
       this.topOpportunites = await this.fetchBenevoleOpportunites();
+      this.certifications = await this.fetchCertifications();
     } catch (error) {
       console.error('Error during initialization:', error);
     } finally {

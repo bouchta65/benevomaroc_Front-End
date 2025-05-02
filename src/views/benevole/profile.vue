@@ -90,7 +90,7 @@
                 </div>
                 <div class="ml-4">
                   <p class="text-sm text-gray-500">Missions Complétées</p>
-                  <p class="text-2xl font-bold text-gray-900">12</p>
+                  <p class="text-2xl font-bold text-gray-900">{{ statistics.participatedOpportunities }}</p>
                 </div>
               </div>
             </div>
@@ -101,8 +101,8 @@
                   <i class="fas fa-clock text-[#C9559B] text-xl"></i>
                 </div>
                 <div class="ml-4">
-                  <p class="text-sm text-gray-500">Heures de Bénévolat</p>
-                  <p class="text-2xl font-bold text-gray-900">48h</p>
+                  <p class="text-sm text-gray-500">Missions en attent</p>
+                  <p class="text-2xl font-bold text-gray-900">{{ statistics.pendingOpportunities }}</p>
                 </div>
               </div>
             </div>
@@ -113,8 +113,8 @@
                   <i class="fas fa-star text-[#00B3AD] text-xl"></i>
                 </div>
                 <div class="ml-4">
-                  <p class="text-sm text-gray-500">Note Moyenne</p>
-                  <p class="text-2xl font-bold text-gray-900">4.8/5</p>
+                  <p class="text-sm text-gray-500">Missions réfusé</p>
+                  <p class="text-2xl font-bold text-gray-900">{{ statistics.refusedOpportunities }}</p>
                 </div>
               </div>
             </div>
@@ -126,7 +126,7 @@
                 </div>
                 <div class="ml-4">
                   <p class="text-sm text-gray-500">Certifications</p>
-                  <p class="text-2xl font-bold text-gray-900">{{ certifications.length }}</p>
+                  <p class="text-2xl font-bold text-gray-900">{{ statistics.certificationsCount }}</p>
                 </div>
               </div>
             </div>
@@ -449,15 +449,18 @@
 <script>
 import profileApi from '@/api/profile';
 import certifApi from '@/api/certification';
+import statistiquesApi from '@/api/statistiques';
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import UpdateUserInfoModal from './updateUserInfoModal.vue';
 import UpdateBenevoleDetailsModal from './updateBenevoleDetailsModal.vue';
+
 export default {
   components: {
-      LoadingSpinner,
-      UpdateUserInfoModal,
-      UpdateBenevoleDetailsModal
+    LoadingSpinner,
+    UpdateUserInfoModal,
+    UpdateBenevoleDetailsModal
   },
+  
   data() {
     return {
       loading: true,
@@ -483,96 +486,92 @@ export default {
         metier: '',
         cv: null,
       },
+      statistics: {
+        participatedOpportunities: 0,
+        certificationsCount: 0,
+        refusedOpportunities: 0,
+        pendingOpportunities: 0
+      },
       showUserInfoModal: false,
       showBenevoleDetailsModal: false,
-      topOpportunites: [],
       imageUploading: false,
       imageError: null,
-      certifications: [],
-      certificationLoading: false,
-      certificationError: null,
       showCertificationImageModal: false,
       selectedCertificationImage: '',
-      showAllCertifications: false,
+      // Data loaded from API
+      topOpportunites: [],
+      certifications: [],
     };
   },
 
   computed: {
     parsedDomainesAction() {
-      try {
-        return JSON.parse(this.profileData.domaines_action);
-      } catch {
-        return [];
-      }
+      return this.parseJsonField(this.profileData.domaines_action);
     },
 
     parsedMissionsPreferees() {
-      try {
-        return JSON.parse(this.profileData.missions_preferrees);
-      } catch {
-        return [];
-      }
-    },
-
-    formattedDateNaissance() {
-      if (!this.profileData.date_naissance) return '';
-      return new Date(this.profileData.date_naissance).toLocaleDateString('fr-FR', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
+      return this.parseJsonField(this.profileData.missions_preferrees);
     }
   },
 
   methods: {
-    async fetchProfileData() {
+    // Helper method for JSON parsing with error handling
+    parseJsonField(field) {
       try {
-        const token = sessionStorage.getItem('authToken');
-        const response = await profileApi.getProfile(token);
-        
-        if (response.data.benevole) {
-          this.profileData = {
-            ...response.data.benevole,
-          };
-        } 
-      } catch (error) {
-        this.error = error.message || 'Erreur lors de la récupération des données de profil';
-      }
-    },
-    
-    async fetchBenevoleOpportunites() {
-      try {
-        console.log('Fetching opportunities...');
-        const token = sessionStorage.getItem('authToken');
-        console.log('Token retrieved:', !!token);
-        const response = await profileApi.getTop3Opportunites(token);
-        console.log('API response:', response);
-        return response.data.opportunites  || [];
-      } catch (error) {
-        console.error('Error fetching opportunites:', error);
+        return JSON.parse(field);
+      } catch {
         return [];
       }
     },
-
-    async fetchCertifications() {
-  try {
-    this.certificationLoading = true;
-    const token = sessionStorage.getItem('authToken');
-    const response = await certifApi.getCertificationBenevole(token);
-    return response.data.last_certifications || [];
-  } catch (error) {
-    console.error('Error fetching certifications:', error);
-  } finally {
-    this.certificationLoading = false;
-  }
+    
+    // Format date for display
+    formatDate(date) {
+      if (!date) return 'N/A';
+      const options = { year: "numeric", month: "long", day: "numeric" };
+      return new Intl.DateTimeFormat("fr-FR", options).format(new Date(date));
     },
 
+    // API Calls
+    async loadAllData() {
+      try {
+        this.loading = true;
+        const token = sessionStorage.getItem('authToken');
+        
+        const [profileResponse, statsResponse, certResponse, oppResponse] = await Promise.all([
+          profileApi.getProfile(token),
+          statistiquesApi.getBenevoleStatistics(token),
+          certifApi.getCertificationBenevole(token),
+          profileApi.getTop3Opportunites(token)
+        ]);
+        
+        if (profileResponse.data.benevole) {
+          this.profileData = { ...profileResponse.data.benevole };
+        }
+        
+        if (statsResponse.data) {
+          this.statistics = { ...statsResponse.data };
+        }
+        
+        this.certifications = certResponse.data.last_certifications || [];
+        
+        this.topOpportunites = oppResponse.data.opportunites || [];
+        
+      } catch (error) {
+        this.error = error.message || "Une erreur s'est produite lors du chargement des données";
+        console.error('Error loading data:', error);
+      } finally {
+        setTimeout(() => {
+          this.loading = false;
+        }, 500);
+      }
+    },
+    
     openCertificationImage(imageUrl) {
       if (!imageUrl) return;
       this.selectedCertificationImage = imageUrl;
       this.showCertificationImageModal = true;
     },
-
+    
     changeimagebenevole() {
       this.imageError = null;
       const fileInput = document.createElement('input');
@@ -604,55 +603,44 @@ export default {
         formData.append('image', file); 
         
         const token = sessionStorage.getItem('authToken');
-        const response = await profileApi.updateUserInfo(formData, token);
-        await this.fetchProfileData();
-        console.log('Image updated successfully');
-
-      } catch (error) {    
-        if (error.response?.status === 500) {
-          this.imageError = "Erreur lors du téléchargement de l'image. Veuillez réessayer.";
+        await profileApi.updateUserInfo(formData, token);
+        
+        const profileResponse = await profileApi.getProfile(token);
+        if (profileResponse.data.benevole) {
+          this.profileData = { ...profileResponse.data.benevole };
         }
+        
+      } catch (error) {    
+        this.imageError = "Erreur lors du téléchargement de l'image. Veuillez réessayer.";
       } finally {
         this.imageUploading = false;
       }
     },
-        
+    
     toggleUserInfoModal() {
       this.showUserInfoModal = !this.showUserInfoModal;
-    },
-
-    handleUserInfoUpdated() {
-      this.fetchProfileData();
     },
     
     toggleBenevoleDetailsModal() {
       this.showBenevoleDetailsModal = !this.showBenevoleDetailsModal;
     },
-
-    handleBenevoleDetailsUpdated() {
-      this.fetchProfileData();
+    
+    handleUserInfoUpdated() {
+      const token = sessionStorage.getItem('authToken');
+      profileApi.getProfile(token).then(response => {
+        if (response.data.benevole) {
+          this.profileData = { ...response.data.benevole };
+        }
+      });
     },
     
-    formatDate(date) {
-      if (!date) return 'N/A';
-      const options = { year: "numeric", month: "long", day: "numeric" };
-      return new Intl.DateTimeFormat("fr-FR", options).format(new Date(date));
-    },
+    handleBenevoleDetailsUpdated() {
+      this.handleUserInfoUpdated();
+    }
   },
 
-  async created() {
-    try {
-      this.loading = true;
-      await this.fetchProfileData();
-      this.topOpportunites = await this.fetchBenevoleOpportunites();
-      this.certifications = await this.fetchCertifications();
-    } catch (error) {
-      console.error('Error during initialization:', error);
-    } finally {
-      setTimeout(() => {
-        this.loading = false;
-      }, 500);
-    }
+  created() {
+    this.loadAllData();
   }
 };
 </script>

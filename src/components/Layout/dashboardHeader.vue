@@ -39,6 +39,18 @@
             Associations
           </router-link>
          </div>
+
+         <div v-if="authStore.isLoggedIn && authStore.role === 'admin'">
+          <router-link to="/dashboard/categories" 
+             :class="[$route.path === '/dashboard/categories' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
+                     'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
+            <svg class="mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': $route.path === '/dashboard/categories', 'text-gray-500': $route.path !== '/dashboard/categories'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h16M4 8h16M4 12h16M4 16h16M4 20h16" />
+            </svg>
+            categories
+          </router-link>
+         </div>
+         <div v-if="authStore.isLoggedIn && authStore.role === 'association'">
           <router-link to="/dashboard/benevoles" 
                      :class="[$route.path === '/dashboard/benevoles' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
                              'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
@@ -47,6 +59,7 @@
             </svg>
             Bénévoles
           </router-link>
+        </div>
           
           <router-link to="/dashboard/opportunites" 
                      :class="[$route.path === '/dashboard/opportunites' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 

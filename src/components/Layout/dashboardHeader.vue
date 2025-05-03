@@ -28,7 +28,17 @@
             </svg>
             Tableau de Bord
           </router-link>
-          
+
+          <div v-if="authStore.isLoggedIn && authStore.role === 'admin'">
+          <router-link to="/dashboard/associations" 
+             :class="[$route.path === '/dashboard/associations' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
+                     'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
+           <svg class="mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': $route.path === '/dashboard/associations', 'text-gray-500': $route.path !== '/dashboard/associations'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+          </svg>
+            Associations
+          </router-link>
+         </div>
           <router-link to="/dashboard/benevoles" 
                      :class="[$route.path === '/dashboard/benevoles' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
                              'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
@@ -59,7 +69,7 @@
               Formations
             </router-link>
           </div>
-          
+          <div v-if="authStore.isLoggedIn && authStore.role === 'association'">
           <router-link to="/dashboard/certifications" 
                      :class="[$route.path === '/dashboard/certifications' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
                              'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
@@ -68,7 +78,7 @@
             </svg>
             Certifications
           </router-link>
-          
+        </div>
           <router-link to="/dashboard/profile" 
                      :class="[$route.path === '/dashboard/profile' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
                              'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">

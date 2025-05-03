@@ -104,38 +104,39 @@ export default {
         };
     },
     methods: {
-        async onSubmit() {
-            this.isLoading = true;
-            this.errorMessage = ""; 
-            try {
-                const response = await authapi.login(this.formData);
-                const token = response.data.token;
+    async onSubmit() {
+        this.isLoading = true;
+        this.errorMessage = ""; 
+        try {
+            const response = await authapi.login(this.formData);
+            const token = response.data.token;
 
-      
-                sessionStorage.setItem("authToken", token);
-                
+            sessionStorage.setItem("authToken", token);
+            document.cookie = `authToken=${token}; Secure; SameSite=Strict; path=/`;
 
-                document.cookie = `authToken=${token}; Secure; SameSite=Strict; path=/`;
+            authStore.login({
+                role: response.data.user.role,
+                ...response.data.user
+            });
 
-                authStore.login({
-                    role: response.data.user.role,
-                    ...response.data.user
-                });
-
-                const role = response.data.user.role;
-                if (role === "admin") {
-                    this.$router.push("/dashboard");
-                } else if (role === "association") {
-                    this.$router.push("/dashboard");
-                } else {
-                    this.$router.push("/profile");
-                }
-            } catch (error) {
-                this.errorMessage = "Email ou mot de passe incorrect. Veuillez réessayer.";
-            } finally {
-                this.isLoading = false;
+            const role = response.data.user.role;
+            if (role === "admin") {
+                this.$router.push("/dashboard");
+            } else if (role === "association") {
+                this.$router.push("/dashboard");
+            } else {
+                this.$router.push("/profile");
             }
-        },
+        } catch (error) {
+            if (error.response && error.response.status === 403) {
+                this.errorMessage = "Votre compte n’a pas encore été validé. Veuillez contacter l'administrateur.";
+            } else {
+                this.errorMessage = "Email ou mot de passe incorrect. Veuillez réessayer.";
+            }
+        } finally {
+            this.isLoading = false;
+        }
     },
+},
 };
 </script>

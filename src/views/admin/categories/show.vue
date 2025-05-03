@@ -1,174 +1,218 @@
 <template>
-  <div class="p-4 bg-gray-50 min-h-screen">
-    <div class="max-w-5xl mx-auto">
-      <div class="bg-white p-4 rounded mb-4 shadow-sm">
-        <div class="flex items-center">
-          <div class="bg-[#00B3AD]/10 p-3 rounded">
-            <div class="flex gap-3 items-center">
-              <i class="fas fa-tags text-[#00B3AD]"></i>
-              <div>
-                <p class="text-sm text-gray-600">Total des catégories</p>
-                <p class="text-xl font-bold">{{ categories.length }}</p>
+  <div class="min-h-screen bg-[#F8F9FE]">
+    <div class="container mx-auto px-4 py-6">
+      <div class="flex flex-col space-y-6">
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-[#00B3AD]/10 rounded-lg p-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-gray-600">Total des catégories</p>
+                  <p class="text-2xl font-bold text-gray-900">{{ categories.length }}</p>
+                </div>
+                <div class="h-10 w-10 rounded-full bg-[#00B3AD] flex items-center justify-center">
+                  <i class="fas fa-tags text-white"></i>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="bg-white p-4 rounded mb-4 shadow-sm flex flex-col sm:flex-row gap-3">
-        <input 
-          type="text" 
-          placeholder="Rechercher..." 
-          class="border rounded px-3 py-2 flex-1"
-          v-model="searchQuery"
-          @input="filterCategories"
-        />
-        <button 
-          @click="openAddModal"
-          class="bg-[#00B3AD] text-white px-4 py-2 rounded"
-        >
-          <i class="fas fa-plus mr-2"></i> Nouvelle catégorie
-        </button>
-      </div>
-      
-      <div class="bg-white rounded shadow-sm">
-        <div v-if="loading" class="p-8 text-center">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#00B3AD]"></div>
-          <p class="mt-2">Chargement...</p>
+        <div class="bg-white rounded-lg shadow-sm p-5 border border-gray-100">
+          <div class="flex flex-col md:flex-row gap-4 justify-between">
+            <div class="flex-1">
+              <input 
+                type="text" 
+                placeholder="Rechercher une catégorie..." 
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#00B3AD]"
+                v-model="searchQuery"
+                @input="filterCategories"
+              />
+            </div>
+            <div>
+              <button 
+                @click="openAddModal"
+                class="px-4 py-2 bg-[#00B3AD] text-white rounded-md hover:bg-[#00B3AD]/90 flex items-center"
+              >
+                <i class="fas fa-plus mr-2"></i> Nouvelle catégorie
+              </button>
+            </div>
+          </div>
         </div>
         
-        <div v-else-if="error" class="p-8 text-center text-red-500">
-          <i class="fas fa-exclamation-circle text-2xl"></i>
-          <p class="mt-2">{{ error }}</p>
-          <button @click="fetchCategories" class="mt-3 bg-[#00B3AD] text-white px-3 py-1 rounded">
-            Réessayer
-          </button>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+          
+          <div v-if="loading" class="p-10 text-center">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#00B3AD]"></div>
+            <p class="mt-2">Chargement des catégories...</p>
+          </div>
+          
+          <div v-else-if="error" class="p-10 text-center text-red-500">
+            <i class="fas fa-exclamation-circle text-3xl"></i>
+            <p class="mt-2">{{ error }}</p>
+            <button @click="fetchCategories" class="mt-4 px-4 py-2 bg-[#00B3AD] text-white rounded">
+              Réessayer
+            </button>
+          </div>
+          
+          <div v-else class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nom</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr v-if="filteredCategories.length === 0">
+                  <td colspan="3" class="px-6 py-12 text-center text-gray-500">
+                    <i class="fas fa-folder-open text-gray-300 text-4xl mb-3"></i>
+                    <p>Aucune catégorie trouvée</p>
+                  </td>
+                </tr>
+                
+                <tr v-for="category in filteredCategories" :key="category.id" class="hover:bg-gray-50">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <div class="h-8 w-8 rounded-full bg-[#00B3AD]/20 flex items-center justify-center text-[#00B3AD] mr-2">
+                        <i class="fas fa-tag"></i>
+                      </div>
+                      <div class="text-sm font-medium text-gray-900">{{ category.nom }}</div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4">
+                    <div class="text-sm text-gray-700 max-w-md">
+                      {{ truncateText(category.description, 100) }}
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex space-x-2">
+                      <button 
+                        @click="editCategory(category)" 
+                        class="p-2 text-blue-600 hover:bg-blue-50 rounded-md" 
+                        title="Modifier la catégorie"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button 
+                        @click="confirmDelete(category)" 
+                        class="p-2 text-red-600 hover:bg-red-50 rounded-md"
+                        title="Supprimer la catégorie"
+                      >
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        
-        <table v-else class="w-full">
-          <thead class="bg-gray-50">
-            <tr>
-              <th class="p-3 text-left">Nom</th>
-              <th class="p-3 text-left">Description</th>
-              <th class="p-3 text-left">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-if="filteredCategories.length === 0">
-              <td colspan="3" class="p-8 text-center text-gray-500">
-                <i class="fas fa-folder-open text-2xl opacity-30 mb-2"></i>
-                <p>Aucune catégorie trouvée</p>
-              </td>
-            </tr>
-            
-            <tr v-for="category in filteredCategories" :key="category.id" class="border-t hover:bg-gray-50">
-              <td class="p-3">
-                <div class="flex items-center">
-                  <i class="fas fa-tag text-[#00B3AD] mr-2"></i>
-                  <span>{{ category.nom }}</span>
-                </div>
-              </td>
-              <td class="p-3">{{category.description }}</td>
-              <td class="p-3">
-                <button @click="editCategory(category)" class="text-blue-600 mr-3">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button @click="confirmDelete(category)" class="text-red-600">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
     
-    <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div class="bg-white rounded max-w-md w-full p-5">
-        <div class="flex justify-between items-center mb-4 border-b pb-2">
-          <h3 class="font-medium">
-            {{ isEditing ? 'Modifier la catégorie' : 'Ajouter une catégorie' }}
-          </h3>
-          <button @click="closeModal" class="text-gray-400">
-            <i class="fas fa-times"></i>
-          </button>
+    <div v-if="showModal" class="fixed inset-0 z-50 overflow-y-auto">
+      <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" @click="closeModal"></div>
+      
+      <div class="flex min-h-screen items-center justify-center p-4">
+        <div class="relative bg-white rounded-lg max-w-md w-full shadow-xl p-6">
+          <div class="flex justify-between items-center mb-6 border-b pb-3">
+            <h3 class="text-lg font-semibold text-gray-900">
+              {{ isEditing ? 'Modifier la catégorie' : 'Ajouter une catégorie' }}
+            </h3>
+            <button @click="closeModal" class="text-gray-400 hover:text-gray-500">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          
+          <form @submit.prevent="submitForm">
+            <div class="mb-4">
+              <label for="nom" class="block text-sm font-medium text-gray-700 mb-1">Nom *</label>
+              <input 
+                id="nom"
+                type="text" 
+                v-model="form.nom"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#00B3AD]"
+                placeholder="Nom de la catégorie"
+                required
+              />
+            </div>
+            
+            <div class="mb-6">
+              <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description *</label>
+              <textarea 
+                id="description"
+                v-model="form.description"
+                rows="4"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#00B3AD]"
+                placeholder="Description de la catégorie"
+                required
+              ></textarea>
+            </div>
+            
+            <div v-if="formError" class="mb-4 p-3 bg-red-100 text-red-700 rounded-md text-sm">
+              {{ formError }}
+            </div>
+            
+            <div class="flex justify-end space-x-3 border-t pt-4">
+              <button 
+                type="button"
+                @click="closeModal"
+                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+              >
+                Annuler
+              </button>
+              <button 
+                type="submit"
+                class="px-4 py-2 bg-[#00B3AD] text-white rounded-md hover:bg-[#00B3AD]/90"
+                :disabled="formProcessing"
+              >
+                <i v-if="formProcessing" class="fas fa-spinner fa-spin mr-2"></i>
+                {{ isEditing ? 'Mettre à jour' : 'Ajouter' }}
+              </button>
+            </div>
+          </form>
         </div>
-        
-        <form @submit.prevent="submitForm">
-          <div class="mb-3">
-            <label class="block mb-1">Nom</label>
-            <input 
-              v-model="form.nom"
-              type="text" 
-              class="w-full border rounded px-3 py-2"
-              required
-            />
+      </div>
+    </div>
+    
+    <div v-if="showDeleteModal" class="fixed inset-0 z-50 overflow-y-auto">
+      <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" @click="closeDeleteModal"></div>
+      
+      <div class="flex min-h-screen items-center justify-center p-4">
+        <div class="relative bg-white rounded-lg max-w-sm w-full shadow-xl p-6">
+          <div class="flex flex-col items-center text-center mb-6">
+            <div class="h-16 w-16 bg-red-100 rounded-full flex items-center justify-center text-red-500 mb-4">
+              <i class="fas fa-exclamation-triangle text-2xl"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">Confirmer la suppression</h3>
+            <p class="text-sm text-gray-500">
+              Êtes-vous sûr de vouloir supprimer la catégorie <strong>{{ categoryToDelete?.nom }}</strong> ?
+              Cette action est irréversible.
+            </p>
           </div>
           
-          <div class="mb-4">
-            <label class="block mb-1">Description</label>
-            <textarea 
-              v-model="form.description"
-              rows="3"
-              class="w-full border rounded px-3 py-2"
-              required
-            ></textarea>
+          <div v-if="deleteError" class="mb-4 p-3 bg-red-100 text-red-700 rounded-md text-sm">
+            {{ deleteError }}
           </div>
           
-          <div v-if="formError" class="mb-4 p-2 bg-red-100 text-red-700 rounded text-sm">
-            {{ formError }}
-          </div>
-          
-          <div class="flex justify-end gap-2 border-t pt-3">
+          <div class="flex justify-end space-x-3">
             <button 
-              type="button"
-              @click="closeModal"
-              class="px-3 py-2 border rounded"
+              @click="closeDeleteModal"
+              class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
             >
               Annuler
             </button>
             <button 
-              type="submit"
-              class="px-3 py-2 bg-[#00B3AD] text-white rounded"
-              :disabled="formProcessing"
+              @click="deleteCategory"
+              class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+              :disabled="deleteProcessing"
             >
-              <i v-if="formProcessing" class="fas fa-spinner fa-spin mr-1"></i>
-              {{ isEditing ? 'Mettre à jour' : 'Ajouter' }}
+              <i v-if="deleteProcessing" class="fas fa-spinner fa-spin mr-2"></i>
+              Supprimer
             </button>
           </div>
-        </form>
-      </div>
-    </div>
-    
-    <div v-if="showDeleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div class="bg-white rounded w-full max-w-sm p-5">
-        <div class="text-center mb-4">
-          <i class="fas fa-exclamation-triangle text-red-500 text-2xl mb-2"></i>
-          <h3 class="font-medium mb-1">Confirmer la suppression</h3>
-          <p class="text-sm text-gray-600">
-            Supprimer la catégorie <strong>{{ categoryToDelete?.nom }}</strong> ?
-          </p>
-        </div>
-        
-        <div v-if="deleteError" class="mb-4 p-2 bg-red-100 text-red-700 rounded text-sm">
-          {{ deleteError }}
-        </div>
-        
-        <div class="flex justify-end gap-2">
-          <button 
-            @click="closeDeleteModal"
-            class="px-3 py-2 border rounded"
-          >
-            Annuler
-          </button>
-          <button 
-            @click="deleteCategory"
-            class="px-3 py-2 bg-red-600 text-white rounded"
-            :disabled="deleteProcessing"
-          >
-            <i v-if="deleteProcessing" class="fas fa-spinner fa-spin mr-1"></i>
-            Supprimer
-          </button>
         </div>
       </div>
     </div>
@@ -203,11 +247,9 @@ export default {
       deleteProcessing: false
     };
   },
-  
   created() {
     this.fetchCategories();
   },
-  
   methods: {
     async fetchCategories() {
       this.loading = true;
@@ -215,11 +257,17 @@ export default {
       
       try {
         const token = sessionStorage.getItem('authToken');
+        if (!token) {
+          this.error = 'Vous devez être connecté pour accéder à cette page';
+          return;
+        }
+        
         const response = await categoriesApi.getAllCategories(token);
         this.categories = response.data.categorie || [];
-        this.filteredCategories = [...this.categories];
+        this.filterCategories();
       } catch (error) {
-        this.error = 'Impossible de charger les catégories';
+        console.error('Erreur:', error);
+        this.error = 'Impossible de récupérer les catégories';
       } finally {
         this.loading = false;
       }
@@ -236,6 +284,11 @@ export default {
         cat.nom.toLowerCase().includes(query) ||
         cat.description.toLowerCase().includes(query)
       );
+    },
+    
+    truncateText(text, length) {
+      if (!text) return '';
+      return text.length > length ? text.substring(0, length) + '...' : text;
     },
     
     openAddModal() {
@@ -262,21 +315,23 @@ export default {
       
       try {
         const token = sessionStorage.getItem('authToken');
-        const data = {
+        const formData = {
           nom: this.form.nom,
           description: this.form.description
         };
         
         if (this.isEditing) {
-          await categoriesApi.updateCategory(token, this.form.id, data);
+          await categoriesApi.updateCategory(token, this.form.id, formData);
         } else {
-          await categoriesApi.addCategory(token, data);
+          await categoriesApi.addCategory(token, formData);
         }
         
         await this.fetchCategories();
+        
         this.closeModal();
       } catch (error) {
-        this.formError = 'Erreur lors de l\'enregistrement';
+        console.error('Erreur:', error);
+        this.formError = error.response?.data?.message || 'Une erreur est survenue';
       } finally {
         this.formProcessing = false;
       }
@@ -290,19 +345,27 @@ export default {
     
     closeDeleteModal() {
       this.showDeleteModal = false;
+      setTimeout(() => {
+        this.categoryToDelete = null;
+      }, 300);
     },
     
     async deleteCategory() {
       if (!this.categoryToDelete) return;
       
       this.deleteProcessing = true;
+      this.deleteError = null;
+      
       try {
         const token = sessionStorage.getItem('authToken');
         await categoriesApi.deleteCategory(token, this.categoryToDelete.id);
+        
         await this.fetchCategories();
+        
         this.closeDeleteModal();
       } catch (error) {
-        this.deleteError = 'Erreur lors de la suppression';
+        console.error('Erreur:', error);
+        this.deleteError = error.response?.data?.message || 'Erreur lors de la suppression';
       } finally {
         this.deleteProcessing = false;
       }

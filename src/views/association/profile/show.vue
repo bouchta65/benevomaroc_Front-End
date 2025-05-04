@@ -402,6 +402,30 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div class="flex items-center justify-between mb-6">
+                  <div class="flex items-center space-x-3">
+                    <i class="fas fa-lock text-[#C9559B] text-xl"></i>
+                    <h2 class="text-xl font-semibold text-gray-900">Sécurité du compte</h2>
+                  </div>
+                </div>
+                
+                <div class="grid grid-cols-1 gap-4">
+                  <div class="p-6 rounded-lg bg-gray-50 flex flex-col items-center justify-center space-y-4">
+                    <div class="h-16 w-16 rounded-full bg-[#00B3AD]/10 flex items-center justify-center">
+                      <i class="fas fa-shield-alt text-[#00B3AD] text-2xl"></i>
+                    </div>
+                    <p class="text-gray-900 font-medium">Mot de passe</p>
+                    <button 
+                      @click="togglePasswordModal" 
+                      class="px-4 py-2 bg-[#00B3AD] text-white rounded-lg text-sm hover:bg-[#00B3AD]/90 transition-colors"
+                    >
+                      Changer le mot de passe
+                    </button>
+                  </div>
+                </div>
+              </div>
               </div>
             </div>
           </div>
@@ -421,6 +445,12 @@
         @close="toggleAssociationDetailsModal"
         @updated="handleAssociationUpdated"
       />
+
+      <ChangePasswordModal 
+      v-if="showPasswordModal"
+      @close="togglePasswordModal"
+      @updated="handlePasswordUpdated"
+    />
       
     </div>
   </template>
@@ -431,13 +461,15 @@
   import UpdateUserInfoModal from './updatePrisidnetModal.vue';
   import UpdateAssociationDetailsModal from './updateAssociationDetails.vue';
   import { RouterLink } from 'vue-router';
-  
+  import ChangePasswordModal from '../../admin/profile/changePasswordModal.vue';
+
   export default {
     components: {
       LoadingSpinner,
       UpdateUserInfoModal,
       UpdateAssociationDetailsModal,
-      RouterLink
+      RouterLink,
+      ChangePasswordModal
     },
     data() {
       return {
@@ -474,6 +506,7 @@
         showUserInfoModal: false,
         showAssociationDetailsModal: false,
         opportunities: [],
+        showPasswordModal: false,
       };
     },
   
@@ -536,6 +569,10 @@
         if (!date) return 'N/A';
         const options = { year: "numeric", month: "long", day: "numeric" };
         return new Intl.DateTimeFormat("fr-FR", options).format(new Date(date));
+      },
+
+      togglePasswordModal() {
+      this.showPasswordModal = !this.showPasswordModal;
       }
     },
   

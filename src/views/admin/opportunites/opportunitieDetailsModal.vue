@@ -122,7 +122,7 @@
 </template>
 
 <script>
-import opportuniteApi from '@/api/opportunite';
+import opportuniteApi from '@/api/adminDashbaord';
 
 export default {
   props: {
@@ -164,7 +164,8 @@ export default {
       this.loading = true;
       
       try {
-        const response = await opportuniteApi.getById(this.opportunityId);
+        const token = sessionStorage.getItem('authToken');
+        const response = await opportuniteApi.getByIdDash(this.opportunityId,token);
         this.opportunity = response.data.opportunite;
         console.log('API Response:', response);
         this.error = null;

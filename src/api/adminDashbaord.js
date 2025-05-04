@@ -50,6 +50,14 @@ export default {
         });
       },
 
+      updateAdminInfo(data , token) {
+        return axios.post(`${api}/profile/admin/userInfo`, data, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            
+          }
+        });
+      }
 
  
 

@@ -29,7 +29,26 @@ export default {
             }
           }
         );
-      }
+      },
+
+      updateOpportuniteStatus(token, opportunityId, status) {
+        return axios.put(`${api}/admin/opportunites/${opportunityId}/status`, 
+          { status },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }
+          }
+        );
+      },
+
+      getAllOpportunities(token, page = 1) {
+        return axios.get(`${api}/admin/opportunites?page=${page}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
+      },
 
 
  

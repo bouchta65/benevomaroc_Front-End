@@ -67,7 +67,7 @@
                 <option value="">Tous les statuts</option>
                 <option value="actif">Actif</option>
                 <option value="en attente">En attente</option>
-                <option value="archive">Archivé</option>
+                <option value="fermé">Archivé</option>
               </select>
             </div>
             <div class="w-full md:w-48">
@@ -372,7 +372,7 @@ export default {
       const classes = {
         'actif': 'bg-green-100 text-green-800',
         'en attente': 'bg-yellow-100 text-yellow-800',
-        'archive': 'bg-red-100 text-red-800'
+        'fermé': 'bg-red-100 text-red-800'
       };
       return classes[status?.toLowerCase()] || 'bg-gray-100 text-gray-800';
     },

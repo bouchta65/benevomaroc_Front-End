@@ -129,7 +129,7 @@ export default {
             }
         } catch (error) {
             if (error.response && error.response.status === 403) {
-                this.errorMessage = "Votre compte n’a pas encore été validé. Veuillez contacter l'administrateur.";
+                this.errorMessage = "Votre compte n’a pas encore été validé. Veuillez patienter jusqu'à ce qu'un administrateur accepte votre compte.";
             } else {
                 this.errorMessage = "Email ou mot de passe incorrect. Veuillez réessayer.";
             }

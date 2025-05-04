@@ -49,7 +49,6 @@
                                 <div>
                                     <div class="flex justify-between mb-1">
                                         <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
-                                        <a href="#" class="text-sm text-[#00B3AD] hover:underline">Mot de passe oublié?</a>
                                     </div>
                                     <div class="relative">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -70,7 +69,9 @@
                         <div class="mt-6 text-center">
                             <p class="text-gray-600">
                                 Vous n'avez pas de compte? 
-                                <a href="#" class="font-medium text-[#00B3AD] hover:underline">S'inscrire</a>
+                                <router-link to="/register">
+                                    <span class="font-medium text-[#00B3AD] hover:underline">S'inscrire</span>
+                                </router-link>
                             </p>
                         </div>
                     </div>

@@ -140,6 +140,7 @@
             </div>
             <div class="relative" ref="profileMenu">
               <RouterLink to="/dashboard/profile">
+                <div v-if="authStore.isLoggedIn && authStore.role === 'association'">
               <button @click="profileMenuOpen = !profileMenuOpen" class="flex items-center space-x-2 focus:outline-none">
                 <img :src="profileData.logo" alt="Profile" class="w-8 h-8 rounded-full border-2 border-[#00B3AD]">
                 <div class="hidden md:flex flex-col">
@@ -151,6 +152,21 @@
                 </span>
               </div>         
               </button>
+            </div>
+            <div v-if="authStore.isLoggedIn && authStore.role === 'admin'">
+              <button @click="profileMenuOpen = !profileMenuOpen" class="flex items-center space-x-2 focus:outline-none">
+                <img :src="authStore.user.image" alt="Profile" class="w-8 h-8 rounded-full border-2 border-[#00B3AD]">
+                <div class="hidden md:flex flex-col">
+                <span class="text-sm font-bold text-gray-800 truncate max-w-[150px] group-hover:text-[#00B3AD] transition-colors">
+                  {{ authStore.user.prenom }} {{ authStore.user.nom }}
+                </span>
+                <span class="text-xs text-gray-500">
+                  <span class="inline-block w-2 h-2 bg-green-500 rounded-full mr-1"></span>Connecté
+                </span>
+              </div>         
+              </button>
+            </div>
+
             </RouterLink>
             </div>
           </div>

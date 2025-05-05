@@ -74,6 +74,13 @@ createOpportunite(data, token) {
     });
   },
 
+      getByIdDash(id , token) {
+        return axios.get(`${api}/association/opportunites/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+      }
 
   
 

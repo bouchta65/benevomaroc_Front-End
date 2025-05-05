@@ -118,7 +118,7 @@
                     <div class="text-sm">{{ opp.association?.nom_association || 'N/A' }}</div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm">{{ formatDate(opp.date_publication) }}</div>
+                    <div class="text-sm">{{ formatDate(opp.date) }}</div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <span :class="getStatusClass(opp.status)">{{ opp.status }}</span>

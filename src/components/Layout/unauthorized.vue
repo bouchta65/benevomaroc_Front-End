@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-center justify-center min-h-[60vh] bg-gradient-to-br from-gray-100 to-gray-200 px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-center min-h-[80vh] bg-gradient-to-br from-gray-100 to-gray-200 px-4 sm:px-6 lg:px-8">
       <div class="bg-white rounded-2xl shadow-xl p-8 sm:p-12 max-w-lg w-full text-center">
         <div class="text-red-500 mb-6">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">

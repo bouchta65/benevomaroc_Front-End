@@ -36,5 +36,21 @@ export default {
     });
   },
 
+  updatePassword(passwordData, token) {
+    return axios.put(`${api}/profile/password`, passwordData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+  },
 
+  resetPassword(token) {
+    return axios.post(`${api}/profile/reset-password`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+}
 }

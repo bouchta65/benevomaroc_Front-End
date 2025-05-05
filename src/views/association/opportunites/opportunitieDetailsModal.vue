@@ -122,7 +122,7 @@
 </template>
 
 <script>
-import opportuniteApi from '@/api/adminDashbaord';
+import opportuniteApi from '@/api/associationDashboard';
 
 export default {
   props: {

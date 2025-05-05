@@ -1,3 +1,8 @@
+<script setup lang="ts">
+import { RouterLink } from 'vue-router';
+
+</script>
+
 <template>
     <div class="relative bg-[#00B3AD] text-white py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -119,20 +124,20 @@
                 <h3 class="text-xl font-bold text-gray-900 mb-4">Liens Utiles</h3>
                 <ul class="space-y-3">
                     <li>
-                        <a href="{{url('guide-Juridique/Conditions-dutilisation')}}" class="flex items-center text-gray-600 hover:text-[#00B3AD]">
+                        <RouterLink to="./Conditions_dutilisation" class="flex items-center text-gray-600 hover:text-[#00B3AD]">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                             </svg>
                             <span>conditions d'utilisation</span>
-                        </a>
+                        </RouterLink>
                     </li>
                     <li>
-                        <a href="{{url('guide-Juridique/Politique-confidentialité')}}" class="flex items-center text-gray-600 hover:text-[#00B3AD]">
+                        <RouterLink to="./Politique_confidentialite.vue" class="flex items-center text-gray-600 hover:text-[#00B3AD]">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                             </svg>
                             <span>la politique de confidentialité</span>
-                        </a>
+                        </RouterLink>
                     </li>
                 </ul>
             </div>

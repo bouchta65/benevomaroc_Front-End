@@ -15,6 +15,7 @@ import dashboard_certification from '../views/association/certifications/show.vu
 import association_admin from '../views/admin/associations/show.vue';
 import categorie_admin from '../views/admin/categories/show.vue';
 import AllcertificationBenevole from '../views/benevole/certificationodal.vue';
+import contacts_admin from '../views/admin/contacts/show.vue';
 import contact from '../views/others/contact.vue';
 import dashboard from '../components/dashboard.vue';
 import NotFound from '../components/layout/notFound.vue';
@@ -40,6 +41,7 @@ const routes = [
   { path: '/dashboard/associations', name: 'association_admin', component: association_admin, meta: { requiresAuth: true, role: "admin" }},
   { path: '/dashboard/associations', name: 'association_admin', component: association_admin, meta: { requiresAuth: true, role: "admin" }},
   { path: '/dashboard/categories', name: 'categorie_admin', component: categorie_admin, meta: { requiresAuth: true, role: "admin" }},
+  { path: '/dashboard/contacts', name: 'contacts_admin', component: contacts_admin, meta: { requiresAuth: true, role: "admin" }},
   
   { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFound }
 ];

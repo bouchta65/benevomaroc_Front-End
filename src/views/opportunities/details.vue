@@ -43,7 +43,7 @@
                     {{ opportunite.categorie.nom }}
                   </span>
                   <span class="bg-white/90 text-gray-700 px-3 py-1 rounded-full text-sm backdrop-blur-sm">
-                    🕒 {{ opportunite.engagement_requis }}
+                    🕒 {{ opportunite.duree }}
                   </span>
                 </div>
               </div>

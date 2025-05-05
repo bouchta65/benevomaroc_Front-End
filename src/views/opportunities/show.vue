@@ -128,8 +128,8 @@
 
                                         <div class="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-4">
                                             <div class="flex flex-col">
-                                                <span class="text-gray-500">Engagement:</span>
-                                                <span class="text-gray-900 font-medium">{{ opportunite.engagement_requis }}</span>
+                                                <span class="text-gray-500">Durée:</span>
+                                                <span class="text-gray-900 font-medium">{{ opportunite.duree }}</span>
                                             </div>
                                             <div class="flex flex-col">
                                                 <span class="text-gray-500">Places:</span>

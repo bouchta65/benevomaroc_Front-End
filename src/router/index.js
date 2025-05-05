@@ -15,6 +15,7 @@ import dashboard_certification from '../views/association/certifications/show.vu
 import association_admin from '../views/admin/associations/show.vue';
 import categorie_admin from '../views/admin/categories/show.vue';
 import AllcertificationBenevole from '../views/benevole/certificationodal.vue';
+import contact from '../views/others/contact.vue';
 import dashboard from '../components/dashboard.vue';
 import NotFound from '../components/layout/notFound.vue';
 import authapi from "@/api/auth"; 
@@ -22,6 +23,7 @@ import authapi from "@/api/auth";
 const routes = [
   { path: '/', name: 'home', component: home },
   { path: '/opportunites', name: 'opportunites', component: opportunites },
+  { path: '/contact', name: 'contact', component: contact },
   { path: '/opportunites/:id', name: 'OpportuniteDetails', component: OpportuniteDetails, props: true },
   { path: '/register-benevole/', name: 'registerBenevole', component: registerBenevole, meta: { guestOnly: true } },
   { path: '/register-association/', name: 'registerAssociation', component: registerAssociation, meta: { guestOnly: true } },

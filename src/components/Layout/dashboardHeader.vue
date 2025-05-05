@@ -92,6 +92,17 @@
             Certifications
           </router-link>
         </div>
+
+            <div v-if="authStore.isLoggedIn && authStore.role === 'admin'">
+            <router-link to="/dashboard/contacts"  
+                      :class="[$route.path === '/dashboard/contacts' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
+                            'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
+              <svg class="mr-3 flex-shrink-0 h-6 w-6" :class="{'text-[#00B3AD]': $route.path === '/dashboard/contacts', 'text-gray-500': $route.path !== '/dashboard/contacts'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              Contact
+            </router-link>
+          </div>
           <router-link to="/dashboard/profile" 
                      :class="[$route.path === '/dashboard/profile' ? 'bg-[#00B3AD]/10 text-[#00B3AD]' : 'text-gray-600 hover:bg-gray-100', 
                              'group flex items-center px-3 py-2 text-sm font-medium rounded-md cursor-pointer']">
@@ -206,7 +217,10 @@ export default {
         '/dashboard/opportunites': 'Gestion des Opportunités',
         '/dashboard/formations': 'Formations',
         '/dashboard/certifications': 'Certifications',
-        '/dashboard/profile': 'Profile'
+        '/dashboard/profile': 'Profile',
+        '/dashboard/associations': 'Associations',
+        '/dashboard/categories': 'Catégories',
+        '/dashboard/contacts': 'Messages de Contact'
       };
       return titles[path] || 'Tableau de Bord';
     },
@@ -218,7 +232,10 @@ export default {
         '/dashboard/opportunites': 'Créez et gérez vos offres de bénévolat',
         '/dashboard/formations': 'Proposez et suivez des programmes de formation',
         '/dashboard/certifications': 'Attribuez et suivez les certifications',
-        '/dashboard/profile': 'Personnalisez votre profil et vos paramètres.'
+        '/dashboard/profile': 'Personnalisez votre profil et vos paramètres.',
+        '/dashboard/associations': 'Gérez les associations partenaires et leurs informations',
+        '/dashboard/categories': 'Créez et modifiez les catégories d\'opportunités',
+        '/dashboard/contacts': 'Consultez les messages envoyés via le formulaire de contact'
       };
       return subtitles[path] || '';
     }

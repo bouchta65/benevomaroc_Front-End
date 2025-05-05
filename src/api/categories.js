@@ -4,8 +4,8 @@ const api = 'http://127.0.0.1:8000/api/dashboard';
 
 export default {
 
-      getAllCategories(token) {
-        return axios.get(`${api}/categories`, {
+    getAllCategories(token, page = 1, perPage = 10) {
+        return axios.get(`${api}/categories?page=${page}&per_page=${perPage}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           }

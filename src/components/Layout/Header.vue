@@ -102,7 +102,7 @@
           </div>
           
           <div class="px-4 py-2 space-y-1 border-t border-gray-200">
-            <router-link to="/Bénévoles" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">Bénévoles</router-link>
+            <router-link to="/Benevoles" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">Bénévoles</router-link>
             <router-link to="/associations" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">Associations</router-link>
             <router-link to="/formations" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">Formation</router-link>
             <router-link to="/guide-Juridique" class="block text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium" @click="closeMobileMenu">Guide Juridique</router-link>
@@ -190,14 +190,14 @@
 
             <div class="flex items-center space-x-6">
               <router-link
-                :to="'/Bénévoles'"
+                :to="'/Benevoles'"
                 :class="{
-                  'border-[#00B3AD] text-[#00B3AD]': $route.path === '/Bénévoles',
-                  'border-transparent text-gray-600': $route.path !== '/Bénévoles'
+                  'border-[#00B3AD] text-[#00B3AD]': $route.path === '/Benevoles',
+                  'border-transparent text-gray-600': $route.path !== '/Benevoles'
                 }"
                 class="flex items-center py-2 border-b-2 transition-colors duration-200 group"
               >
-                <svg class="w-5 h-5 mr-2" :class="{'text-[#00B3AD]': $route.path === '/Bénévoles', 'text-gray-400': $route.path !== '/Bénévoles'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg class="w-5 h-5 mr-2" :class="{'text-[#00B3AD]': $route.path === '/Benevoles', 'text-gray-400': $route.path !== '/Benevoles'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
                 <span class="text-sm font-medium whitespace-nowrap">Bénévoles</span>

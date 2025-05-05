@@ -17,6 +17,14 @@ import categorie_admin from '../views/admin/categories/show.vue';
 import AllcertificationBenevole from '../views/benevole/certificationodal.vue';
 import contacts_admin from '../views/admin/contacts/show.vue';
 import contact from '../views/others/contact.vue';
+import faq from '../views/others/faq.vue';
+import apopos from '../views/others/apopos.vue';
+import benevoles from '../views/others/benevoles.vue';
+import formation from '../views/others/formation.vue';
+import association from '../views/others/association.vue';
+import guide_juridique from '../views/others/guide_juridique.vue';
+import Politique_confidentialite from '../views/others/Politique_confidentialite.vue';
+import Conditions_dutilisation from '../views/others/Conditions_dutilisation.vue';
 import dashboard from '../components/dashboard.vue';
 import NotFound from '../components/layout/notFound.vue';
 import authapi from "@/api/auth"; 
@@ -25,6 +33,14 @@ const routes = [
   { path: '/', name: 'home', component: home },
   { path: '/opportunites', name: 'opportunites', component: opportunites },
   { path: '/contact', name: 'contact', component: contact },
+  { path: '/faq', name: 'faq', component: faq },
+  { path: '/propos', name: 'apopos', component: apopos },
+  { path: '/Benevoles', name: 'benevoles', component: benevoles },
+  { path: '/associations', name: 'association', component: association },
+  { path: '/formations', name: 'formation', component: formation },
+  { path: '/Conditions_dutilisation', name: 'Conditions_dutilisation', component: Conditions_dutilisation },
+  { path: '/Politique_confidentialite', name: 'Politique_confidentialite', component: Politique_confidentialite },
+  { path: '/guide-Juridique', name: 'guide_juridique', component: guide_juridique },
   { path: '/opportunites/:id', name: 'OpportuniteDetails', component: OpportuniteDetails, props: true },
   { path: '/register-benevole/', name: 'registerBenevole', component: registerBenevole, meta: { guestOnly: true } },
   { path: '/register-association/', name: 'registerAssociation', component: registerAssociation, meta: { guestOnly: true } },

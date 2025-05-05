@@ -16,7 +16,7 @@ export default {
       },
 
       deleteAllMessages(token) {
-        return axios.post(`${api}/dashboard/admin/contacts/delete`, {
+        return axios.delete(`${api}/dashboard/admin/contacts/delete`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

@@ -16,7 +16,7 @@
                 </div>
                 </div>
                 <button 
-                @click="showDeleteModal = true"
+                @click="showDeleteConfirmModal = true"
                 class="w-full md:w-auto px-4 py-3 md:py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex items-center justify-center md:justify-start"
                 >
                 <i class="fas fa-trash mr-2"></i> Supprimer tous

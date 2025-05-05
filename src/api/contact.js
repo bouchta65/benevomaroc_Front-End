@@ -6,4 +6,20 @@ export default {
     sendMessage(data) {
         return axios.post(`${api}/contact`, data);
     },
+
+    getAllMessages(token) {
+        return axios.get(`${api}/dashboard/admin/contacts/all`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+      },
+
+      deleteAllMessages(token) {
+        return axios.post(`${api}/dashboard/admin/contacts/delete`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+      }
 };

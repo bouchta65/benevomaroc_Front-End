@@ -1,23 +1,33 @@
-# Vue 3 + Vite
+# Plateforme de Bénévolat
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## Description
+Cette plateforme vise à connecter les bénévoles aux associations et aux opportunités de volontariat, facilitant ainsi l'organisation et la gestion des efforts communautaires. Elle répond à un besoin crucial d'organisation efficace du volontariat, notamment après des catastrophes naturelles.
 
-While this project uses Vue.js, Vite supports many popular JS frameworks. [See all the supported frameworks](https://vitejs.dev/guide/#scaffolding-your-first-vite-project).
+## Problématique
+Après le tremblement de terre qui a frappé le Maroc, il est apparu un besoin urgent d'une plateforme centralisée pour coordonner les efforts de volontariat. Cette plateforme vise à optimiser la répartition des ressources et à faciliter la gestion des volontaires de manière efficace et sécurisée.
 
-## Deploy Your Own
+## Objectifs Principaux
+1. **Connexion des bénévoles aux associations** : Offrir une interface simple pour rechercher et s'inscrire à des missions de bénévolat.
+2. **Gestion des événements et des bénévoles** : Permettre aux associations de créer et suivre les événements et les participants.
+3. **Promotion de la culture du bénévolat** : Sensibiliser à l'importance du volontariat et encourager l'engagement citoyen.
+4. **Conformité légale** : Assurer un cadre juridique sûr respectant les lois locales.
 
-Deploy your own Vite project with Vercel.
+## Fonctionnalités
+### 1. Interface Utilisateur (UI/UX)
+- Conception réactive avec **HTML5, CSS3 et JavaScript**.
+- Interface intuitive pour une expérience utilisateur optimisée.
 
-[![Deploy with Vercel](https://vercel.com/button)]([https://vercel.com/new/clone?repository-url=https://github.com/vercel/examples/tree/main/framework-boilerplates/vite&template=vite](https://vercel.com/new/clone?demo-description=Vite%2FVue.js%20site%20that%20can%20be%20deployed%20to%20Vercel&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F2T4BUF3mEBKPJF3jcjU6nS%2F0d4a02e7c48091d13814a4ab513e8734%2FScreen_Shot_2022-04-13_at_10.05.56_PM.png&demo-title=Vite%20-%20Vue&demo-url=https%3A%2F%2Fvite-vue-template.vercel.app%2F&from=templates&project-name=Vite%20-%20Vue&repository-name=vite-vue&repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fvercel%2Ftree%2Fmain%2Fexamples%2Fvite&skippable-integrations=1))
+### 2. Système de Correspondance
+- Algorithme intelligent pour associer les bénévoles aux missions appropriées.
+- Gestion des profils (bénévoles et associations).
 
-_Live Example: https://vite-vue-template.vercel.app_
+### 3. Évaluation et Avis
+- Système de notation et de commentaires pour renforcer la crédibilité des acteurs.
 
-### Deploying From Your Terminal
+### 4. Gestion des Projets et des Événements
+- Publication et gestion d'opportunités de volontariat.
+- Inscription simple pour les bénévoles.
 
-
-You can deploy your new Vite project with a single command from your terminal using [Vercel CLI](https://vercel.com/download):
-
-```shell
-$ vercel
-```
-hello world
+### 5. Formation et Certifications
+- Cours en ligne pour améliorer les compétences des bénévoles.
+- Délivrance de certificats électroniques de participation.
